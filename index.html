@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Movimentações — Promotorias</title>
+<style>
+:root{
+  --ink: #1c2430;
+  --ink-soft: #4a5568;
+  --paper: #f2efe8;
+  --paper-raised: #ffffff;
+  --line: #d8d3c6;
+  --navy: #1f3a5f;
+  --navy-deep: #142842;
+  --brass: #9c7a3c;
+  --brass-soft: #e9dfc4;
+  --ok: #2f6d4f;
+  --ok-bg: #e3efe6;
+  --warn: #9a5b12;
+  --warn-bg: #f6e8d4;
+  --alert: #8a2f2f;
+  --alert-bg: #f3e0e0;
+  --plantao: #4a3b7a;
+  --plantao-bg: #e7e1f2;
+  --mono: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+  --serif: "Source Serif Pro", "Georgia", serif;
+  --sans: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+  --radius: 6px;
+  --shadow: 0 1px 2px rgba(28,36,48,.06), 0 4px 12px rgba(28,36,48,.05);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important; animation:none !important;}
+}
+
+/* ---------- layout shell ---------- */
+#app{ min-height:100vh; display:flex; flex-direction:column; }
+
+header.topbar{
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: #eef2f6;
+  padding: 18px 28px 0 28px;
+  border-bottom: 4px solid var(--brass);
+}
+.topbar-inner{
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  max-width:1280px; margin:0 auto; padding-bottom:18px; flex-wrap:wrap;
+}
+.brand{ display:flex; align-items:center; gap:12px; }
+.brand-seal{
+  width:38px; height:38px; border-radius:50%;
+  border:2px solid var(--brass-soft);
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--serif); font-weight:700; font-size:15px; color: var(--brass-soft);
+  flex-shrink:0;
+}
+.brand h1{ font-family: var(--serif); font-size:20px; font-weight:600; margin:0; letter-spacing:.2px;}
+.brand p{ margin:2px 0 0; font-size:12px; color:#b9c6d6; letter-spacing:.4px; text-transform:uppercase;}
+.topbar-meta{
+  display:flex; align-items:center; justify-content:flex-end; gap:14px;
+  color:#c8d4e0; text-align:right;
+}
+.topbar-status{ display:flex; flex-direction:column; gap:3px; min-width:170px; }
+.topbar-status #clock{ font-family:var(--mono); font-size:11px; color:#9fb1c4; }
+.topbar-status #auth-user{ color:#f3f6f9; font-family:var(--sans); font-size:12px; }
+button.btn-topbar{
+  background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.38);
+  box-shadow:0 1px 2px rgba(0,0,0,.14); transition:background .18s ease, border-color .18s ease;
+}
+button.btn-topbar:hover{ background:rgba(255,255,255,.22); border-color:rgba(255,255,255,.7); }
+button.btn-topbar:focus-visible{ outline-color:var(--brass-soft); }
+
+nav.tabs{
+  max-width:1280px; margin:0 auto; display:flex; gap:3px; padding-top:4px;
+  border-top:1px solid rgba(255,255,255,.12); overflow-x:auto;
+}
+nav.tabs button{
+  background:transparent; border:none; color:#c7d3e0; font-family:var(--sans);
+  font-size:13.5px; font-weight:500; padding:11px 16px 10px; cursor:pointer;
+  border-radius:6px 6px 0 0; letter-spacing:.2px; white-space:nowrap;
+}
+nav.tabs button:hover{ background: rgba(255,255,255,.06); color:#fff; }
+nav.tabs button.active{ background: var(--paper); color: var(--navy-deep); font-weight:600; }
+@media (max-width:700px){
+  header.topbar{ padding:14px 16px 0; }
+  .topbar-inner{ align-items:flex-start; gap:14px; padding-bottom:14px; }
+  .brand h1{ font-size:18px; }
+  .brand p{ font-size:10px; }
+  .topbar-meta{ width:100%; justify-content:space-between; text-align:left; }
+  .topbar-status{ min-width:0; }
+  nav.tabs button{ padding-left:13px; padding-right:13px; }
+}
+
+main{ flex:1; max-width:1280px; margin:0 auto; padding:24px 28px 60px; width:100%; }
+section.view{ display:none; }
+section.view.active{ display:block; animation: fadein .18s ease; }
+@keyframes fadein{ from{opacity:0; transform:translateY(2px);} to{opacity:1; transform:none;} }
+
+h2.view-title{
+  font-family: var(--serif); font-size:22px; margin:0 0 4px; color: var(--navy-deep);
+}
+p.view-sub{ margin:0 0 20px; color: var(--ink-soft); font-size:13.5px; }
+
+.card{
+  background: var(--paper-raised); border:1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding:18px 20px; margin-bottom:18px;
+}
+.card h3{ margin:0 0 12px; font-size:14px; text-transform:uppercase; letter-spacing:.6px; color:var(--ink-soft); font-weight:600;}
+
+/* ---------- buttons / inputs ---------- */
+button.btn{
+  font-family:var(--sans); font-size:13px; font-weight:600; border-radius:5px; border:1px solid transparent;
+  padding:9px 16px; cursor:pointer; letter-spacing:.2px;
+}
+button.btn-primary{ background: var(--navy); color:#fff; }
+button.btn-primary:hover{ background: var(--navy-deep); }
+button.btn-ghost{ background: transparent; color: var(--navy); border-color: var(--line); }
+button.btn-ghost:hover{ background: #eae5d8; }
+button.btn-danger{ background: transparent; color: var(--alert); border-color: var(--alert); }
+button.btn-danger:hover{ background: var(--alert-bg); }
+button.btn-sm{ padding:5px 10px; font-size:12px; }
+
+label{ display:block; font-size:12px; font-weight:600; color: var(--ink-soft); margin-bottom:5px; letter-spacing:.2px;}
+input[type=text], input[type=date], input[type=number], select, textarea{
+  width:100%; font-family:var(--sans); font-size:13.5px; padding:8px 10px;
+  border:1px solid var(--line); border-radius:5px; background:#fff; color:var(--ink);
+}
+input:focus, select:focus, textarea:focus, button:focus-visible{
+  outline: 2px solid var(--brass); outline-offset:1px; border-color: var(--brass);
+}
+textarea{ resize:vertical; min-height:64px; font-family:var(--sans); }
+.field{ margin-bottom:14px; }
+.local-promotoria-filter{ margin-bottom:18px; }
+.local-promotoria-buttons{ display:flex; gap:8px; flex-wrap:wrap; }
+.local-promotoria-btn.active{ background:var(--navy); color:#fff; border-color:var(--navy); }
+.local-promotoria-btn.active:hover{ background:var(--navy-deep); border-color:var(--navy-deep); }
+.grid{ display:grid; gap:14px; }
+.grid-2{ grid-template-columns: repeat(2, 1fr); }
+.grid-3{ grid-template-columns: repeat(3, 1fr); }
+.grid-4{ grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 860px){ .grid-2,.grid-3,.grid-4{ grid-template-columns:1fr; } }
+
+/* ---------- status badges (the signature: registry seals) ---------- */
+.seal{
+  display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px;
+  font-weight:600; padding:3px 9px 3px 7px; border-radius:20px; letter-spacing:.3px; white-space:nowrap;
+}
+.seal::before{ content:""; width:6px; height:6px; border-radius:50%; display:inline-block; }
+.seal.presente{ background: var(--ok-bg); color: var(--ok); }
+.seal.presente::before{ background: var(--ok); }
+.seal.futuro{ background: var(--warn-bg); color: var(--warn); }
+.seal.futuro::before{ background: var(--warn); }
+.seal.plantao{ background: var(--plantao-bg); color: var(--plantao); }
+.seal.plantao::before{ background: var(--plantao); }
+.seal.encerrado{ background:#e7e5e0; color:#6b6558; }
+.seal.encerrado::before{ background:#9a9284; }
+
+/* ---------- resumo (dashboard) ---------- */
+.stat-row{ display:grid; grid-template-columns: repeat(4,1fr); gap:14px; margin-bottom:18px; }
+@media (max-width:860px){ .stat-row{ grid-template-columns: repeat(2,1fr); } }
+.stat-card{
+  background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px 18px; box-shadow: var(--shadow); position:relative; overflow:hidden;
+}
+.stat-card .n{ font-family:var(--serif); font-size:30px; font-weight:700; color:var(--navy-deep); line-height:1;}
+.stat-card .l{ font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--ink-soft); margin-top:6px;}
+.stat-card::after{ content:""; position:absolute; right:-12px; top:-12px; width:60px; height:60px; border-radius:50%; background: var(--brass-soft); opacity:.35; }
+
+.two-col{ display:grid; grid-template-columns: 1.3fr 1fr; gap:18px; }
+@media (max-width:960px){ .two-col{ grid-template-columns:1fr; } }
+
+.list-mini{ list-style:none; margin:0; padding:0; }
+.list-mini li{
+  display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px dashed var(--line); font-size:13px;
+}
+.list-mini li:last-child{ border-bottom:none; }
+.list-mini .tag{ font-family:var(--mono); font-size:11px; color:var(--ink-soft); }
+
+.bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:12.5px; }
+.bar-row .lbl{ width:110px; flex-shrink:0; color:var(--ink-soft); }
+.bar-track{ flex:1; height:8px; background:#eae5d8; border-radius:4px; overflow:hidden; }
+.bar-fill{ height:100%; background: var(--navy); border-radius:4px; }
+.bar-row .cnt{ width:28px; text-align:right; font-family:var(--mono); font-size:12px; }
+
+/* ---------- filtros / listagem ---------- */
+.filters-bar{ display:flex; gap:10px; align-items:flex-end; margin-bottom:14px; flex-wrap:wrap; }
+.quick-search{ flex:1; min-width:220px; }
+.quick-search input{ padding:10px 12px; font-size:14px; }
+.filters-toggle{ white-space:nowrap; }
+.filters-panel{ display:none; }
+.filters-panel.open{ display:block; }
+.chips{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 4px; }
+.chip{
+  background: var(--brass-soft); color: var(--navy-deep); font-size:11.5px; padding:4px 10px 4px 12px;
+  border-radius:14px; display:flex; align-items:center; gap:6px; font-weight:600;
+}
+.chip button{ background:none; border:none; cursor:pointer; color:var(--navy-deep); font-size:13px; line-height:1; padding:0;}
+
+table.reg-table{ width:100%; border-collapse:collapse; font-size:13px; }
+table.reg-table thead th{
+  text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-soft);
+  border-bottom:2px solid var(--ink); padding:8px 10px; cursor:pointer; user-select:none; white-space:nowrap;
+}
+table.reg-table thead th:hover{ color: var(--navy); }
+table.reg-table thead th.sorted::after{ content:" ▾"; font-size:9px; }
+table.reg-table thead th.sorted.desc::after{ content:" ▴"; }
+table.reg-table tbody tr{ border-bottom:1px solid var(--line); cursor:pointer; }
+table.reg-table tbody tr:hover{ background: #f7f4ec; }
+table.reg-table td{ padding:9px 10px; vertical-align:top; }
+table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
+.row-actions{ display:flex; gap:6px; }
+.empty-state{ text-align:center; padding:40px 20px; color:var(--ink-soft); }
+.empty-state .glyph{ font-family:var(--serif); font-size:34px; color:var(--brass); margin-bottom:8px;}
+.results-count{ font-size:12px; color:var(--ink-soft); margin-bottom:8px; }
+.checkbox-line{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); }
+.checkbox-line input{ width:auto; }
+
+/* ---------- detalhe ---------- */
+.detail-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap;}
+.detail-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:0; }
+@media (max-width:760px){ .detail-grid{ grid-template-columns:1fr; } }
+.dl-item{ padding:10px 4px; border-bottom:1px solid var(--line); }
+.dl-item .k{ font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-soft); margin-bottom:3px;}
+.dl-item .v{ font-size:14px; color:var(--ink); }
+.dl-item .v.empty{ color:#b0aa9c; font-style:italic; }
+.sub-block{ margin-top:6px; border-top:2px solid var(--brass-soft); padding-top:12px; }
+.sub-block h4{ font-family:var(--serif); font-size:15px; color:var(--navy-deep); margin:0 0 6px;}
+
+/* ---------- toast ---------- */
+#toast{
+  position:fixed; bottom:20px; right:20px; background: var(--navy-deep); color:#fff; padding:11px 18px;
+  border-radius:6px; font-size:13px; box-shadow: var(--shadow); opacity:0; transform:translateY(8px);
+  transition: all .25s ease; pointer-events:none; z-index:50;
+}
+#toast.show{ opacity:1; transform:none; }
+
+.section-divider{ border:none; border-top:1px solid var(--line); margin:22px 0; }
+.pill-buttons{ display:flex; gap:8px; flex-wrap:wrap; }
+.helper{ font-size:11.5px; color:var(--ink-soft); margin-top:4px; }
+
+/* ---------- autenticação provisória ---------- */
+#auth-screen{
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:32px 20px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(156,122,60,.16), transparent 28%),
+    radial-gradient(circle at 88% 82%, rgba(31,58,95,.18), transparent 30%),
+    linear-gradient(135deg, #e9e5db 0%, var(--paper) 48%, #e5e9ed 100%);
+}
+#auth-screen::before,
+#auth-screen::after{ content:""; position:absolute; border-radius:50%; pointer-events:none; }
+#auth-screen::before{ width:420px; height:420px; right:-180px; top:-170px; border:1px solid rgba(31,58,95,.12); box-shadow:0 0 0 22px rgba(31,58,95,.035), 0 0 0 44px rgba(31,58,95,.025); }
+#auth-screen::after{ width:280px; height:280px; left:-150px; bottom:-150px; background:rgba(156,122,60,.08); }
+#auth-screen[hidden], #app[hidden]{ display:none !important; }
+.auth-card{ width:min(520px,100%); position:relative; z-index:1; background:rgba(255,255,255,.94); border:1px solid rgba(216,211,198,.95); border-radius:14px; box-shadow:0 18px 45px rgba(20,40,66,.14), 0 3px 8px rgba(28,36,48,.07); padding:36px 42px 30px; }
+.auth-card::before{ content:""; position:absolute; left:0; right:0; top:0; height:5px; border-radius:14px 14px 0 0; background:linear-gradient(90deg, var(--brass), #c5a25e, var(--navy)); }
+.auth-brand{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+.auth-seal{ width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:var(--navy-deep); color:var(--brass-soft); border:2px solid var(--brass); font-family:var(--serif); font-size:15px; font-weight:700; }
+.auth-kicker{ color:var(--brass); font-size:10px !important; font-weight:700; letter-spacing:1.4px; margin:0 !important; text-transform:uppercase; }
+.auth-card h1{ margin:0 0 8px; font-family:var(--serif); font-size:28px; line-height:1.15; color:var(--navy-deep); }
+.auth-card .auth-lead{ color:var(--ink-soft); font-size:13.5px; line-height:1.55; margin:0 0 24px; }
+.auth-card .field{ margin-bottom:16px; }
+.auth-card label{ margin-bottom:6px; }
+.auth-card input[type=email], .auth-card input[type=password]{ width:100%; min-height:50px; padding:13px 14px; background:#fcfcfb; font-size:14px; }
+.auth-card .btn{ width:100%; margin-top:6px; padding-top:11px; padding-bottom:11px; }
+.auth-card .btn-primary{ box-shadow:0 5px 12px rgba(31,58,95,.18); }
+.auth-error{ color:var(--alert) !important; min-height:18px; margin:10px 0 0; }
+.auth-public{ margin-top:24px; padding:18px 16px 0; border-top:1px solid var(--line); text-align:center; }
+.auth-public p{ margin:0 0 10px; font-size:12.5px; }
+.auth-public .btn{ background:#fff; color:var(--navy); border:1px solid var(--line); }
+.auth-public .btn:hover{ background:var(--brass-soft); border-color:var(--brass); }
+.auth-config{ background:var(--warn-bg); border:1px solid var(--brass); border-radius:7px; padding:10px 12px; font-size:12px !important; }
+@media (max-width:520px){
+  #auth-screen{ padding:20px 14px; }
+  .auth-card{ padding:30px 16px 24px; border-radius:11px; }
+  .auth-card h1{ font-size:25px; }
+}
+
+</style>
+</head>
+<body>
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="auth-seal">MP</div>
+      <p class="auth-kicker">Painel administrativo</p>
+    </div>
+    <h1>Registro de Movimentações</h1>
+    <p class="auth-lead">Entre com seu acesso administrativo para cadastrar, editar e excluir registros.</p>
+    <p class="auth-config" id="auth-config-message" hidden></p>
+    <form id="form-login">
+      <div class="field">
+        <label for="login-email">E-mail</label>
+        <input type="email" id="login-email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="login-password">Senha</label>
+        <input type="password" id="login-password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Entrar como administrador</button>
+      <p class="auth-error" id="login-error" role="alert"></p>
+    </form>
+    <div class="auth-public">
+      <p>Ou entre sem login para apenas visualizar e filtrar os registros.</p>
+      <button type="button" class="btn" id="btn-entrar-publico">Entrar sem login</button>
+    </div>
+  </div>
+</div>
+<div id="app" hidden>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-seal">MP</div>
+        <div>
+          <h1>Registro de Movimentações</h1>
+          <p>Titulares · Substitutos · Promotorias</p>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <div class="topbar-status">
+          <div id="clock"></div>
+          <div id="auth-user"></div>
+        </div>
+        <button class="btn btn-topbar btn-sm" id="btn-sair" type="button">Sair</button>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button data-view="resumo" class="active">Resumo</button>
+      <button data-view="listagem">Listagem</button>
+      <button data-view="cadastro" data-admin-only>Cadastro</button>
+      <button data-view="historico">Histórico</button>
+      <button data-view="detalhe" id="tab-detalhe" style="display:none;">Detalhe</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="view active" id="view-resumo">
+      <h2 class="view-title">Painel geral</h2>
+      <p class="view-sub">Visão consolidada dos registros cadastrados.</p>
+
+      <div class="stat-row" id="stat-row"></div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>Próximos eventos (30 dias)</h3>
+          <ul class="list-mini" id="upcoming-list"></ul>
+        </div>
+        <div class="card">
+          <h3>Registros por tipo</h3>
+          <div id="tipo-bars"></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>Registros por promotoria</h3>
+          <div id="promotoria-bars"></div>
+        </div>
+        <div class="card">
+          <h3>Ações rápidas</h3>
+          <div class="pill-buttons">
+            <button class="btn btn-primary" id="btn-novo-resumo" data-admin-only>+ Novo registro</button>
+            <button class="btn btn-ghost" id="btn-ver-todos">Ver listagem completa</button>
+          </div>
+          <hr class="section-divider">
+          <p class="helper">Total de registros carregados: <strong id="total-registros-mini">0</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== LISTAGEM ===================== -->
+    <section class="view" id="view-listagem">
+      <h2 class="view-title">Listagem e filtros</h2>
+      <p class="view-sub">Localize registros por promotoria, tipo, período, situação ou texto livre.</p>
+
+      <div class="card">
+        <div class="filters-bar">
+          <div class="quick-search">
+            <label for="quick-search-input">Busca rápida (titular, substituto, promotoria, referência, resumo)</label>
+            <input type="text" id="quick-search-input" placeholder="Digite para localizar...">
+          </div>
+          <button class="btn btn-ghost filters-toggle" id="btn-toggle-filters">Filtros avançados ▾</button>
+          <button class="btn btn-ghost" id="btn-export">Exportar CSV</button>
+          <button class="btn btn-primary" id="btn-novo-listagem" data-admin-only>+ Novo</button>
+        </div>
+
+        <div class="filters-panel" id="filters-panel">
+          <hr class="section-divider" style="margin:12px 0;">
+          <div class="grid grid-4">
+            <div class="field">
+              <label for="f-promotoria">Promotoria</label>
+              <select id="f-promotoria">
+                <option value="">Todas</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-titular">Titular</label>
+              <input type="text" id="f-titular" placeholder="Todos">
+            </div>
+            <div class="field">
+              <label for="f-substituto">Substituto</label>
+              <input type="text" id="f-substituto" placeholder="Todos">
+            </div>
+            <div class="field">
+              <label for="f-tipo">Tipo</label>
+              <select id="f-tipo">
+                <option value="">Todos</option>
+                <option>Remoção</option>
+                <option>Nomeação</option>
+                <option>Autorização</option>
+                <option>Afastamento</option>
+                <option>Acúmulo</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-4">
+            <div class="field">
+              <label for="f-destinacao">Destinação</label>
+              <input type="text" id="f-destinacao" placeholder="Todas">
+            </div>
+            <div class="field">
+              <label for="f-situacao">Situação</label>
+              <select id="f-situacao">
+                <option value="">Todas</option>
+                <option>Presente</option>
+                <option>Futuro</option>
+                <option>Plantão</option>
+                <option>Encerrado</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-referencia">Referência</label>
+              <input type="text" id="f-referencia" placeholder="Todas">
+            </div>
+            <div class="field">
+              <label for="f-resumo">Texto livre no resumo</label>
+              <input type="text" id="f-resumo" placeholder="Buscar no resumo...">
+            </div>
+          </div>
+          <div class="grid grid-4">
+            <div class="field">
+              <label for="f-periodo-ini">Período — a partir de</label>
+              <input type="date" id="f-periodo-ini">
+            </div>
+            <div class="field">
+              <label for="f-periodo-fim">Período — até</label>
+              <input type="date" id="f-periodo-fim">
+            </div>
+            <div class="field" style="align-self:end;">
+              <div class="checkbox-line">
+                <input type="checkbox" id="f-apenas-ativos">
+                <label for="f-apenas-ativos" style="margin:0;">Somente ativos (presente/plantão)</label>
+              </div>
+            </div>
+            <div class="field" style="align-self:end;">
+              <button class="btn btn-ghost" id="btn-clear-filters" style="width:100%;">Limpar filtros</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="active-chips" class="chips"></div>
+      </div>
+
+      <div class="card">
+        <div class="results-count" id="results-count"></div>
+        <div id="table-wrap"></div>
+      </div>
+    </section>
+
+    <!-- ===================== CADASTRO ===================== -->
+    <section class="view" id="view-cadastro">
+      <h2 class="view-title" id="cadastro-title">Novo registro</h2>
+      <p class="view-sub" id="cadastro-sub">Informe a promotoria; os demais campos são opcionais.</p>
+
+      <form id="form-registro">
+        <input type="hidden" id="f-id">
+
+        <div class="card">
+          <h3>Dados do registro</h3>
+          <div class="field local-promotoria-filter">
+            <label>Local da promotoria</label>
+            <div class="local-promotoria-buttons" id="filtro-local-promotorias" role="group" aria-label="Filtrar promotorias por local">
+              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn active" data-local-promotoria="">Todos</button>
+              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" data-local-promotoria="capital">Capital</button>
+              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" data-local-promotoria="interior">Interior</button>
+            </div>
+            <p class="helper">Escolha o local para filtrar as promotorias disponíveis.</p>
+          </div>
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="c-promotoria">Promotoria *</label>
+              <select id="c-promotoria" required>
+                <option value="">Selecione uma promotoria...</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="c-tipo">Tipo da movimentação</label>
+              <select id="c-tipo">
+                <option value="">Selecione...</option>
+                <option>Remoção</option>
+                <option>Nomeação</option>
+                <option>Autorização</option>
+                <option>Afastamento</option>
+                <option>Acúmulo</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="c-titular">Titular</label>
+              <input type="text" id="c-titular">
+            </div>
+            <div class="field">
+              <label for="c-destinacao">Destinação</label>
+              <input type="text" id="c-destinacao">
+            </div>
+          </div>
+          <div class="grid grid-4">
+            <div class="field">
+              <label for="c-data-ini">Data inicial</label>
+              <input type="date" id="c-data-ini">
+            </div>
+            <div class="field">
+              <label for="c-data-fim">Data final</label>
+              <input type="date" id="c-data-fim">
+            </div>
+            <div class="field">
+              <label for="c-situacao">Situação atual</label>
+              <select id="c-situacao">
+                <option value="">A calcular pelas datas</option>
+                <option>Presente</option>
+                <option>Futuro</option>
+                <option>Plantão</option>
+                <option>Encerrado</option>
+              </select>
+              <p class="helper">Deixe em branco para calcular automaticamente pelas datas.</p>
+            </div>
+            <div class="field">
+              <label for="c-referencia">Referência</label>
+              <input type="text" id="c-referencia" placeholder="Ex.: Portaria, processo...">
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-resumo">Resumo</label>
+            <textarea id="c-resumo"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Substituto (opcional)</h3>
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="c-substituto">Substituto</label>
+              <input type="text" id="c-substituto">
+            </div>
+            <div class="field">
+              <label for="c-referencia-sub">Referência do substituto</label>
+              <input type="text" id="c-referencia-sub">
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="c-data-ini-sub">Data inicial do substituto</label>
+              <input type="date" id="c-data-ini-sub">
+            </div>
+            <div class="field">
+              <label for="c-data-fim-sub">Data final do substituto</label>
+              <input type="date" id="c-data-fim-sub">
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-resumo-sub">Resumo do substituto</label>
+            <textarea id="c-resumo-sub"></textarea>
+          </div>
+        </div>
+
+        <div class="pill-buttons">
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar registro</button>
+          <button type="button" class="btn btn-ghost" id="btn-cancelar-cadastro">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== HISTÓRICO ===================== -->
+    <section class="view" id="view-historico">
+      <h2 class="view-title">Histórico cronológico por promotoria</h2>
+      <p class="view-sub">Selecione uma promotoria para ver todas as movimentações em ordem cronológica.</p>
+      <div class="card">
+        <div class="field" style="max-width:420px;">
+          <label for="h-promotoria">Promotoria</label>
+          <select id="h-promotoria"></select>
+        </div>
+      </div>
+      <div class="card" id="historico-wrap"></div>
+    </section>
+
+    <!-- ===================== DETALHE ===================== -->
+    <section class="view" id="view-detalhe">
+      <div class="card">
+        <div class="detail-header">
+          <div>
+            <h2 class="view-title" style="margin-bottom:2px;" id="d-titulo">Registro</h2>
+            <span class="seal" id="d-seal"></span>
+          </div>
+          <div class="pill-buttons">
+            <button class="btn btn-ghost btn-sm" id="btn-editar-detalhe" data-admin-only>Editar</button>
+            <button class="btn btn-danger btn-sm" id="btn-excluir-detalhe" data-admin-only>Excluir</button>
+            <button class="btn btn-ghost btn-sm" id="btn-voltar-detalhe">Voltar à listagem</button>
+          </div>
+        </div>
+        <div class="detail-grid" id="detail-grid"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+
+  /* ---------------------------------------------------------
+     ESTADO
+  --------------------------------------------------------- */
+  let registros = [];
+  let promotorias = [];
+  let localPromotoriasSelecionado = '';
+  let editandoId = null;
+  let detalheAtualId = null;
+  let ordenacao = { campo: 'dataInicial', dir: 'asc' };
+  let filtrosAbertos = false;
+  let modoPublico = true;
+  let usuarioAtual = null;
+  let perfilAtual = { role: 'visualizador' };
+  let ignorarProximaSessaoNula = false;
+
+  const SUPABASE_URL = 'https://cserkovxfkapmnlonuzr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_nVox92qsvHa2Q0Asd9nmNA_4AkFGcS1';
+  const CONFIG_SUPABASE_OK =
+    !SUPABASE_URL.includes('SEU-PROJETO') &&
+    !SUPABASE_ANON_KEY.includes('COLE_SUA_CHAVE');
+  const supabaseClient = CONFIG_SUPABASE_OK && window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+  const supabasePublicClient = CONFIG_SUPABASE_OK && window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+        }
+      })
+    : null;
+
+  function ehAdmin(){
+    return !modoPublico && perfilAtual.role === 'admin';
+  }
+
+  function aplicarPermissoes(){
+    document.querySelectorAll('[data-admin-only]').forEach(el=>{
+      el.hidden = !ehAdmin();
+    });
+    document.getElementById('auth-user').textContent = modoPublico
+      ? 'Consulta pública'
+      : (usuarioAtual?.email || 'Usuário autenticado') + (ehAdmin() ? ' · administrador' : ' · visualizador');
+  }
+
+  function bancoParaRegistro(row){
+    return {
+      ...row,
+      promotoria: row.promotoria || '',
+      titular: row.titular || '',
+      tipo: row.tipo || '',
+      destinacao: row.destinacao || '',
+      situacao: row.situacao || '',
+      referencia: row.referencia || '',
+      resumo: row.resumo || '',
+      substituto: row.substituto || '',
+      dataInicial: row.data_inicial || '',
+      dataFinal: row.data_final || '',
+      referenciaSubstituto: row.referencia_substituto || row.referenciaSubstituto || '',
+      resumoSubstituto: row.resumo_substituto || row.resumoSubstituto || '',
+      dataInicialSubstituto: row.data_inicial_substituto || '',
+      dataFinalSubstituto: row.data_final_substituto || '',
+      criadoEm: row.criado_em || ''
+    };
+  }
+
+  function registroParaBanco(dados){
+    const valorOuNulo = valor => valor || null;
+    return {
+      promotoria: dados.promotoria,
+      titular: valorOuNulo(dados.titular),
+      tipo: valorOuNulo(dados.tipo),
+      destinacao: valorOuNulo(dados.destinacao),
+      data_inicial: valorOuNulo(dados.dataInicial),
+      data_final: valorOuNulo(dados.dataFinal),
+      situacao: valorOuNulo(dados.situacao),
+      referencia: valorOuNulo(dados.referencia),
+      resumo: valorOuNulo(dados.resumo),
+      substituto: valorOuNulo(dados.substituto),
+      data_inicial_substituto: valorOuNulo(dados.dataInicialSubstituto),
+      data_final_substituto: valorOuNulo(dados.dataFinalSubstituto),
+      referencia_substituto: valorOuNulo(dados.referenciaSubstituto),
+      resumo_substituto: valorOuNulo(dados.resumoSubstituto)
+    };
+  }
+
+  /* ---------------------------------------------------------
+     AUTENTICAÇÃO E PERSISTÊNCIA SUPABASE
+  --------------------------------------------------------- */
+  async function carregarPerfil(){
+    perfilAtual = { role: 'visualizador' };
+    const { data, error } = await supabaseClient
+      .from('perfis')
+      .select('role')
+      .eq('id', usuarioAtual.id)
+      .maybeSingle();
+    if(error){
+      console.error(error);
+      mostrarToast('Não foi possível carregar o perfil de acesso.');
+      return;
+    }
+    if(data) perfilAtual = data;
+  }
+
+  async function mostrarAplicacaoPublica(){
+    modoPublico = true;
+    usuarioAtual = null;
+    perfilAtual = { role: 'visualizador' };
+    document.getElementById('auth-screen').hidden = true;
+    document.getElementById('app').hidden = false;
+    aplicarPermissoes();
+    await carregar();
+  }
+
+  async function processarSessao(session){
+    if(!session){
+      if(ignorarProximaSessaoNula){
+        ignorarProximaSessaoNula = false;
+        await mostrarAplicacaoPublica();
+        return;
+      }
+      modoPublico = true;
+      usuarioAtual = null;
+      perfilAtual = { role: 'visualizador' };
+      document.getElementById('auth-screen').hidden = false;
+      document.getElementById('app').hidden = true;
+      return;
+    }
+    modoPublico = false;
+    usuarioAtual = session.user;
+    await carregarPerfil();
+    document.getElementById('auth-screen').hidden = true;
+    document.getElementById('app').hidden = false;
+    aplicarPermissoes();
+    await carregar();
+  }
+
+  async function iniciarAutenticacao(){
+    const configMessage = document.getElementById('auth-config-message');
+    if(!CONFIG_SUPABASE_OK || !supabaseClient){
+      configMessage.hidden = false;
+      configMessage.textContent = 'Configure a conexão do Supabase antes de usar o sistema.';
+      return;
+    }
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    await processarSessao(session);
+    supabaseClient.auth.onAuthStateChange((_event, novaSessao)=>{
+      setTimeout(()=> processarSessao(novaSessao), 0);
+    });
+  }
+
+  document.getElementById('form-login').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const erro = document.getElementById('login-error');
+    const botao = e.target.querySelector('button[type="submit"]');
+    erro.textContent = '';
+    botao.disabled = true;
+    botao.textContent = 'Entrando...';
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if(error) erro.textContent = 'E-mail ou senha inválidos.';
+    botao.disabled = false;
+    botao.textContent = 'Entrar como administrador';
+  });
+
+  document.getElementById('btn-entrar-publico').addEventListener('click', async()=>{
+    if(supabaseClient){
+      ignorarProximaSessaoNula = true;
+      await supabaseClient.auth.signOut();
+    }
+    await mostrarAplicacaoPublica();
+  });
+
+  document.getElementById('btn-sair').addEventListener('click', async()=>{
+    if(supabaseClient) await supabaseClient.auth.signOut();
+    document.getElementById('app').hidden = true;
+    document.getElementById('auth-screen').hidden = false;
+  });
+
+  async function carregar(){
+    if(!supabasePublicClient){
+      mostrarToast('A conexão com o Supabase não está configurada.');
+      render();
+      return;
+    }
+    const [resultadoRegistros, resultadoPromotorias] = await Promise.all([
+      supabasePublicClient
+        .from('registros')
+        .select('*')
+        .order('data_inicial', { ascending: true, nullsFirst: false }),
+      supabasePublicClient
+        .from('promotorias')
+        .select('nome, local')
+        .order('nome', { ascending: true })
+    ]);
+    if(resultadoRegistros.error){
+      console.error(resultadoRegistros.error);
+      registros = [];
+      mostrarToast('Não foi possível carregar os registros.');
+    } else {
+      registros = (resultadoRegistros.data || []).map(bancoParaRegistro);
+    }
+    if(resultadoPromotorias.error){
+      console.error(resultadoPromotorias.error);
+      promotorias = [];
+      mostrarToast('Não foi possível carregar a lista de promotorias.');
+    } else {
+      promotorias = (resultadoPromotorias.data || [])
+        .map(row => ({ nome: row.nome, local: normalizarLocalPromotoria(row.local) }))
+        .filter(row => row.nome);
+    }
+    render();
+  }
+
+  async function salvarRegistro(dados, id){
+    if(!ehAdmin()){
+      mostrarToast('Somente o administrador pode alterar registros.');
+      return false;
+    }
+    const payload = registroParaBanco(dados);
+    const query = id
+      ? supabaseClient.from('registros').update(payload).eq('id', id)
+      : supabaseClient.from('registros').insert(payload);
+    const { error } = await query;
+    if(error){
+      console.error(error);
+      mostrarToast('Não foi possível cadastrar: ' + (error.message || 'verifique as permissões.'));
+      return false;
+    }
+    await carregar();
+    return true;
+  }
+
+  /* ---------------------------------------------------------
+     UTILITÁRIOS
+  --------------------------------------------------------- */
+  function uid(){
+    return 'r_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
+  }
+
+  function hoje(){
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    return d;
+  }
+
+  function parseData(str){
+    if(!str) return null;
+    const d = new Date(str + 'T00:00:00');
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function fmtData(str){
+    const d = parseData(str);
+    if(!d) return '—';
+    return d.toLocaleDateString('pt-BR');
+  }
+
+  function situacaoCalculada(reg){
+    if(reg.situacao){ return reg.situacao; }
+    const ini = parseData(reg.dataInicial);
+    const fim = parseData(reg.dataFinal);
+    const t = hoje();
+    if(!ini && !fim) return 'Indefinido';
+    if(ini && t < ini) return 'Futuro';
+    if(fim && t > fim) return 'Encerrado';
+    return 'Presente';
+  }
+
+  function seloClasse(sit){
+    switch(sit){
+      case 'Presente': return 'presente';
+      case 'Futuro': return 'futuro';
+      case 'Plantão': return 'plantao';
+      case 'Encerrado': return 'encerrado';
+      default: return 'encerrado';
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  function mostrarToast(msg){
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(()=> el.classList.remove('show'), 2600);
+  }
+
+  function distinctValues(campo){
+    const s = new Set();
+    registros.forEach(r => { if(r[campo]) s.add(r[campo]); });
+    return Array.from(s).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  }
+
+  function normalizarLocalPromotoria(valor){
+    const local = String(valor || '').trim().toLowerCase();
+    return local === 'capital' || local === 'interior' ? local : '';
+  }
+
+  /* ---------------------------------------------------------
+     NAVEGAÇÃO ENTRE VIEWS
+  --------------------------------------------------------- */
+  function irPara(view){
+    if(view === 'cadastro' && !ehAdmin()){
+      mostrarToast('Apenas administradores podem acessar o cadastro.');
+      return;
+    }
+    document.querySelectorAll('section.view').forEach(s => s.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+    const tab = document.querySelector(`nav.tabs button[data-view="${view}"]`);
+    if(tab) tab.classList.add('active');
+    window.scrollTo({top:0, behavior:'instant'});
+    if(view === 'listagem') renderListagem();
+    if(view === 'resumo') renderResumo();
+    if(view === 'historico') renderHistorico();
+  }
+
+  document.querySelectorAll('nav.tabs button[data-view]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.dataset.view === 'cadastro'){
+        const idDoFormulario = document.getElementById('f-id').value.trim();
+        const idDoRegistroAberto = detalheAtualId;
+        const idParaEditar = idDoFormulario || idDoRegistroAberto;
+        if(idParaEditar){
+          abrirCadastro(idParaEditar);
+          return;
+        }
+      }
+      irPara(btn.dataset.view);
+    });
+  });
+
+  /* ---------------------------------------------------------
+     RELÓGIO
+  --------------------------------------------------------- */
+  function tickClock(){
+    const el = document.getElementById('clock');
+    const now = new Date();
+    el.textContent = now.toLocaleDateString('pt-BR', {weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+  }
+  tickClock();
+  setInterval(tickClock, 60000);
+
+  /* ---------------------------------------------------------
+     RESUMO / DASHBOARD
+  --------------------------------------------------------- */
+  function renderResumo(){
+    const total = registros.length;
+    const comSit = registros.map(r => situacaoCalculada(r));
+    const cont = k => comSit.filter(s => s === k).length;
+
+    document.getElementById('stat-row').innerHTML = `
+      <div class="stat-card"><div class="n">${total}</div><div class="l">Total de registros</div></div>
+      <div class="stat-card"><div class="n">${cont('Presente')}</div><div class="l">Presentes</div></div>
+      <div class="stat-card"><div class="n">${cont('Futuro')}</div><div class="l">Futuros</div></div>
+      <div class="stat-card"><div class="n">${cont('Plantão')}</div><div class="l">Em plantão</div></div>
+    `;
+    document.getElementById('total-registros-mini').textContent = total;
+
+    // próximos eventos (futuro dentro de 30 dias, por dataInicial)
+    const t = hoje();
+    const em30 = new Date(t); em30.setDate(em30.getDate()+30);
+    const proximos = registros
+      .filter(r => {
+        const ini = parseData(r.dataInicial);
+        return ini && ini >= t && ini <= em30;
+      })
+      .sort((a,b)=> parseData(a.dataInicial) - parseData(b.dataInicial));
+
+    const ul = document.getElementById('upcoming-list');
+    ul.innerHTML = proximos.length ? proximos.map(r => `
+      <li>
+        <span>${escapeHtml(r.titular || '—')} <span class="tag">· ${escapeHtml(r.promotoria || '—')}</span></span>
+        <span class="tag">${fmtData(r.dataInicial)}</span>
+      </li>
+    `).join('') : '<li style="color:#8a8478;">Nenhum evento nos próximos 30 dias.</li>';
+
+    // por tipo
+    const tipos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Outro'];
+    const maxTipo = Math.max(1, ...tipos.map(t2 => registros.filter(r=>r.tipo===t2).length));
+    document.getElementById('tipo-bars').innerHTML = tipos.map(t2 => {
+      const n = registros.filter(r=>r.tipo===t2).length;
+      const pct = Math.round((n/maxTipo)*100);
+      return `<div class="bar-row"><div class="lbl">${t2}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="cnt">${n}</div></div>`;
+    }).join('');
+
+    // por promotoria (top 8)
+    const porProm = {};
+    registros.forEach(r => { const k = r.promotoria || '—'; porProm[k] = (porProm[k]||0)+1; });
+    const listaProm = Object.entries(porProm).sort((a,b)=> b[1]-a[1]).slice(0,8);
+    const maxProm = Math.max(1, ...listaProm.map(x=>x[1]));
+    document.getElementById('promotoria-bars').innerHTML = listaProm.length ? listaProm.map(([nome,n]) => {
+      const pct = Math.round((n/maxProm)*100);
+      return `<div class="bar-row"><div class="lbl" title="${escapeHtml(nome)}">${escapeHtml(nome)}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="cnt">${n}</div></div>`;
+    }).join('') : '<p class="helper">Nenhum registro cadastrado ainda.</p>';
+  }
+
+  document.getElementById('btn-novo-resumo').addEventListener('click', ()=> abrirCadastro(null));
+  document.getElementById('btn-ver-todos').addEventListener('click', ()=> irPara('listagem'));
+
+  /* ---------------------------------------------------------
+     LISTAGEM / FILTROS
+  --------------------------------------------------------- */
+  function filtrosAtuais(){
+    return {
+      busca: document.getElementById('quick-search-input').value.trim().toLowerCase(),
+      promotoria: document.getElementById('f-promotoria').value.trim().toLowerCase(),
+      titular: document.getElementById('f-titular').value.trim().toLowerCase(),
+      substituto: document.getElementById('f-substituto').value.trim().toLowerCase(),
+      tipo: document.getElementById('f-tipo').value,
+      destinacao: document.getElementById('f-destinacao').value.trim().toLowerCase(),
+      situacao: document.getElementById('f-situacao').value,
+      referencia: document.getElementById('f-referencia').value.trim().toLowerCase(),
+      resumo: document.getElementById('f-resumo').value.trim().toLowerCase(),
+      periodoIni: document.getElementById('f-periodo-ini').value,
+      periodoFim: document.getElementById('f-periodo-fim').value,
+      apenasAtivos: document.getElementById('f-apenas-ativos').checked,
+    };
+  }
+
+  function aplicarFiltros(lista, f){
+    return lista.filter(r => {
+      const sit = situacaoCalculada(r);
+      if(f.busca){
+        const alvo = [r.titular, r.substituto, r.promotoria, r.referencia, r.resumo]
+          .map(x => (x||'').toLowerCase()).join(' | ');
+        if(!alvo.includes(f.busca)) return false;
+      }
+      if(f.promotoria && !(r.promotoria||'').toLowerCase().includes(f.promotoria)) return false;
+      if(f.titular && !(r.titular||'').toLowerCase().includes(f.titular)) return false;
+      if(f.substituto && !(r.substituto||'').toLowerCase().includes(f.substituto)) return false;
+      if(f.tipo && r.tipo !== f.tipo) return false;
+      if(f.destinacao && !(r.destinacao||'').toLowerCase().includes(f.destinacao)) return false;
+      if(f.situacao && sit !== f.situacao) return false;
+      if(f.referencia && !(r.referencia||'').toLowerCase().includes(f.referencia)) return false;
+      if(f.resumo && !(((r.resumo||'')+' '+(r.resumoSubstituto||'')).toLowerCase().includes(f.resumo))) return false;
+      if(f.apenasAtivos && !(sit === 'Presente' || sit === 'Plantão')) return false;
+      if(f.periodoIni){
+        const ini = parseData(r.dataInicial);
+        if(!ini || ini < parseData(f.periodoIni)) return false;
+      }
+      if(f.periodoFim){
+        const ini = parseData(r.dataInicial);
+        if(!ini || ini > parseData(f.periodoFim)) return false;
+      }
+      return true;
+    });
+  }
+
+  function ordenarLista(lista){
+    const {campo, dir} = ordenacao;
+    const arr = [...lista];
+    arr.sort((a,b)=>{
+      let va = a[campo], vb = b[campo];
+      if(campo === 'dataInicial' || campo === 'dataFinal'){
+        va = parseData(va); vb = parseData(vb);
+        va = va ? va.getTime() : -Infinity;
+        vb = vb ? vb.getTime() : -Infinity;
+      } else {
+        va = (va||'').toString().toLowerCase();
+        vb = (vb||'').toString().toLowerCase();
+      }
+      if(va < vb) return dir === 'asc' ? -1 : 1;
+      if(va > vb) return dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return arr;
+  }
+
+  function atualizarSelectPromotorias(){
+    const promotoriasDoLocal = promotorias.filter(p => !localPromotoriasSelecionado || p.local === localPromotoriasSelecionado);
+    const opcoes = promotoriasDoLocal
+      .map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`)
+      .join('');
+    const opcoesTodas = promotorias
+      .map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`)
+      .join('');
+    const filtro = document.getElementById('f-promotoria');
+    const cadastro = document.getElementById('c-promotoria');
+    const historico = document.getElementById('h-promotoria');
+    const valorFiltro = filtro.value;
+    const valorCadastro = cadastro.value;
+    const valorHistorico = historico.value;
+
+    filtro.innerHTML = '<option value="">Todas</option>' + opcoesTodas;
+    cadastro.innerHTML = '<option value="">Selecione uma promotoria...</option>' + opcoes;
+    historico.innerHTML = opcoesTodas || '<option value="">Nenhuma promotoria cadastrada</option>';
+    if(promotorias.some(p => p.nome === valorFiltro)) filtro.value = valorFiltro;
+    if(promotoriasDoLocal.some(p => p.nome === valorCadastro)) cadastro.value = valorCadastro;
+    if(promotorias.some(p => p.nome === valorHistorico)) historico.value = valorHistorico;
+  }
+
+  function definirFiltroLocalPromotorias(local){
+    localPromotoriasSelecionado = normalizarLocalPromotoria(local);
+    document.querySelectorAll('[data-local-promotoria]').forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.localPromotoria === localPromotoriasSelecionado);
+    });
+    atualizarSelectPromotorias();
+  }
+
+  document.querySelectorAll('[data-local-promotoria]').forEach(btn=>{
+    btn.addEventListener('click', ()=> definirFiltroLocalPromotorias(btn.dataset.localPromotoria));
+  });
+
+  function renderChips(f){
+    const chips = [];
+    const push = (label, key, clearFn) => { if(label) chips.push({label, clearFn}); };
+    if(f.busca) push(`Busca: "${f.busca}"`, null, ()=> document.getElementById('quick-search-input').value = '');
+    if(f.promotoria) push(`Promotoria: ${f.promotoria}`, null, ()=> document.getElementById('f-promotoria').value = '');
+    if(f.titular) push(`Titular: ${f.titular}`, null, ()=> document.getElementById('f-titular').value = '');
+    if(f.substituto) push(`Substituto: ${f.substituto}`, null, ()=> document.getElementById('f-substituto').value = '');
+    if(f.tipo) push(`Tipo: ${f.tipo}`, null, ()=> document.getElementById('f-tipo').value = '');
+    if(f.destinacao) push(`Destinação: ${f.destinacao}`, null, ()=> document.getElementById('f-destinacao').value = '');
+    if(f.situacao) push(`Situação: ${f.situacao}`, null, ()=> document.getElementById('f-situacao').value = '');
+    if(f.referencia) push(`Referência: ${f.referencia}`, null, ()=> document.getElementById('f-referencia').value = '');
+    if(f.resumo) push(`Resumo contém: ${f.resumo}`, null, ()=> document.getElementById('f-resumo').value = '');
+    if(f.periodoIni) push(`De: ${fmtData(f.periodoIni)}`, null, ()=> document.getElementById('f-periodo-ini').value = '');
+    if(f.periodoFim) push(`Até: ${fmtData(f.periodoFim)}`, null, ()=> document.getElementById('f-periodo-fim').value = '');
+    if(f.apenasAtivos) push(`Somente ativos`, null, ()=> document.getElementById('f-apenas-ativos').checked = false);
+
+    const wrap = document.getElementById('active-chips');
+    if(!chips.length){ wrap.innerHTML=''; return; }
+    wrap.innerHTML = chips.map((c,i)=> `<span class="chip" data-i="${i}">${escapeHtml(c.label)} <button aria-label="remover filtro" data-i="${i}">×</button></span>`).join('');
+    wrap.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{ chips[+btn.dataset.i].clearFn(); renderListagem(); });
+    });
+  }
+
+  function renderListagem(){
+    const f = filtrosAtuais();
+    let lista = aplicarFiltros(registros, f);
+    lista = ordenarLista(lista);
+
+    renderChips(f);
+    document.getElementById('results-count').textContent =
+      `${lista.length} registro(s) encontrado(s) de ${registros.length} no total.`;
+
+    const wrap = document.getElementById('table-wrap');
+    if(!lista.length){
+      wrap.innerHTML = `<div class="empty-state"><div class="glyph">§</div>Nenhum registro corresponde aos filtros aplicados.</div>`;
+      return;
+    }
+
+    const cols = [
+      {k:'promotoria', l:'Promotoria'},
+      {k:'titular', l:'Titular'},
+      {k:'tipo', l:'Tipo'},
+      {k:'substituto', l:'Substituto'},
+      {k:'dataInicial', l:'Data inicial'},
+      {k:'dataFinal', l:'Data final'},
+    ];
+
+    let html = '<table class="reg-table"><thead><tr>';
+    cols.forEach(c=>{
+      const sortedCls = ordenacao.campo===c.k ? ('sorted ' + (ordenacao.dir==='desc'?'desc':'')) : '';
+      html += `<th class="${sortedCls}" data-sort="${c.k}">${c.l}</th>`;
+    });
+    html += '<th>Situação</th><th></th></tr></thead><tbody>';
+
+    lista.forEach(r=>{
+      const sit = situacaoCalculada(r);
+      const acaoEditar = ehAdmin()
+        ? `<button class="btn btn-ghost btn-sm" data-action="editar" data-id="${r.id}">Editar</button>`
+        : '';
+      html += `<tr data-id="${r.id}">
+        <td>${escapeHtml(r.promotoria||'—')}</td>
+        <td>${escapeHtml(r.titular||'—')}</td>
+        <td>${escapeHtml(r.tipo||'—')}</td>
+        <td>${escapeHtml(r.substituto||'—')}</td>
+        <td class="num">${fmtData(r.dataInicial)}</td>
+        <td class="num">${fmtData(r.dataFinal)}</td>
+        <td><span class="seal ${seloClasse(sit)}">${sit}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" data-action="ver" data-id="${r.id}">Ver</button>
+            ${acaoEditar}
+          </div>
+        </td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+
+    wrap.querySelectorAll('th[data-sort]').forEach(th=>{
+      th.addEventListener('click', ()=>{
+        const campo = th.dataset.sort;
+        if(ordenacao.campo === campo){ ordenacao.dir = ordenacao.dir === 'asc' ? 'desc' : 'asc'; }
+        else { ordenacao = { campo, dir:'asc' }; }
+        renderListagem();
+      });
+    });
+    wrap.querySelectorAll('tr[data-id]').forEach(tr=>{
+      tr.addEventListener('click', (e)=>{
+        if(e.target.closest('button')) return;
+        abrirDetalhe(tr.dataset.id);
+      });
+    });
+    wrap.querySelectorAll('button[data-action="ver"]').forEach(b=> b.addEventListener('click', ()=> abrirDetalhe(b.dataset.id)));
+    wrap.querySelectorAll('button[data-action="editar"]').forEach(b=> b.addEventListener('click', ()=> abrirCadastro(b.dataset.id)));
+  }
+
+  // listeners de filtro (reatividade)
+  ['quick-search-input','f-promotoria','f-titular','f-substituto','f-tipo','f-destinacao',
+   'f-situacao','f-referencia','f-resumo','f-periodo-ini','f-periodo-fim','f-apenas-ativos'
+  ].forEach(id=>{
+    const el = document.getElementById(id);
+    const evt = (el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'date') ? 'change' : 'input';
+    el.addEventListener(evt, renderListagem);
+  });
+
+  document.getElementById('btn-toggle-filters').addEventListener('click', ()=>{
+    filtrosAbertos = !filtrosAbertos;
+    document.getElementById('filters-panel').classList.toggle('open', filtrosAbertos);
+    document.getElementById('btn-toggle-filters').textContent = filtrosAbertos ? 'Filtros avançados ▴' : 'Filtros avançados ▾';
+  });
+
+  document.getElementById('btn-clear-filters').addEventListener('click', ()=>{
+    ['quick-search-input','f-promotoria','f-titular','f-substituto','f-destinacao','f-referencia','f-resumo']
+      .forEach(id=> document.getElementById(id).value = '');
+    ['f-tipo','f-situacao'].forEach(id=> document.getElementById(id).value = '');
+    document.getElementById('f-periodo-ini').value = '';
+    document.getElementById('f-periodo-fim').value = '';
+    document.getElementById('f-apenas-ativos').checked = false;
+    renderListagem();
+  });
+
+  document.getElementById('btn-novo-listagem').addEventListener('click', ()=> abrirCadastro(null));
+
+  document.getElementById('btn-export').addEventListener('click', ()=>{
+    const f = filtrosAtuais();
+    const lista = ordenarLista(aplicarFiltros(registros, f));
+    if(!lista.length){ mostrarToast('Não há registros para exportar com os filtros atuais.'); return; }
+    const headers = ['Promotoria','Titular','Tipo','Destinação','Data inicial','Data final','Situação','Referência','Resumo','Substituto','Data inicial substituto','Data final substituto','Referência substituto','Resumo substituto'];
+    const linhas = lista.map(r => [
+      r.promotoria, r.titular, r.tipo, r.destinacao, r.dataInicial||'', r.dataFinal||'',
+      situacaoCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'',
+      r.referenciaSubstituto, r.resumoSubstituto
+    ]);
+    const csvEsc = v => `"${String(v==null?'':v).replace(/"/g,'""')}"`;
+    const csv = [headers.map(csvEsc).join(';'), ...linhas.map(l=> l.map(csvEsc).join(';'))].join('\r\n');
+    const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'movimentacoes_filtradas.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    mostrarToast('Exportação gerada: ' + lista.length + ' registro(s).');
+  });
+
+  /* ---------------------------------------------------------
+     CADASTRO / EDIÇÃO
+  --------------------------------------------------------- */
+  const camposForm = {
+    promotoria:'c-promotoria', titular:'c-titular', tipo:'c-tipo',
+    destinacao:'c-destinacao', dataInicial:'c-data-ini', dataFinal:'c-data-fim',
+    situacao:'c-situacao', referencia:'c-referencia', resumo:'c-resumo',
+    substituto:'c-substituto', dataInicialSubstituto:'c-data-ini-sub',
+    dataFinalSubstituto:'c-data-fim-sub', referenciaSubstituto:'c-referencia-sub',
+    resumoSubstituto:'c-resumo-sub'
+  };
+
+  function limparForm(){
+    Object.values(camposForm).forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('f-id').value = '';
+    definirFiltroLocalPromotorias('');
+  }
+
+  function intervaloDeDatasValido(idInicial, idFinal, mensagem){
+    const inicial = document.getElementById(idInicial).value;
+    const final = document.getElementById(idFinal).value;
+    if(inicial && final && final < inicial){
+      mostrarToast(mensagem);
+      document.getElementById(idFinal).focus();
+      return false;
+    }
+    return true;
+  }
+
+  [['c-data-ini','c-data-fim'], ['c-data-ini-sub','c-data-fim-sub']].forEach(([idInicial, idFinal])=>{
+    const inicial = document.getElementById(idInicial);
+    const final = document.getElementById(idFinal);
+    const atualizarLimite = ()=>{
+      final.min = inicial.value || '';
+      if(inicial.value && final.value && final.value < inicial.value) final.value = '';
+    };
+    inicial.addEventListener('change', atualizarLimite);
+    atualizarLimite();
+  });
+
+  function abrirCadastro(id){
+    if(!ehAdmin()){
+      mostrarToast('Apenas administradores podem acessar o cadastro.');
+      return;
+    }
+    editandoId = id || null;
+    if(!id) detalheAtualId = null;
+    limparForm();
+    if(id){
+      const r = registros.find(x=>x.id===id);
+      if(!r){
+        editandoId = null;
+        mostrarToast('Registro não encontrado.');
+        return;
+      }
+      document.getElementById('f-id').value = r.id;
+      Object.entries(camposForm).forEach(([campo, elId])=>{
+        document.getElementById(elId).value = r[campo] || '';
+      });
+      document.getElementById('cadastro-title').textContent = 'Editar registro';
+      document.getElementById('cadastro-sub').textContent = 'Atualize os dados do titular e do substituto.';
+    } else {
+      document.getElementById('cadastro-title').textContent = 'Novo registro';
+      document.getElementById('cadastro-sub').textContent = 'Informe a promotoria; os demais campos são opcionais.';
+    }
+    irPara('cadastro');
+  }
+
+  document.getElementById('form-registro').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem salvar registros.');
+      return;
+    }
+    const promotoria = document.getElementById('c-promotoria').value.trim();
+    if(!promotoria){
+      mostrarToast('Preencha o campo obrigatório: Promotoria.');
+      return;
+    }
+    if(!intervaloDeDatasValido('c-data-ini', 'c-data-fim', 'A data final não pode ser anterior à data inicial.')) return;
+    if(!intervaloDeDatasValido('c-data-ini-sub', 'c-data-fim-sub', 'A data final do substituto não pode ser anterior à data inicial.')) return;
+    const dados = {};
+    Object.entries(camposForm).forEach(([campo, elId])=>{
+      dados[campo] = document.getElementById(elId).value.trim();
+    });
+
+    const idParaSalvar = document.getElementById('f-id').value.trim() || editandoId || null;
+    const salvou = await salvarRegistro(dados, idParaSalvar);
+    if(!salvou) return;
+    mostrarToast(idParaSalvar ? 'Registro atualizado com sucesso.' : 'Registro cadastrado com sucesso.');
+    editandoId = null;
+    irPara('listagem');
+    renderResumo();
+  });
+
+  document.getElementById('btn-cancelar-cadastro').addEventListener('click', ()=>{
+    editandoId = null;
+    irPara('listagem');
+  });
+
+  /* ---------------------------------------------------------
+     DETALHE
+  --------------------------------------------------------- */
+  function abrirDetalhe(id){
+    const r = registros.find(x=>x.id===id);
+    if(!r){ mostrarToast('Registro não encontrado.'); return; }
+    detalheAtualId = id;
+    const sit = situacaoCalculada(r);
+
+    document.getElementById('d-titulo').textContent = `Registro — ${r.titular || ''}`;
+    document.getElementById('d-seal').className = 'seal ' + seloClasse(sit);
+    document.getElementById('d-seal').textContent = sit;
+
+    const item = (k,v) => `<div class="dl-item"><div class="k">${k}</div><div class="v ${v? '' : 'empty'}">${v ? escapeHtml(v) : 'Não informado'}</div></div>`;
+
+    let html = '';
+    html += item('Promotoria', r.promotoria);
+    html += item('Titular', r.titular);
+    html += item('Tipo da movimentação', r.tipo);
+    html += item('Destinação', r.destinacao);
+    html += item('Data inicial', r.dataInicial ? fmtData(r.dataInicial) : '');
+    html += item('Data final', r.dataFinal ? fmtData(r.dataFinal) : '');
+    html += item('Referência', r.referencia);
+    html += `<div class="dl-item" style="grid-column:1/-1;"><div class="k">Resumo</div><div class="v ${r.resumo?'':'empty'}">${r.resumo ? escapeHtml(r.resumo) : 'Não informado'}</div></div>`;
+
+    if(r.substituto || r.dataInicialSubstituto || r.dataFinalSubstituto || r.resumoSubstituto || r.referenciaSubstituto){
+      html += `<div style="grid-column:1/-1;" class="sub-block"><h4>Substituto</h4></div>`;
+      html += item('Substituto', r.substituto);
+      html += item('Referência do substituto', r.referenciaSubstituto);
+      html += item('Data inicial do substituto', r.dataInicialSubstituto ? fmtData(r.dataInicialSubstituto) : '');
+      html += item('Data final do substituto', r.dataFinalSubstituto ? fmtData(r.dataFinalSubstituto) : '');
+      html += `<div class="dl-item" style="grid-column:1/-1;"><div class="k">Resumo do substituto</div><div class="v ${r.resumoSubstituto?'':'empty'}">${r.resumoSubstituto ? escapeHtml(r.resumoSubstituto) : 'Não informado'}</div></div>`;
+    }
+
+    document.getElementById('detail-grid').innerHTML = html;
+    document.getElementById('tab-detalhe').style.display = 'inline-block';
+    irPara('detalhe');
+  }
+
+  document.getElementById('btn-voltar-detalhe').addEventListener('click', ()=>{
+    document.getElementById('tab-detalhe').style.display = 'none';
+    irPara('listagem');
+  });
+  document.getElementById('btn-editar-detalhe').addEventListener('click', ()=>{
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem editar registros.');
+      return;
+    }
+    if(detalheAtualId) abrirCadastro(detalheAtualId);
+  });
+  document.getElementById('btn-excluir-detalhe').addEventListener('click', async ()=>{
+    if(!detalheAtualId) return;
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem excluir registros.');
+      return;
+    }
+    if(!confirm('Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.')) return;
+    const { error } = await supabaseClient.from('registros').delete().eq('id', detalheAtualId);
+    if(error){
+      console.error(error);
+      mostrarToast('Não foi possível excluir o registro.');
+      return;
+    }
+    await carregar();
+    mostrarToast('Registro excluído.');
+    document.getElementById('tab-detalhe').style.display = 'none';
+    irPara('listagem');
+    renderResumo();
+  });
+  /* ---------------------------------------------------------
+     HISTÓRICO POR PROMOTORIA
+  --------------------------------------------------------- */
+  function renderHistorico(){
+    const sel = document.getElementById('h-promotoria');
+    const atual = sel.value;
+    const opts = promotorias;
+    sel.innerHTML = opts.length
+      ? opts.map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`).join('')
+      : '<option value="">Nenhuma promotoria cadastrada</option>';
+    if(opts.some(p => p.nome === atual)) sel.value = atual;
+    renderHistoricoLista();
+  }
+
+  function renderHistoricoLista(){
+    const prom = document.getElementById('h-promotoria').value;
+    const wrap = document.getElementById('historico-wrap');
+    if(!prom){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">§</div>Cadastre registros para visualizar o histórico.</div>';
+      return;
+    }
+    const lista = registros
+      .filter(r => r.promotoria === prom)
+      .sort((a,b)=>{
+        const da = parseData(a.dataInicial), db = parseData(b.dataInicial);
+        return (da? da.getTime():-Infinity) - (db? db.getTime():-Infinity);
+      });
+    if(!lista.length){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">§</div>Nenhuma movimentação para esta promotoria.</div>';
+      return;
+    }
+    wrap.innerHTML = `<h3>Linha do tempo — ${escapeHtml(prom)}</h3>` + lista.map(r=>{
+      const sit = situacaoCalculada(r);
+      return `<div class="dl-item" style="cursor:pointer;" data-id="${r.id}">
+        <div class="k">${fmtData(r.dataInicial)} ${r.dataFinal ? '→ ' + fmtData(r.dataFinal) : ''} <span class="seal ${seloClasse(sit)}" style="margin-left:8px;">${sit}</span></div>
+        <div class="v"><strong>${escapeHtml(r.tipo||'—')}</strong> — ${escapeHtml(r.titular||'—')} ${r.substituto ? '· substituto: ' + escapeHtml(r.substituto) : ''}</div>
+      </div>`;
+    }).join('');
+    wrap.querySelectorAll('[data-id]').forEach(el=>{
+      el.addEventListener('click', ()=> abrirDetalhe(el.dataset.id));
+    });
+  }
+
+  document.getElementById('h-promotoria').addEventListener('change', renderHistoricoLista);
+
+  /* ---------------------------------------------------------
+     INICIALIZAÇÃO
+  --------------------------------------------------------- */
+  function render(){
+    atualizarSelectPromotorias();
+    renderResumo();
+    renderListagem();
+    renderHistorico();
+  }
+
+  iniciarAutenticacao();
+
+})();
+</script>
+</body>
+</html>
