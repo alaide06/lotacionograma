@@ -44,6 +44,8 @@ create table if not exists public.registros (
       'Autorização',
       'Afastamento',
       'Acúmulo',
+      'Designação',
+      'Promoção',
       'Outro'
     )
   ),
@@ -125,6 +127,21 @@ alter table public.registros drop column if exists numero;
 alter table public.registros alter column promotoria set not null;
 alter table public.registros alter column titular drop not null;
 alter table public.registros alter column tipo drop not null;
+
+-- Atualiza a lista de tipos aceita também em instalações já existentes.
+alter table public.registros drop constraint if exists registros_tipo_check;
+alter table public.registros add constraint registros_tipo_check check (
+  tipo is null or tipo in (
+    'Remoção',
+    'Nomeação',
+    'Autorização',
+    'Afastamento',
+    'Acúmulo',
+    'Designação',
+    'Promoção',
+    'Outro'
+  )
+);
 
 -- ============================================================
 -- Atualização automática
