@@ -401,9 +401,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           <div class="grid grid-4">
             <div class="field">
               <label for="f-promotoria">Promotoria</label>
-              <select id="f-promotoria">
-                <option value="">Todas</option>
-              </select>
+              <input type="text" id="f-promotoria" list="dl-promotorias-filtro" placeholder="Todas" autocomplete="off">
+              <datalist id="dl-promotorias-filtro"></datalist>
             </div>
             <div class="field">
               <label for="f-titular">Titular</label>
@@ -502,9 +501,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           <div class="grid grid-2">
             <div class="field">
               <label for="c-promotoria">Promotoria *</label>
-              <select id="c-promotoria" required>
-                <option value="">Selecione uma promotoria...</option>
-              </select>
+              <input type="text" id="c-promotoria" list="dl-promotorias-cadastro" placeholder="Digite para pesquisar..." autocomplete="off" required>
+              <datalist id="dl-promotorias-cadastro"></datalist>
             </div>
             <div class="field">
               <label for="c-tipo">Tipo da movimentação</label>
@@ -846,7 +844,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     } else {
       promotorias = (resultadoPromotorias.data || [])
         .map(row => ({ nome: row.nome, local: normalizarLocalPromotoria(row.local) }))
-        .filter(row => row.nome);
+        .filter(row => row.nome)
+        .sort(ordenarPromotorias);
     }
     render();
   }
@@ -939,6 +938,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   function normalizarLocalPromotoria(valor){
     const local = String(valor || '').trim().toLowerCase();
     return local === 'capital' || local === 'interior' ? local : '';
+  }
+
+  function ordenarPromotorias(a, b){
+    return a.nome.localeCompare(b.nome, 'pt-BR', { numeric:true, sensitivity:'base' });
   }
 
   /* ---------------------------------------------------------
@@ -1113,25 +1116,30 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   }
 
   function atualizarSelectPromotorias(){
-    const promotoriasDoLocal = promotorias.filter(p => !localPromotoriasSelecionado || p.local === localPromotoriasSelecionado);
-    const opcoes = promotoriasDoLocal
+    const promotoriasDoLocal = promotorias
+      .filter(p => !localPromotoriasSelecionado || p.local === localPromotoriasSelecionado)
+      .sort(ordenarPromotorias);
+    const opcoesCadastro = promotoriasDoLocal
       .map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`)
       .join('');
-    const opcoesTodas = promotorias
+    const opcoesFiltro = promotorias
       .map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`)
       .join('');
     const filtro = document.getElementById('f-promotoria');
     const cadastro = document.getElementById('c-promotoria');
     const historico = document.getElementById('h-promotoria');
+    const datalistFiltro = document.getElementById('dl-promotorias-filtro');
+    const datalistCadastro = document.getElementById('dl-promotorias-cadastro');
     const valorFiltro = filtro.value;
     const valorCadastro = cadastro.value;
     const valorHistorico = historico.value;
 
-    filtro.innerHTML = '<option value="">Todas</option>' + opcoesTodas;
-    cadastro.innerHTML = '<option value="">Selecione uma promotoria...</option>' + opcoes;
-    historico.innerHTML = opcoesTodas || '<option value="">Nenhuma promotoria cadastrada</option>';
-    if(promotorias.some(p => p.nome === valorFiltro)) filtro.value = valorFiltro;
+    datalistFiltro.innerHTML = opcoesFiltro;
+    datalistCadastro.innerHTML = opcoesCadastro;
+    historico.innerHTML = opcoesFiltro || '<option value="">Nenhuma promotoria cadastrada</option>';
+    filtro.value = valorFiltro;
     if(promotoriasDoLocal.some(p => p.nome === valorCadastro)) cadastro.value = valorCadastro;
+    else cadastro.value = '';
     if(promotorias.some(p => p.nome === valorHistorico)) historico.value = valorHistorico;
   }
 
@@ -1366,11 +1374,18 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       mostrarToast('Somente administradores podem salvar registros.');
       return;
     }
-    const promotoria = document.getElementById('c-promotoria').value.trim();
-    if(!promotoria){
+    const valorPromotoria = document.getElementById('c-promotoria').value.trim();
+    if(!valorPromotoria){
       mostrarToast('Preencha o campo obrigatório: Promotoria.');
       return;
     }
+    const promotoriaBase = promotorias.find(p => p.nome.toLocaleLowerCase('pt-BR') === valorPromotoria.toLocaleLowerCase('pt-BR'));
+    if(!promotoriaBase){
+      mostrarToast('Selecione uma promotoria existente na lista.');
+      document.getElementById('c-promotoria').focus();
+      return;
+    }
+    document.getElementById('c-promotoria').value = promotoriaBase.nome;
     if(!intervaloDeDatasValido('c-data-ini', 'c-data-fim', 'A data final não pode ser anterior à data inicial.')) return;
     if(!intervaloDeDatasValido('c-data-ini-sub', 'c-data-fim-sub', 'A data final do substituto não pode ser anterior à data inicial.')) return;
     const dados = {};
