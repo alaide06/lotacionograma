@@ -600,7 +600,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       <div class="card">
         <div class="field" style="max-width:420px;">
           <label for="h-promotoria">Promotoria</label>
-          <select id="h-promotoria"></select>
+          <input type="text" id="h-promotoria" list="dl-promotorias-historico" placeholder="Digite para pesquisar..." autocomplete="off">
+          <datalist id="dl-promotorias-historico"></datalist>
         </div>
       </div>
       <div class="card" id="historico-wrap"></div>
@@ -1130,17 +1131,19 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const historico = document.getElementById('h-promotoria');
     const datalistFiltro = document.getElementById('dl-promotorias-filtro');
     const datalistCadastro = document.getElementById('dl-promotorias-cadastro');
+    const datalistHistorico = document.getElementById('dl-promotorias-historico');
     const valorFiltro = filtro.value;
     const valorCadastro = cadastro.value;
     const valorHistorico = historico.value;
 
     datalistFiltro.innerHTML = opcoesFiltro;
     datalistCadastro.innerHTML = opcoesCadastro;
-    historico.innerHTML = opcoesFiltro || '<option value="">Nenhuma promotoria cadastrada</option>';
+    datalistHistorico.innerHTML = opcoesFiltro;
     filtro.value = valorFiltro;
     if(promotoriasDoLocal.some(p => p.nome === valorCadastro)) cadastro.value = valorCadastro;
     else cadastro.value = '';
     if(promotorias.some(p => p.nome === valorHistorico)) historico.value = valorHistorico;
+    else historico.value = '';
   }
 
   function definirFiltroLocalPromotorias(local){
@@ -1352,7 +1355,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       const r = registros.find(x=>x.id===id);
       if(!r){
         editandoId = null;
-        mostrarToast('Registro não encontrado.');
+        detalheAtualId = null;
+        document.getElementById('cadastro-title').textContent = 'Novo registro';
+        document.getElementById('cadastro-sub').textContent = 'Informe a promotoria; os demais campos são opcionais.';
+        mostrarToast('O registro não está mais disponível. Abrindo um novo cadastro.');
+        irPara('cadastro');
         return;
       }
       document.getElementById('f-id').value = r.id;
@@ -1470,6 +1477,9 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       mostrarToast('Não foi possível excluir o registro.');
       return;
     }
+    detalheAtualId = null;
+    editandoId = null;
+    limparForm();
     await carregar();
     mostrarToast('Registro excluído.');
     document.getElementById('tab-detalhe').style.display = 'none';
@@ -1483,10 +1493,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const sel = document.getElementById('h-promotoria');
     const atual = sel.value;
     const opts = promotorias;
-    sel.innerHTML = opts.length
-      ? opts.map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`).join('')
-      : '<option value="">Nenhuma promotoria cadastrada</option>';
     if(opts.some(p => p.nome === atual)) sel.value = atual;
+    else if(atual) sel.value = '';
     renderHistoricoLista();
   }
 
@@ -1519,7 +1527,19 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     });
   }
 
-  document.getElementById('h-promotoria').addEventListener('change', renderHistoricoLista);
+  document.getElementById('h-promotoria').addEventListener('input', renderHistoricoLista);
+  document.getElementById('h-promotoria').addEventListener('change', ()=>{
+    const campo = document.getElementById('h-promotoria');
+    const valor = campo.value.trim();
+    const promotoriaBase = promotorias.find(p => p.nome.toLocaleLowerCase('pt-BR') === valor.toLocaleLowerCase('pt-BR'));
+    if(valor && !promotoriaBase){
+      campo.value = '';
+      mostrarToast('Selecione uma promotoria existente na lista.');
+    } else if(promotoriaBase){
+      campo.value = promotoriaBase.nome;
+    }
+    renderHistoricoLista();
+  });
 
   /* ---------------------------------------------------------
      INICIALIZAÇÃO
