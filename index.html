@@ -393,6 +393,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           </div>
           <button class="btn btn-ghost filters-toggle" id="btn-toggle-filters">Filtros avançados ▾</button>
           <button class="btn btn-ghost" id="btn-export">Exportar CSV</button>
+          <button class="btn btn-ghost" id="btn-importar" data-admin-only>Importar CSV</button>
+          <input type="file" id="arquivo-importacao" accept=".csv,text/csv" hidden>
           <button class="btn btn-primary" id="btn-novo-listagem" data-admin-only>+ Novo</button>
         </div>
 
@@ -1306,6 +1308,169 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
     mostrarToast('Exportação gerada: ' + lista.length + ' registro(s).');
+  });
+
+  function textoChaveImportacao(valor){
+    return String(valor || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, ' ');
+  }
+
+  function separarCsv(texto){
+    const primeiraLinha = texto.split(/\r?\n/, 1)[0] || '';
+    return (primeiraLinha.match(/;/g) || []).length >= (primeiraLinha.match(/,/g) || []).length ? ';' : ',';
+  }
+
+  function lerCsv(texto){
+    const separador = separarCsv(texto);
+    const linhas = [];
+    let linha = [];
+    let campo = '';
+    let dentroDeAspas = false;
+
+    for(let i=0; i<texto.length; i++){
+      const caractere = texto[i];
+      const proximo = texto[i + 1];
+      if(caractere === '"'){
+        if(dentroDeAspas && proximo === '"'){
+          campo += '"';
+          i++;
+        } else {
+          dentroDeAspas = !dentroDeAspas;
+        }
+      } else if(caractere === separador && !dentroDeAspas){
+        linha.push(campo);
+        campo = '';
+      } else if(caractere === '\n' && !dentroDeAspas){
+        linha.push(campo);
+        linhas.push(linha);
+        linha = [];
+        campo = '';
+      } else if(caractere !== '\r'){
+        campo += caractere;
+      }
+    }
+    if(campo.length || linha.length){
+      linha.push(campo);
+      linhas.push(linha);
+    }
+    return linhas;
+  }
+
+  function dataImportada(valor){
+    const texto = String(valor || '').trim();
+    if(!texto) return '';
+    let iso = texto;
+    const brasileira = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(texto);
+    if(brasileira){
+      iso = `${brasileira[3]}-${brasileira[2].padStart(2,'0')}-${brasileira[1].padStart(2,'0')}`;
+    }
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+    const data = new Date(`${iso}T00:00:00Z`);
+    if(Number.isNaN(data.getTime()) || data.toISOString().slice(0,10) !== iso) return null;
+    return iso;
+  }
+
+  async function importarCsvArquivo(arquivo){
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem importar registros.');
+      return;
+    }
+    const texto = await arquivo.text();
+    const linhas = lerCsv(texto);
+    if(linhas.length < 2){
+      mostrarToast('O CSV precisa ter um cabeçalho e pelo menos uma linha.');
+      return;
+    }
+
+    const camposPorCabecalho = {
+      promotoria:'promotoria', titular:'titular', tipo:'tipo', destinacao:'destinacao',
+      'data inicial':'dataInicial', 'data final':'dataFinal', situacao:'situacao',
+      referencia:'referencia', resumo:'resumo', substituto:'substituto',
+      'data inicial substituto':'dataInicialSubstituto',
+      'data final substituto':'dataFinalSubstituto',
+      'referencia substituto':'referenciaSubstituto',
+      'resumo substituto':'resumoSubstituto'
+    };
+    const cabecalhos = linhas.shift().map((valor, i)=> textoChaveImportacao(i === 0 ? valor.replace(/^\uFEFF/, '') : valor));
+    const campos = cabecalhos.map(cabecalho => camposPorCabecalho[cabecalho] || null);
+    if(!campos.includes('promotoria')){
+      mostrarToast('O CSV precisa ter a coluna Promotoria.');
+      return;
+    }
+
+    const tiposValidos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Promoção','Outro'];
+    const situacoesValidas = ['Presente','Futuro','Plantão','Encerrado'];
+    const erros = [];
+    const payloads = [];
+    linhas.forEach((valores, indice)=>{
+      if(valores.every(valor => !String(valor || '').trim())) return;
+      const linha = indice + 2;
+      const dados = {};
+      campos.forEach((campo, coluna)=>{
+        if(campo) dados[campo] = String(valores[coluna] || '').trim();
+      });
+
+      const promotoria = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoria));
+      if(!promotoria) erros.push(`Linha ${linha}: promotoria não encontrada na base.`);
+      if(dados.tipo && !tiposValidos.some(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo))){
+        erros.push(`Linha ${linha}: tipo de movimentação inválido.`);
+      }
+      if(dados.situacao && !situacoesValidas.some(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacao))){
+        erros.push(`Linha ${linha}: situação inválida.`);
+      }
+
+      ['dataInicial','dataFinal','dataInicialSubstituto','dataFinalSubstituto'].forEach(campo=>{
+        const convertido = dataImportada(dados[campo]);
+        if(convertido === null) erros.push(`Linha ${linha}: ${campo} tem uma data inválida.`);
+        dados[campo] = convertido || '';
+      });
+      if(dados.dataInicial && dados.dataFinal && dados.dataFinal < dados.dataInicial){
+        erros.push(`Linha ${linha}: data final anterior à data inicial.`);
+      }
+      if(dados.dataInicialSubstituto && dados.dataFinalSubstituto && dados.dataFinalSubstituto < dados.dataInicialSubstituto){
+        erros.push(`Linha ${linha}: data final do substituto anterior à data inicial.`);
+      }
+      if(promotoria) dados.promotoria = promotoria.nome;
+      const tipoCanonico = tiposValidos.find(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo));
+      const situacaoCanonica = situacoesValidas.find(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacao));
+      if(dados.tipo) dados.tipo = tipoCanonico || dados.tipo;
+      if(dados.situacao) dados.situacao = situacaoCanonica || dados.situacao;
+      if(promotoria && (!dados.tipo || tipoCanonico) && (!dados.situacao || situacaoCanonica)){
+        payloads.push(registroParaBanco(dados));
+      }
+    });
+
+    if(erros.length){
+      console.warn('Importação cancelada:', erros);
+      window.alert(`Importação cancelada com ${erros.length} erro(s):\n\n${erros.slice(0,12).join('\n')}${erros.length > 12 ? '\n...' : ''}`);
+      return;
+    }
+    if(!payloads.length){
+      mostrarToast('Nenhuma linha válida para importar.');
+      return;
+    }
+
+    const { error } = await supabaseClient.from('registros').insert(payloads);
+    if(error){
+      console.error(error);
+      mostrarToast('Não foi possível importar os registros: ' + (error.message || 'verifique o CSV.'));
+      return;
+    }
+    await carregar();
+    mostrarToast(`${payloads.length} registro(s) importado(s) com sucesso.`);
+  }
+
+  document.getElementById('btn-importar').addEventListener('click', ()=>{
+    document.getElementById('arquivo-importacao').click();
+  });
+  document.getElementById('arquivo-importacao').addEventListener('change', async e=>{
+    const arquivo = e.target.files[0];
+    e.target.value = '';
+    if(arquivo) await importarCsvArquivo(arquivo);
   });
 
   /* ---------------------------------------------------------
