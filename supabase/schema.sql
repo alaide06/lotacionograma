@@ -45,6 +45,7 @@ create table if not exists public.registros (
       'Afastamento',
       'Acúmulo',
       'Designação',
+      'Declaração',
       'Promoção',
       'Outro'
     )
@@ -65,6 +66,14 @@ create table if not exists public.registros (
   substituto text,
   data_inicial_substituto date,
   data_final_substituto date,
+  situacao_substituto text check (
+    situacao_substituto is null or situacao_substituto in (
+      'Presente',
+      'Futuro',
+      'Plantão',
+      'Encerrado'
+    )
+  ),
   referencia_substituto text,
   resumo_substituto text,
   criado_por uuid references auth.users(id) on delete set null default auth.uid(),
@@ -127,8 +136,31 @@ alter table public.registros drop column if exists numero;
 alter table public.registros alter column promotoria set not null;
 alter table public.registros alter column titular drop not null;
 alter table public.registros alter column tipo drop not null;
+alter table public.registros add column if not exists situacao_substituto text;
 
 -- Atualiza a lista de tipos aceita também em instalações já existentes.
+update public.registros
+set tipo = trim(tipo)
+where tipo is not null;
+
+update public.registros
+set tipo = null
+where tipo is not null
+  and (
+    trim(tipo) = ''
+    or tipo not in (
+      'Remoção',
+      'Nomeação',
+      'Autorização',
+      'Afastamento',
+      'Acúmulo',
+      'Designação',
+      'Declaração',
+      'Promoção',
+      'Outro'
+    )
+  );
+
 alter table public.registros drop constraint if exists registros_tipo_check;
 alter table public.registros add constraint registros_tipo_check check (
   tipo is null or tipo in (
@@ -138,8 +170,19 @@ alter table public.registros add constraint registros_tipo_check check (
     'Afastamento',
     'Acúmulo',
     'Designação',
+    'Declaração',
     'Promoção',
     'Outro'
+  )
+);
+
+alter table public.registros drop constraint if exists registros_situacao_substituto_check;
+alter table public.registros add constraint registros_situacao_substituto_check check (
+  situacao_substituto is null or situacao_substituto in (
+    'Presente',
+    'Futuro',
+    'Plantão',
+    'Encerrado'
   )
 );
 

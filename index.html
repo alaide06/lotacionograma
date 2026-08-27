@@ -424,6 +424,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
                 <option>Afastamento</option>
                 <option>Acúmulo</option>
                 <option>Designação</option>
+                <option>Declaração</option>
                 <option>Promoção</option>
                 <option>Outro</option>
               </select>
@@ -577,7 +578,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
               <input type="text" id="c-referencia-sub">
             </div>
           </div>
-          <div class="grid grid-2">
+          <div class="grid grid-3">
             <div class="field">
               <label for="c-data-ini-sub">Data inicial do substituto</label>
               <input type="date" id="c-data-ini-sub">
@@ -585,6 +586,16 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             <div class="field">
               <label for="c-data-fim-sub">Data final do substituto</label>
               <input type="date" id="c-data-fim-sub">
+            </div>
+            <div class="field">
+              <label for="c-situacao-sub">Situação do substituto</label>
+              <select id="c-situacao-sub">
+                <option value="">A calcular pelas datas</option>
+                <option>Presente</option>
+                <option>Futuro</option>
+                <option>Plantão</option>
+                <option>Encerrado</option>
+              </select>
             </div>
           </div>
           <div class="field">
@@ -700,6 +711,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       substituto: row.substituto || '',
       dataInicial: row.data_inicial || '',
       dataFinal: row.data_final || '',
+      situacaoSubstituto: row.situacao_substituto || '',
       referenciaSubstituto: row.referencia_substituto || row.referenciaSubstituto || '',
       resumoSubstituto: row.resumo_substituto || row.resumoSubstituto || '',
       dataInicialSubstituto: row.data_inicial_substituto || '',
@@ -723,6 +735,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       substituto: valorOuNulo(dados.substituto),
       data_inicial_substituto: valorOuNulo(dados.dataInicialSubstituto),
       data_final_substituto: valorOuNulo(dados.dataFinalSubstituto),
+      situacao_substituto: valorOuNulo(dados.situacaoSubstituto),
       referencia_substituto: valorOuNulo(dados.referenciaSubstituto),
       resumo_substituto: valorOuNulo(dados.resumoSubstituto)
     };
@@ -1032,7 +1045,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     `).join('') : '<li style="color:#8a8478;">Nenhum evento nos próximos 30 dias.</li>';
 
     // por tipo
-    const tipos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Promoção','Outro'];
+    const tipos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Declaração','Promoção','Outro'];
     const maxTipo = Math.max(1, ...tipos.map(t2 => registros.filter(r=>r.tipo===t2).length));
     document.getElementById('tipo-bars').innerHTML = tipos.map(t2 => {
       const n = registros.filter(r=>r.tipo===t2).length;
@@ -1293,10 +1306,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const f = filtrosAtuais();
     const lista = ordenarLista(aplicarFiltros(registros, f));
     if(!lista.length){ mostrarToast('Não há registros para exportar com os filtros atuais.'); return; }
-    const headers = ['Promotoria','Titular','Tipo','Destinação','Data inicial','Data final','Situação','Referência','Resumo','Substituto','Data inicial substituto','Data final substituto','Referência substituto','Resumo substituto'];
+    const headers = ['Promotoria','Titular','Tipo','Destinação','Data inicial','Data final','Situação','Referência','Resumo','Substituto','Data inicial substituto','Data final substituto','Situação substituto','Referência substituto','Resumo substituto'];
     const linhas = lista.map(r => [
       r.promotoria, r.titular, r.tipo, r.destinacao, r.dataInicial||'', r.dataFinal||'',
-      situacaoCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'',
+      situacaoCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'', r.situacaoSubstituto||'',
       r.referenciaSubstituto, r.resumoSubstituto
     ]);
     const csvEsc = v => `"${String(v==null?'':v).replace(/"/g,'""')}"`;
@@ -1363,6 +1376,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   function dataImportada(valor){
     const texto = String(valor || '').trim();
     if(!texto) return '';
+    if(['***', '—', '-'].includes(texto)) return '';
     let iso = texto;
     const brasileira = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(texto);
     if(brasileira){
@@ -1379,7 +1393,13 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       mostrarToast('Somente administradores podem importar registros.');
       return;
     }
-    const texto = await arquivo.text();
+    const bytes = await arquivo.arrayBuffer();
+    let texto;
+    try {
+      texto = new TextDecoder('utf-8', {fatal:true}).decode(bytes);
+    } catch(_erroEncoding){
+      texto = new TextDecoder('windows-1252').decode(bytes);
+    }
     const linhas = lerCsv(texto);
     if(linhas.length < 2){
       mostrarToast('O CSV precisa ter um cabeçalho e pelo menos uma linha.');
@@ -1392,6 +1412,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       referencia:'referencia', resumo:'resumo', substituto:'substituto',
       'data inicial substituto':'dataInicialSubstituto',
       'data final substituto':'dataFinalSubstituto',
+      'situacao substituto':'situacaoSubstituto',
       'referencia substituto':'referenciaSubstituto',
       'resumo substituto':'resumoSubstituto'
     };
@@ -1402,7 +1423,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       return;
     }
 
-    const tiposValidos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Promoção','Outro'];
+    const tiposValidos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Declaração','Promoção','Outro'];
     const situacoesValidas = ['Presente','Futuro','Plantão','Encerrado'];
     const erros = [];
     const payloads = [];
@@ -1422,6 +1443,9 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       if(dados.situacao && !situacoesValidas.some(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacao))){
         erros.push(`Linha ${linha}: situação inválida.`);
       }
+      if(dados.situacaoSubstituto && !situacoesValidas.some(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacaoSubstituto))){
+        erros.push(`Linha ${linha}: situação do substituto inválida.`);
+      }
 
       ['dataInicial','dataFinal','dataInicialSubstituto','dataFinalSubstituto'].forEach(campo=>{
         const convertido = dataImportada(dados[campo]);
@@ -1437,9 +1461,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       if(promotoria) dados.promotoria = promotoria.nome;
       const tipoCanonico = tiposValidos.find(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo));
       const situacaoCanonica = situacoesValidas.find(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacao));
+      const situacaoSubstitutoCanonica = situacoesValidas.find(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacaoSubstituto));
       if(dados.tipo) dados.tipo = tipoCanonico || dados.tipo;
       if(dados.situacao) dados.situacao = situacaoCanonica || dados.situacao;
-      if(promotoria && (!dados.tipo || tipoCanonico) && (!dados.situacao || situacaoCanonica)){
+      if(dados.situacaoSubstituto) dados.situacaoSubstituto = situacaoSubstitutoCanonica || dados.situacaoSubstituto;
+      if(promotoria && (!dados.tipo || tipoCanonico) && (!dados.situacao || situacaoCanonica) && (!dados.situacaoSubstituto || situacaoSubstitutoCanonica)){
         payloads.push(registroParaBanco(dados));
       }
     });
@@ -1482,7 +1508,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     situacao:'c-situacao', referencia:'c-referencia', resumo:'c-resumo',
     substituto:'c-substituto', dataInicialSubstituto:'c-data-ini-sub',
     dataFinalSubstituto:'c-data-fim-sub', referenciaSubstituto:'c-referencia-sub',
-    resumoSubstituto:'c-resumo-sub'
+    situacaoSubstituto:'c-situacao-sub', resumoSubstituto:'c-resumo-sub'
   };
 
   function limparForm(){
@@ -1609,12 +1635,13 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     html += item('Referência', r.referencia);
     html += `<div class="dl-item" style="grid-column:1/-1;"><div class="k">Resumo</div><div class="v ${r.resumo?'':'empty'}">${r.resumo ? escapeHtml(r.resumo) : 'Não informado'}</div></div>`;
 
-    if(r.substituto || r.dataInicialSubstituto || r.dataFinalSubstituto || r.resumoSubstituto || r.referenciaSubstituto){
+    if(r.substituto || r.dataInicialSubstituto || r.dataFinalSubstituto || r.situacaoSubstituto || r.resumoSubstituto || r.referenciaSubstituto){
       html += `<div style="grid-column:1/-1;" class="sub-block"><h4>Substituto</h4></div>`;
       html += item('Substituto', r.substituto);
       html += item('Referência do substituto', r.referenciaSubstituto);
       html += item('Data inicial do substituto', r.dataInicialSubstituto ? fmtData(r.dataInicialSubstituto) : '');
       html += item('Data final do substituto', r.dataFinalSubstituto ? fmtData(r.dataFinalSubstituto) : '');
+      html += item('Situação do substituto', r.situacaoSubstituto);
       html += `<div class="dl-item" style="grid-column:1/-1;"><div class="k">Resumo do substituto</div><div class="v ${r.resumoSubstituto?'':'empty'}">${r.resumoSubstituto ? escapeHtml(r.resumoSubstituto) : 'Não informado'}</div></div>`;
     }
 
