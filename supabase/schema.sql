@@ -46,6 +46,7 @@ create table if not exists public.registros (
       'Acúmulo',
       'Designação',
       'Declaração',
+      'Convocação',
       'Promoção',
       'Outro'
     )
@@ -156,6 +157,7 @@ where tipo is not null
       'Acúmulo',
       'Designação',
       'Declaração',
+      'Convocação',
       'Promoção',
       'Outro'
     )
@@ -171,6 +173,7 @@ alter table public.registros add constraint registros_tipo_check check (
     'Acúmulo',
     'Designação',
     'Declaração',
+    'Convocação',
     'Promoção',
     'Outro'
   )

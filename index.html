@@ -425,6 +425,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
                 <option>Acúmulo</option>
                 <option>Designação</option>
                 <option>Declaração</option>
+                <option>Convocação</option>
                 <option>Promoção</option>
                 <option>Outro</option>
               </select>
@@ -520,6 +521,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
                 <option>Acúmulo</option>
                 <option>Designação</option>
                 <option>Declaração</option>
+                <option>Convocação</option>
                 <option>Promoção</option>
                 <option>Outro</option>
               </select>
@@ -1045,7 +1047,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     `).join('') : '<li style="color:#8a8478;">Nenhum evento nos próximos 30 dias.</li>';
 
     // por tipo
-    const tipos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Declaração','Promoção','Outro'];
+    const tipos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Promoção','Outro'];
     const maxTipo = Math.max(1, ...tipos.map(t2 => registros.filter(r=>r.tipo===t2).length));
     document.getElementById('tipo-bars').innerHTML = tipos.map(t2 => {
       const n = registros.filter(r=>r.tipo===t2).length;
@@ -1423,7 +1425,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       return;
     }
 
-    const tiposValidos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Declaração','Promoção','Outro'];
+    const tiposValidos = ['Remoção','Nomeação','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Promoção','Outro'];
     const situacoesValidas = ['Presente','Futuro','Plantão','Encerrado'];
     const erros = [];
     const payloads = [];
