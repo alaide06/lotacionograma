@@ -142,6 +142,15 @@ alter table public.registros alter column promotoria set not null;
 alter table public.registros alter column titular drop not null;
 alter table public.registros alter column tipo drop not null;
 alter table public.registros add column if not exists situacao_substituto text;
+alter table public.registros add column if not exists atualizado_por uuid references auth.users(id) on delete set null;
+alter table public.registros add column if not exists atualizado_em timestamptz;
+update public.registros
+set atualizado_em = coalesce(atualizado_em, criado_em, now())
+where atualizado_em is null;
+alter table public.registros alter column atualizado_em set default now();
+alter table public.registros alter column atualizado_em set not null;
+create index if not exists registros_atualizado_em_idx
+  on public.registros (atualizado_em desc);
 
 -- Atualiza a lista de tipos aceita também em instalações já existentes.
 update public.registros
