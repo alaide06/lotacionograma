@@ -41,6 +41,7 @@ create table if not exists public.registros (
     tipo in (
       'Remoção',
       'Nomeação',
+      'Exoneração',
       'Autorização',
       'Afastamento',
       'Acúmulo',
@@ -165,6 +166,7 @@ where tipo is not null
     or tipo not in (
       'Remoção',
       'Nomeação',
+      'Exoneração',
       'Autorização',
       'Afastamento',
       'Acúmulo',
@@ -185,6 +187,7 @@ alter table public.registros add constraint registros_tipo_check check (
   tipo is null or tipo in (
     'Remoção',
     'Nomeação',
+    'Exoneração',
     'Autorização',
     'Afastamento',
     'Acúmulo',
