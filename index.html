@@ -1685,16 +1685,14 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   [['c-data-ini','c-data-fim'], ['c-data-ini-sub','c-data-fim-sub']].forEach(([idInicial, idFinal])=>{
     const inicial = document.getElementById(idInicial);
     const final = document.getElementById(idFinal);
-    const atualizarLimite = ()=>{
-      final.min = inicial.value || '';
-      if(inicial.value && final.value && final.value < inicial.value) final.value = '';
+    const atualizarSituacao = ()=>{
       atualizarSituacoesCalculadas();
     };
     [inicial, final].forEach(campo=>{
-      campo.addEventListener('input', atualizarLimite);
-      campo.addEventListener('change', atualizarLimite);
+      campo.addEventListener('input', atualizarSituacao);
+      campo.addEventListener('change', atualizarSituacao);
     });
-    atualizarLimite();
+    atualizarSituacao();
   });
 
   function abrirCadastro(id){
