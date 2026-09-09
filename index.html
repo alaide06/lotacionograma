@@ -1690,7 +1690,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       if(inicial.value && final.value && final.value < inicial.value) final.value = '';
       atualizarSituacoesCalculadas();
     };
-    inicial.addEventListener('change', atualizarLimite);
+    [inicial, final].forEach(campo=>{
+      campo.addEventListener('input', atualizarLimite);
+      campo.addEventListener('change', atualizarLimite);
+    });
     atualizarLimite();
   });
 
