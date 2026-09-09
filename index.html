@@ -134,6 +134,10 @@ input[type=text], input[type=date], input[type=number], select, textarea{
   width:100%; font-family:var(--sans); font-size:13.5px; padding:8px 10px;
   border:1px solid var(--line); border-radius:5px; background:#fff; color:var(--ink);
 }
+.calculated-field{
+  display:block; width:100%; min-height:36px; padding:8px 10px;
+  border:1px solid var(--line); border-radius:5px; background:#f5f1e8; color:var(--ink-soft);
+}
 input:focus, select:focus, textarea:focus, button:focus-visible{
   outline: 2px solid var(--brass); outline-offset:1px; border-color: var(--brass);
 }
@@ -457,8 +461,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
                 <option value="">Todas</option>
                 <option>Presente</option>
                 <option>Futuro</option>
-                <option>Plantão</option>
                 <option>Encerrado</option>
+                <option>Indefinido</option>
               </select>
             </div>
             <div class="field">
@@ -574,14 +578,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             </div>
             <div class="field">
               <label for="c-situacao">Situação atual</label>
-              <select id="c-situacao">
-                <option value="">A calcular pelas datas</option>
-                <option>Presente</option>
-                <option>Futuro</option>
-                <option>Plantão</option>
-                <option>Encerrado</option>
-              </select>
-              <p class="helper">Deixe em branco para calcular automaticamente pelas datas.</p>
+              <output id="c-situacao" class="calculated-field">Indefinido</output>
+              <p class="helper">Calculada automaticamente pelas datas.</p>
             </div>
             <div class="field">
               <label for="c-referencia">Referência</label>
@@ -617,13 +615,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             </div>
             <div class="field">
               <label for="c-situacao-sub">Situação do substituto</label>
-              <select id="c-situacao-sub">
-                <option value="">A calcular pelas datas</option>
-                <option>Presente</option>
-                <option>Futuro</option>
-                <option>Plantão</option>
-                <option>Encerrado</option>
-              </select>
+              <output id="c-situacao-sub" class="calculated-field">Indefinido</output>
+              <p class="helper">Calculada automaticamente pelas datas.</p>
             </div>
           </div>
           <div class="field">
@@ -735,13 +728,13 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       titular: row.titular || '',
       tipo: row.tipo || '',
       destinacao: row.destinacao || '',
-      situacao: row.situacao || '',
+      situacao: '',
       referencia: row.referencia || '',
       resumo: row.resumo || '',
       substituto: row.substituto || '',
       dataInicial: row.data_inicial || '',
       dataFinal: row.data_final || '',
-      situacaoSubstituto: row.situacao_substituto || '',
+      situacaoSubstituto: '',
       referenciaSubstituto: row.referencia_substituto || row.referenciaSubstituto || '',
       resumoSubstituto: row.resumo_substituto || row.resumoSubstituto || '',
       dataInicialSubstituto: row.data_inicial_substituto || '',
@@ -760,13 +753,13 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       destinacao: valorOuNulo(dados.destinacao),
       data_inicial: valorOuNulo(dados.dataInicial),
       data_final: valorOuNulo(dados.dataFinal),
-      situacao: valorOuNulo(dados.situacao),
+      situacao: null,
       referencia: valorOuNulo(dados.referencia),
       resumo: valorOuNulo(dados.resumo),
       substituto: valorOuNulo(dados.substituto),
       data_inicial_substituto: valorOuNulo(dados.dataInicialSubstituto),
       data_final_substituto: valorOuNulo(dados.dataFinalSubstituto),
-      situacao_substituto: valorOuNulo(dados.situacaoSubstituto),
+      situacao_substituto: null,
       referencia_substituto: valorOuNulo(dados.referenciaSubstituto),
       resumo_substituto: valorOuNulo(dados.resumoSubstituto)
     };
@@ -975,15 +968,22 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     });
   }
 
-  function situacaoCalculada(reg){
-    if(reg.situacao){ return reg.situacao; }
-    const ini = parseData(reg.dataInicial);
-    const fim = parseData(reg.dataFinal);
+  function calcularSituacaoPorDatas(dataInicial, dataFinal){
+    const ini = parseData(dataInicial);
+    const fim = parseData(dataFinal);
     const t = hoje();
     if(!ini && !fim) return 'Indefinido';
     if(ini && t < ini) return 'Futuro';
     if(fim && t > fim) return 'Encerrado';
     return 'Presente';
+  }
+
+  function situacaoCalculada(reg){
+    return calcularSituacaoPorDatas(reg.dataInicial, reg.dataFinal);
+  }
+
+  function situacaoSubstitutoCalculada(reg){
+    return calcularSituacaoPorDatas(reg.dataInicialSubstituto, reg.dataFinalSubstituto);
   }
 
   function seloClasse(sit){
@@ -1082,7 +1082,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       <div class="stat-card"><div class="n">${total}</div><div class="l">Total de registros</div></div>
       <div class="stat-card"><div class="n">${cont('Presente')}</div><div class="l">Presentes</div></div>
       <div class="stat-card"><div class="n">${cont('Futuro')}</div><div class="l">Futuros</div></div>
-      <div class="stat-card"><div class="n">${cont('Plantão')}</div><div class="l">Em plantão</div></div>
+      <div class="stat-card"><div class="n">${cont('Encerrado')}</div><div class="l">Encerrados</div></div>
     `;
     // próximos eventos dentro de 5 dias, por data inicial
     const t = hoje();
@@ -1173,7 +1173,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       if(f.situacao && sit !== f.situacao) return false;
       if(f.referencia && !(r.referencia||'').toLowerCase().includes(f.referencia)) return false;
       if(f.resumo && !(((r.resumo||'')+' '+(r.resumoSubstituto||'')).toLowerCase().includes(f.resumo))) return false;
-      if(f.apenasAtivos && !(sit === 'Presente' || sit === 'Plantão')) return false;
+      if(f.apenasAtivos && sit !== 'Presente') return false;
       if(f.periodoIni){
         const ini = parseData(r.dataInicial);
         if(!ini || ini < parseData(f.periodoIni)) return false;
@@ -1191,7 +1191,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const arr = [...lista];
     arr.sort((a,b)=>{
       if(campo === 'prioridade'){
-        const ordemSituacao = { Futuro:0, Presente:1, Plantão:1, Encerrado:2, Indefinido:3 };
+        const ordemSituacao = { Futuro:0, Presente:1, Encerrado:2, Indefinido:3 };
         const situacaoA = situacaoCalculada(a);
         const situacaoB = situacaoCalculada(b);
         const prioridadeA = ordemSituacao[situacaoA] ?? 3;
@@ -1466,7 +1466,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const headers = ['Promotoria','Titular','Tipo','Destinação','Data inicial','Data final','Situação','Referência','Resumo','Substituto','Data inicial substituto','Data final substituto','Situação substituto','Referência substituto','Resumo substituto'];
     const linhas = lista.map(r => [
       r.promotoria, r.titular, r.tipo, r.destinacao, r.dataInicial||'', r.dataFinal||'',
-      situacaoCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'', r.situacaoSubstituto||'',
+      situacaoCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'', situacaoSubstitutoCalculada(r),
       r.referenciaSubstituto, r.resumoSubstituto
     ]);
     const csvEsc = v => `"${String(v==null?'':v).replace(/"/g,'""')}"`;
@@ -1565,11 +1565,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
     const camposPorCabecalho = {
       promotoria:'promotoria', titular:'titular', tipo:'tipo', destinacao:'destinacao',
-      'data inicial':'dataInicial', 'data final':'dataFinal', situacao:'situacao',
+      'data inicial':'dataInicial', 'data final':'dataFinal',
       referencia:'referencia', resumo:'resumo', substituto:'substituto',
       'data inicial substituto':'dataInicialSubstituto',
       'data final substituto':'dataFinalSubstituto',
-      'situacao substituto':'situacaoSubstituto',
       'referencia substituto':'referenciaSubstituto',
       'resumo substituto':'resumoSubstituto'
     };
@@ -1581,7 +1580,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     }
 
     const tiposValidos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
-    const situacoesValidas = ['Presente','Futuro','Plantão','Encerrado'];
     const erros = [];
     const payloads = [];
     linhas.forEach((valores, indice)=>{
@@ -1597,13 +1595,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       if(dados.tipo && !tiposValidos.some(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo))){
         erros.push(`Linha ${linha}: tipo de movimentação inválido.`);
       }
-      if(dados.situacao && !situacoesValidas.some(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacao))){
-        erros.push(`Linha ${linha}: situação inválida.`);
-      }
-      if(dados.situacaoSubstituto && !situacoesValidas.some(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacaoSubstituto))){
-        erros.push(`Linha ${linha}: situação do substituto inválida.`);
-      }
-
       ['dataInicial','dataFinal','dataInicialSubstituto','dataFinalSubstituto'].forEach(campo=>{
         const convertido = dataImportada(dados[campo]);
         if(convertido === null) erros.push(`Linha ${linha}: ${campo} tem uma data inválida.`);
@@ -1617,12 +1608,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       }
       if(promotoria) dados.promotoria = promotoria.nome;
       const tipoCanonico = tiposValidos.find(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo));
-      const situacaoCanonica = situacoesValidas.find(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacao));
-      const situacaoSubstitutoCanonica = situacoesValidas.find(situacao => textoChaveImportacao(situacao) === textoChaveImportacao(dados.situacaoSubstituto));
       if(dados.tipo) dados.tipo = tipoCanonico || dados.tipo;
-      if(dados.situacao) dados.situacao = situacaoCanonica || dados.situacao;
-      if(dados.situacaoSubstituto) dados.situacaoSubstituto = situacaoSubstitutoCanonica || dados.situacaoSubstituto;
-      if(promotoria && (!dados.tipo || tipoCanonico) && (!dados.situacao || situacaoCanonica) && (!dados.situacaoSubstituto || situacaoSubstitutoCanonica)){
+      if(promotoria && (!dados.tipo || tipoCanonico)){
         payloads.push(registroParaBanco(dados));
       }
     });
@@ -1662,16 +1649,26 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   const camposForm = {
     promotoria:'c-promotoria', titular:'c-titular', tipo:'c-tipo',
     destinacao:'c-destinacao', dataInicial:'c-data-ini', dataFinal:'c-data-fim',
-    situacao:'c-situacao', referencia:'c-referencia', resumo:'c-resumo',
+    referencia:'c-referencia', resumo:'c-resumo',
     substituto:'c-substituto', dataInicialSubstituto:'c-data-ini-sub',
     dataFinalSubstituto:'c-data-fim-sub', referenciaSubstituto:'c-referencia-sub',
-    situacaoSubstituto:'c-situacao-sub', resumoSubstituto:'c-resumo-sub'
+    resumoSubstituto:'c-resumo-sub'
   };
 
   function limparForm(){
     Object.values(camposForm).forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('f-id').value = '';
     definirFiltroLocalPromotorias('');
+    atualizarSituacoesCalculadas();
+  }
+
+  function atualizarSituacoesCalculadas(){
+    const dataInicial = document.getElementById('c-data-ini').value;
+    const dataFinal = document.getElementById('c-data-fim').value;
+    const dataInicialSubstituto = document.getElementById('c-data-ini-sub').value;
+    const dataFinalSubstituto = document.getElementById('c-data-fim-sub').value;
+    document.getElementById('c-situacao').textContent = calcularSituacaoPorDatas(dataInicial, dataFinal);
+    document.getElementById('c-situacao-sub').textContent = calcularSituacaoPorDatas(dataInicialSubstituto, dataFinalSubstituto);
   }
 
   function intervaloDeDatasValido(idInicial, idFinal, mensagem){
@@ -1691,6 +1688,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const atualizarLimite = ()=>{
       final.min = inicial.value || '';
       if(inicial.value && final.value && final.value < inicial.value) final.value = '';
+      atualizarSituacoesCalculadas();
     };
     inicial.addEventListener('change', atualizarLimite);
     atualizarLimite();
@@ -1719,6 +1717,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       Object.entries(camposForm).forEach(([campo, elId])=>{
         document.getElementById(elId).value = r[campo] || '';
       });
+      atualizarSituacoesCalculadas();
       document.getElementById('cadastro-title').textContent = 'Editar registro';
       document.getElementById('cadastro-sub').textContent = 'Atualize os dados do titular e do substituto.';
     } else {
@@ -1798,7 +1797,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       html += item('Referência do substituto', r.referenciaSubstituto);
       html += item('Data inicial do substituto', r.dataInicialSubstituto ? fmtData(r.dataInicialSubstituto) : '');
       html += item('Data final do substituto', r.dataFinalSubstituto ? fmtData(r.dataFinalSubstituto) : '');
-      html += item('Situação do substituto', r.situacaoSubstituto);
+      html += item('Situação do substituto', situacaoSubstitutoCalculada(r));
       html += `<div class="dl-item" style="grid-column:1/-1;"><div class="k">Resumo do substituto</div><div class="v ${r.resumoSubstituto?'':'empty'}">${r.resumoSubstituto ? escapeHtml(r.resumoSubstituto) : 'Não informado'}</div></div>`;
     }
 
