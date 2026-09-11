@@ -441,6 +441,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
                 <option>Declaração</option>
                 <option>Convocação</option>
                 <option>Exoneração</option>
+                <option>Termo de Posse</option>
                 <option>Vacância</option>
                 <option>Aposentadoria</option>
                 <option>Instalação</option>
@@ -548,6 +549,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
                 <option>Declaração</option>
                 <option>Convocação</option>
                 <option>Exoneração</option>
+                <option>Termo de Posse</option>
                 <option>Vacância</option>
                 <option>Aposentadoria</option>
                 <option>Instalação</option>
@@ -692,6 +694,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
   const SUPABASE_URL = 'https://cserkovxfkapmnlonuzr.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_nVox92qsvHa2Q0Asd9nmNA_4AkFGcS1';
+
+  
   const CONFIG_SUPABASE_OK =
     !SUPABASE_URL.includes('SEU-PROJETO') &&
     !SUPABASE_ANON_KEY.includes('COLE_SUA_CHAVE');
@@ -1118,7 +1122,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     });
 
     // por tipo
-    const tipos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
+    const tipos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Termo de Posse','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
     const maxTipo = Math.max(1, ...tipos.map(t2 => registros.filter(r=>r.tipo===t2).length));
     document.getElementById('tipo-bars').innerHTML = tipos.map(t2 => {
       const n = registros.filter(r=>r.tipo===t2).length;
@@ -1579,7 +1583,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       return;
     }
 
-    const tiposValidos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
+    const tiposValidos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Termo de Posse','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
     const erros = [];
     const payloads = [];
     linhas.forEach((valores, indice)=>{
