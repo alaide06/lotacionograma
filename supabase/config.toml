@@ -1,0 +1,3 @@
+[functions.consultor-ia]
+# A consulta é pública e somente leitura. A função controla o CORS e não executa gravações.
+verify_jwt = false

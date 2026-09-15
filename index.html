@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro de Movimentações — Promotorias</title>
+<title>Lotacionograma — Promotorias</title>
 <style>
 :root{
   --ink: #1c2430;
@@ -48,12 +48,12 @@ body{
 header.topbar{
   background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
   color: #eef2f6;
-  padding: 18px 28px 0 28px;
+  padding: 18px 24px 0 24px;
   border-bottom: 4px solid var(--brass);
 }
 .topbar-inner{
   display:flex; align-items:center; justify-content:space-between; gap:20px;
-  max-width:1280px; margin:0 auto; padding-bottom:18px; flex-wrap:wrap;
+  max-width:1480px; margin:0 auto; padding-bottom:18px; flex-wrap:wrap;
 }
 .brand{ display:flex; align-items:center; gap:12px; }
 .brand-seal{
@@ -80,7 +80,7 @@ button.btn-topbar:hover{ background:rgba(255,255,255,.22); border-color:rgba(255
 button.btn-topbar:focus-visible{ outline-color:var(--brass-soft); }
 
 nav.tabs{
-  max-width:1280px; margin:0 auto; display:flex; gap:3px; padding-top:4px;
+  max-width:1480px; margin:0 auto; display:flex; gap:3px; padding-top:4px;
   border-top:1px solid rgba(255,255,255,.12); overflow-x:auto;
 }
 nav.tabs button{
@@ -100,7 +100,7 @@ nav.tabs button.active{ background: var(--paper); color: var(--navy-deep); font-
   nav.tabs button{ padding-left:13px; padding-right:13px; }
 }
 
-main{ flex:1; max-width:1280px; margin:0 auto; padding:24px 28px 60px; width:100%; }
+main{ flex:1; max-width:1480px; margin:0 auto; padding:24px 24px 60px; width:100%; }
 section.view{ display:none; }
 section.view.active{ display:block; animation: fadein .18s ease; }
 @keyframes fadein{ from{opacity:0; transform:translateY(2px);} to{opacity:1; transform:none;} }
@@ -217,6 +217,14 @@ textarea{ resize:vertical; min-height:64px; font-family:var(--sans); }
 .filters-toggle{ white-space:nowrap; }
 .filters-panel{ display:none; }
 .filters-panel.open{ display:block; }
+.panel-filter-card{ margin-bottom:16px; padding:14px 16px; background:#fbfaf6; }
+.panel-filter-card .filters-bar{ margin-bottom:0; align-items:flex-end; }
+.panel-filter-card .quick-search{ min-width:240px; }
+.panel-filter-card .panel-filter-promotoria{ min-width:260px; flex:1.2; }
+.panel-filter-card .panel-filter-select{ min-width:170px; }
+.panel-filter-card .local-promotoria-buttons{ padding-bottom:1px; }
+.panel-filter-count{ margin:10px 0 0; color:var(--ink-soft); font-size:12px; }
+@media (max-width:860px){ .panel-filter-card .panel-filter-promotoria,.panel-filter-card .panel-filter-select{ min-width:0; flex:1 1 220px; } }
 .chips{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 4px; }
 .chip{
   background: var(--brass-soft); color: var(--navy-deep); font-size:11.5px; padding:4px 10px 4px 12px;
@@ -243,6 +251,116 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .checkbox-line{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); }
 .checkbox-line input{ width:auto; }
 
+/* ---------- tela inicial ---------- */
+#view-inicio{
+  margin:-24px -24px -60px; min-height:calc(100vh - 112px); padding:34px clamp(20px, 4vw, 56px) 56px;
+  background:radial-gradient(circle at 100% 0%, rgba(197,211,228,.7) 0 13%, transparent 31%), #f3f6fa;
+  color:var(--ink); position:relative; overflow:hidden;
+}
+.home-shell{ max-width:1360px; margin:0 auto; position:relative; z-index:1; }
+.home-heading{
+  display:flex; align-items:center; justify-content:space-between; gap:28px; padding:30px 38px;
+  color:#fff; border-radius:22px; background:linear-gradient(118deg, #142842 0%, #285077 100%);
+  box-shadow:0 16px 30px rgba(20,40,66,.18); position:relative; overflow:hidden;
+}
+.home-heading::after{ content:""; position:absolute; width:260px; height:260px; border:1px solid rgba(233,223,196,.24); border-radius:50%; right:-80px; top:-120px; }
+.home-heading-copy{ position:relative; z-index:1; }
+.home-eyebrow{ margin:0 0 10px; color:var(--brass-soft); font-size:12px; font-weight:700; letter-spacing:1.7px; text-transform:uppercase; }
+.home-heading h2{ margin:0; font-family:var(--serif); font-size:clamp(34px, 5vw, 56px); line-height:1; letter-spacing:.4px; font-weight:700; }
+.home-heading p{ max-width:700px; margin:12px 0 0; color:#dbe6f0; font-size:16px; line-height:1.45; }
+.home-mark{ width:72px; height:72px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid rgba(233,223,196,.7); border-radius:50%; color:var(--brass-soft); font-family:var(--serif); font-size:22px; font-weight:700; letter-spacing:1px; position:relative; z-index:1; }
+.home-section-label{ display:flex; align-items:center; justify-content:space-between; gap:18px; margin:30px 2px 15px; }
+.home-section-label strong{ color:var(--navy-deep); font-size:17px; }
+.home-section-label span{ color:var(--ink-soft); font-size:13px; }
+.home-grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px; }
+.home-card{
+  min-height:216px; padding:24px; border:1px solid #dce4ed; border-top:3px solid var(--navy); border-radius:16px;
+  background:#fff; color:var(--ink); display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start;
+  text-align:left; cursor:pointer; font:inherit; box-shadow:0 5px 14px rgba(20,40,66,.06); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.home-card:nth-child(2){ border-top-color:#9c7a3c; }
+.home-card:nth-child(3){ border-top-color:#3f7c83; }
+.home-card:nth-child(4){ border-top-color:#6c5b91; }
+.home-card:nth-child(5){ border-top-color:#285077; }
+.home-card:nth-child(6){ border-top-color:#a65c5c; }
+.home-card:hover, .home-card:focus-visible{ transform:translateY(-4px); box-shadow:0 14px 25px rgba(20,40,66,.13); border-color:#c7d5e3; outline:none; }
+.home-card.is-placeholder{ background:#fbfcfd; }
+.home-icon{ width:52px; height:52px; margin-bottom:22px; padding:11px; color:var(--navy); background:#edf3f8; border-radius:14px; display:flex; align-items:center; justify-content:center; }
+.home-card:nth-child(2) .home-icon{ color:#8a6b30; background:#f5f0e5; }
+.home-card:nth-child(3) .home-icon{ color:#3f7c83; background:#e9f3f3; }
+.home-card:nth-child(4) .home-icon{ color:#6c5b91; background:#f0edf6; }
+.home-card:nth-child(6) .home-icon{ color:#a65c5c; background:#f8eded; }
+.home-icon svg{ width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.home-card h3{ margin:0 0 9px; color:var(--navy-deep); font-size:19px; line-height:1.2; letter-spacing:.1px; font-weight:700; }
+.home-card p{ margin:0; color:var(--ink-soft); font-size:15px; line-height:1.4; }
+.home-card-meta{ margin-top:auto; padding-top:20px; color:var(--navy); font-size:12px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+.home-card-meta.muted{ color:#8995a3; }
+.summary-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin-bottom:14px; }
+.summary-card-head h3{ margin-bottom:5px; }
+.summary-card-head p{ margin:0; color:var(--ink-soft); font-size:13px; }
+.summary-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.summary-table-wrap{ overflow-x:auto; }
+.panel-table{ min-width:680px; }
+.panel-table tbody tr{ cursor:default; }
+.panel-table tbody tr:hover{ background:#fbfaf6; }
+.panel-table td:first-child{ font-weight:600; color:var(--navy-deep); }
+.member-cell{ min-width:160px; }
+.member-cell .member-name{ display:block; }
+.member-cell .member-meta{ display:block; margin-top:4px; color:var(--ink-soft); font-size:11px; }
+.type-badge{ display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--brass-soft); color:var(--navy-deep); font-size:12px; font-weight:700; white-space:nowrap; }
+.member-search-card{ max-width:720px; }
+.member-search-wrap{ position:relative; max-width:560px; }
+.member-options{ display:none; position:absolute; z-index:40; top:calc(100% + 4px); left:0; right:0; max-height:260px; overflow-y:auto; padding:4px; background:#fff; border:1px solid var(--line); border-radius:7px; box-shadow:0 10px 24px rgba(20,35,52,.18); }
+.member-options.open{ display:block; }
+.member-option{ display:block; width:100%; padding:9px 10px; border:0; border-radius:5px; background:transparent; color:var(--ink); text-align:left; font:inherit; cursor:pointer; }
+.member-option:hover,.member-option:focus{ background:#f0ede5; outline:none; }
+.member-options-empty{ padding:9px 10px; color:var(--ink-soft); font-size:12px; }
+.member-profile{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; }
+.member-profile h3{ margin:0 0 5px; color:var(--navy-deep); font-family:var(--serif); font-size:23px; }
+.member-profile p{ margin:0; color:var(--ink-soft); font-size:13px; }
+.member-current-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.member-current-card{ border:1px solid var(--line); border-radius:7px; padding:14px; background:#fbfaf6; }
+.member-current-card h4{ margin:0 0 10px; color:var(--navy-deep); font-size:13px; text-transform:uppercase; letter-spacing:.5px; }
+.member-current-card .member-place{ margin-bottom:10px; font-size:16px; font-weight:700; color:var(--navy-deep); }
+.member-current-card .member-place.empty{ color:var(--ink-soft); font-size:13px; font-weight:400; font-style:italic; }
+.member-current-details{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 14px; }
+.member-current-details .dl-item{ padding-left:0; padding-right:0; }
+.member-current-summary{ margin-top:12px; padding-top:11px; border-top:1px solid var(--line); }
+.member-current-summary .k{ margin-bottom:4px; font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-soft); }
+.member-current-summary .v{ font-size:13px; line-height:1.45; color:var(--ink); white-space:pre-wrap; }
+.member-current-summary .v.empty{ color:#b0aa9c; font-style:italic; }
+.member-history-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:18px; }
+.member-history-card{ min-width:0; }
+.member-history-card h3{ margin-bottom:5px; }
+.member-history-card > p{ margin:0 0 12px; color:var(--ink-soft); font-size:12px; }
+.member-history-table{ overflow-x:auto; }
+.member-history-table table{ min-width:620px; }
+.member-history-table tbody tr{ cursor:default; }
+.member-history-table td{ vertical-align:top; }
+.member-history-table tbody tr[data-member-history-id]{ cursor:pointer; }
+.member-history-table tbody tr[data-member-history-id]:hover{ background:#f7f4ec; }
+.member-history-main{ font-weight:600; color:var(--navy-deep); }
+.member-history-summary{ display:flex; align-items:center; gap:7px; margin-top:5px; color:var(--ink-soft); font-size:11.5px; line-height:1.35; }
+.member-history-summary-text{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:260px; }
+.member-summary-button{ flex:none; padding:0; border:0; background:none; color:var(--navy); font:inherit; font-size:11px; font-weight:700; cursor:pointer; text-decoration:underline; }
+.member-summary-button:hover{ color:var(--navy-deep); }
+.member-history-empty{ color:var(--ink-soft); font-size:13px; padding:18px 4px; }
+@media (max-width:760px){ .member-current-grid,.member-history-grid{ grid-template-columns:1fr; } }
+@media (max-width:900px){
+  .home-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .summary-card-head{ flex-direction:column; }
+  .summary-actions{ justify-content:flex-start; }
+}
+@media (max-width:560px){
+  #view-inicio{ margin:-24px -24px -60px; padding:24px 16px 48px; }
+  .home-heading{ align-items:flex-start; padding:25px 22px; border-radius:18px; }
+  .home-heading p{ font-size:15px; }
+  .home-mark{ width:56px; height:56px; font-size:17px; }
+  .home-section-label{ align-items:flex-start; flex-direction:column; gap:4px; margin-top:24px; }
+  .home-grid{ grid-template-columns:1fr; gap:16px; }
+  .home-card{ min-height:194px; }
+}
+
 /* ---------- detalhe ---------- */
 .detail-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap;}
 .detail-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:0; }
@@ -260,11 +378,45 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   border-radius:6px; font-size:13px; box-shadow: var(--shadow); opacity:0; transform:translateY(8px);
   transition: all .25s ease; pointer-events:none; z-index:50;
 }
+.summary-popup[hidden]{ display:none; }
+.summary-popup{ position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; }
+.summary-popup-backdrop{ position:absolute; inset:0; background:rgba(13,28,45,.58); }
+.summary-popup-card{ position:relative; z-index:1; width:min(620px,100%); max-height:min(70vh,620px); overflow:auto; padding:22px 24px; border:1px solid var(--line); border-radius:10px; background:var(--paper-raised); box-shadow:0 22px 55px rgba(10,25,42,.3); }
+.summary-popup-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+.summary-popup-head h3{ margin:0; color:var(--navy-deep); font-family:var(--serif); font-size:20px; }
+.summary-popup-close{ border:0; background:transparent; color:var(--ink-soft); font-size:24px; line-height:1; cursor:pointer; }
+.summary-popup-close:hover{ color:var(--navy-deep); }
+.summary-popup-text{ margin:0; white-space:pre-wrap; color:var(--ink); font-size:14px; line-height:1.55; }
 #toast.show{ opacity:1; transform:none; }
 
 .section-divider{ border:none; border-top:1px solid var(--line); margin:22px 0; }
 .pill-buttons{ display:flex; gap:8px; flex-wrap:wrap; }
 .helper{ font-size:11.5px; color:var(--ink-soft); margin-top:4px; }
+
+/* ---------- consultor IA ---------- */
+.consultor-layout{ display:grid; grid-template-columns:minmax(0,1.55fr) minmax(240px,.75fr); gap:18px; align-items:start; }
+.consultor-card{ min-height:520px; display:flex; flex-direction:column; }
+.consultor-messages{ flex:1; min-height:330px; max-height:560px; overflow-y:auto; padding:4px 2px 14px; }
+.consultor-message{ display:flex; margin:0 0 14px; }
+.consultor-message.user{ justify-content:flex-end; }
+.consultor-bubble{ max-width:min(780px,92%); padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:#fbfaf6; color:var(--ink); font-size:13.5px; line-height:1.5; white-space:pre-wrap; }
+.consultor-message.user .consultor-bubble{ background:var(--navy); border-color:var(--navy); color:#fff; }
+.consultor-message.system .consultor-bubble{ background:var(--ok-bg); border-color:#c5dfcb; }
+.consultor-form{ display:flex; gap:8px; align-items:flex-end; border-top:1px solid var(--line); padding-top:14px; }
+.consultor-form textarea{ min-height:48px; max-height:140px; resize:vertical; }
+.consultor-form .btn{ flex:0 0 auto; min-height:48px; }
+.consultor-suggestions{ display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.consultor-suggestion{ font:inherit; font-size:11.5px; color:var(--navy); background:#f4f0e5; border:1px solid var(--brass-soft); border-radius:999px; padding:6px 10px; cursor:pointer; }
+.consultor-suggestion:hover{ background:var(--brass-soft); }
+.consultor-report{ margin-top:12px; padding:12px 14px; border-left:3px solid var(--brass); background:#f8f5ed; border-radius:4px; font-size:12.5px; line-height:1.5; }
+.consultor-report strong{ color:var(--navy-deep); }
+.consultor-table-wrap{ overflow:auto; margin-top:9px; }
+.consultor-table{ width:100%; border-collapse:collapse; font-size:12px; }
+.consultor-table th,.consultor-table td{ padding:7px 8px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+.consultor-table th{ color:var(--ink-soft); font-size:10px; text-transform:uppercase; letter-spacing:.4px; }
+.consultor-disclaimer{ color:var(--ink-soft); font-size:11.5px; line-height:1.5; margin:0; }
+@media (max-width:900px){ .consultor-layout{ grid-template-columns:1fr; } }
+@media (max-width:600px){ .consultor-form{ flex-direction:column; align-items:stretch; } .consultor-form .btn{ width:100%; } }
 
 /* ---------- autenticação provisória ---------- */
 #auth-screen{
@@ -354,8 +506,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       </div>
     </div>
     <nav class="tabs">
-      <button data-view="resumo" class="active">Resumo</button>
-      <button data-view="listagem">Listagem</button>
+      <button data-view="inicio" class="active">Início</button>
+      <button data-view="membro">Situação do membro</button>
+      <button data-view="resumo">Quadro resumido</button>
+      <button data-view="listagem">Painel geral</button>
+      <button data-view="consultor" hidden>Consultor IA</button>
       <button data-view="cadastro" data-admin-only>Cadastro</button>
       <button data-view="historico">Histórico</button>
       <button data-view="detalhe" id="tab-detalhe" style="display:none;">Detalhe</button>
@@ -364,40 +519,163 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
   <main>
 
-    <!-- ===================== RESUMO ===================== -->
-    <section class="view active" id="view-resumo">
-      <h2 class="view-title">Painel geral</h2>
-      <p class="view-sub">Visão consolidada dos registros cadastrados.</p>
-
-      <div class="stat-row" id="stat-row"></div>
-
-      <div class="two-col">
-        <div class="card">
-          <h3>Próximos eventos (5 dias)</h3>
-          <ul class="list-mini" id="upcoming-list"></ul>
+    <!-- ===================== INÍCIO ===================== -->
+    <section class="view active" id="view-inicio">
+      <div class="home-shell">
+        <div class="home-heading">
+          <div class="home-heading-copy">
+            <p class="home-eyebrow">Gestão de lotação e movimentações</p>
+            <h2>Lotacionograma</h2>
+            <p>Consulte a composição das promotorias e acompanhe as movimentações dos membros.</p>
+          </div>
+          <div class="home-mark" aria-hidden="true">MP</div>
         </div>
-        <div class="card">
-          <h3>Registros por tipo</h3>
-          <div id="tipo-bars"></div>
+        <div class="home-section-label">
+          <strong>Acesso rápido</strong>
+          <span>Selecione uma área para começar</span>
+        </div>
+        <div class="home-grid" aria-label="Módulos do sistema">
+          <button type="button" class="home-card" data-home-view="membro">
+            <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="17" r="9"/><path d="M17 48c1-9 7-14 15-14s14 5 15 14"/><path d="M13 49h38"/><path d="M22 34l-4-12h18l7 12"/></svg></span>
+            <h3>Situação do membro</h3>
+            <p>Consulte vínculos atuais e o histórico de cada membro</p>
+            <span class="home-card-meta">Abrir consulta →</span>
+          </button>
+          <button type="button" class="home-card is-placeholder" data-home-placeholder="Situação do órgão">
+            <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 52V24h15v28M27 52V12h18v40M45 52V28h8v24"/><path d="M17 30h5M17 37h5M32 20h7M32 27h7M32 34h7M32 41h7M48 34h3M48 41h3"/><path d="M34 52V44h5v8"/></svg></span>
+            <h3>Situação do órgão</h3>
+            <p>Membro titular e membros designados</p>
+            <span class="home-card-meta muted">Em breve</span>
+          </button>
+          <button type="button" class="home-card" data-home-view="resumo">
+            <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M10 52h44M14 48V29M24 48V36M34 48V24M44 48V16"/><path d="M13 21l10-7 10 5 13-11"/><circle cx="13" cy="21" r="2"/><circle cx="23" cy="14" r="2"/><circle cx="33" cy="19" r="2"/><circle cx="46" cy="8" r="2"/></svg></span>
+            <h3>Quadro resumido</h3>
+            <p>Quantitativo de promotorias vagas e ocupadas</p>
+            <span class="home-card-meta">Abrir quadro →</span>
+          </button>
+          <button type="button" class="home-card is-placeholder" data-home-placeholder="Estágio probatório">
+            <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M13 27h31v20H13zM18 27v-6h21v6M21 38h15"/><circle cx="45" cy="44" r="10"/><path d="M45 39v6l4 2"/></svg></span>
+            <h3>Estágio probatório</h3>
+            <p>Titularidade, afastamentos e designações</p>
+            <span class="home-card-meta muted">Em breve</span>
+          </button>
+          <button type="button" class="home-card" data-home-view="listagem">
+            <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="16" y="12" width="28" height="38" rx="2"/><path d="M23 22h14M23 29h14M23 36h9"/><circle cx="45" cy="43" r="9"/><path d="M51 49l6 6"/></svg></span>
+            <h3>Painel geral</h3>
+            <p>Consulta rápida por membro, promotoria e tipo</p>
+            <span class="home-card-meta">Consultar registros →</span>
+          </button>
+          <button type="button" class="home-card is-placeholder" data-home-placeholder="Afastamentos">
+            <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M29 10c-8 2-14 10-14 19 0 9 4 17 12 24"/><path d="M29 10c9 0 16 8 16 18 0 4-1 8-3 11"/><circle cx="29" cy="29" r="6"/><circle cx="45" cy="46" r="10"/><path d="M45 41v6l4 2"/></svg></span>
+            <h3>Afastamentos</h3>
+            <p>Membros afastados no presente, no futuro e por área</p>
+            <span class="home-card-meta muted">Em breve</span>
+          </button>
         </div>
       </div>
+    </section>
 
-      <div class="two-col">
-        <div class="card">
-          <h3>Registros por promotoria</h3>
-          <div id="promotoria-bars"></div>
+    <!-- ===================== SITUAÇÃO DO MEMBRO ===================== -->
+    <section class="view" id="view-membro">
+      <h2 class="view-title">Situação do membro</h2>
+      <p class="view-sub">Consulte onde o membro está lotado e acompanhe suas passagens como titular e substituto.</p>
+
+      <div class="card member-search-card">
+        <label for="membro-busca">Membro</label>
+        <div class="member-search-wrap">
+          <input type="text" id="membro-busca" placeholder="Digite o nome do membro..." autocomplete="off" aria-controls="opcoes-membros" aria-expanded="false">
+          <div class="member-options" id="opcoes-membros" role="listbox"></div>
         </div>
-        <div class="card">
-          <h3>Atividade recente</h3>
-          <ul class="list-mini" id="recent-list"></ul>
+        <p class="helper">Selecione um nome da lista para visualizar a situação e o histórico.</p>
+      </div>
+
+      <div id="situacao-membro-wrap">
+        <div class="empty-state"><div class="glyph">⌕</div>Selecione um membro para consultar os dados.</div>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="view" id="view-resumo">
+      <h2 class="view-title">Quadro resumido</h2>
+      <p class="view-sub">Visão compacta da composição atual das promotorias cadastradas.</p>
+
+      <div class="card panel-filter-card">
+        <div class="filters-bar">
+          <div class="quick-search">
+            <label for="painel-busca">Busca no quadro</label>
+            <input type="text" id="painel-busca" placeholder="Promotoria, titular ou substituto..." autocomplete="off">
+          </div>
+          <div class="field panel-filter-promotoria" style="margin-bottom:0;">
+            <label for="painel-promotoria">Promotoria</label>
+            <div class="promotoria-combobox">
+              <input type="text" id="painel-promotoria" placeholder="Todas" autocomplete="off" aria-controls="opcoes-promotorias-painel">
+              <div class="promotoria-options" id="opcoes-promotorias-painel" role="listbox"></div>
+            </div>
+          </div>
+          <div class="field panel-filter-select" style="margin-bottom:0;">
+            <label for="painel-tipo">Tipo</label>
+            <select id="painel-tipo">
+              <option value="">Todos os tipos</option>
+              <option>Remoção</option>
+              <option>Nomeação</option>
+              <option>Exoneração</option>
+              <option>Autorização</option>
+              <option>Afastamento</option>
+              <option>Declaração</option>
+              <option>Convocação</option>
+              <option>Acúmulo</option>
+              <option>Designação</option>
+              <option>Promoção</option>
+              <option>Indicação</option>
+              <option>Vacância</option>
+              <option>Aposentadoria</option>
+              <option>Instalação</option>
+              <option>Termo de Posse</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="field panel-filter-select" style="margin-bottom:0;">
+            <label for="painel-situacao">Situação</label>
+            <select id="painel-situacao">
+              <option value="">Todas as situações</option>
+              <option>Presente</option>
+              <option>Futuro</option>
+              <option>Encerrado</option>
+              <option>Indefinido</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Local</label>
+            <div class="local-promotoria-buttons" id="painel-filtro-local" role="group" aria-label="Filtrar quadro por local">
+              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn active" data-local-painel="">Todos</button>
+              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" data-local-painel="capital">Capital</button>
+              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" data-local-painel="interior">Interior</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-limpar-painel">Limpar filtros</button>
         </div>
+        <p class="panel-filter-count" id="painel-filtro-contagem"></p>
+      </div>
+
+      <div class="card">
+        <div class="summary-card-head">
+          <div>
+            <h3>Composição atual por promotoria</h3>
+            <p>Titular em exercício, substituto quando houver e tipo do membro.</p>
+          </div>
+          <div class="summary-actions">
+            <button class="btn btn-ghost" id="btn-resumo-listagem" type="button">Abrir painel geral</button>
+            <button class="btn btn-primary" id="btn-novo-resumo" data-admin-only type="button">+ Novo registro</button>
+          </div>
+        </div>
+        <div class="summary-table-wrap" id="painel-promotorias-wrap"></div>
       </div>
     </section>
 
     <!-- ===================== LISTAGEM ===================== -->
     <section class="view" id="view-listagem">
-      <h2 class="view-title">Listagem e filtros</h2>
-      <p class="view-sub">Localize registros por promotoria, tipo, período, situação ou texto livre.</p>
+      <h2 class="view-title">Painel geral</h2>
+      <p class="view-sub">Consulte e filtre os registros por promotoria, membro, tipo, período ou texto livre.</p>
 
       <div class="card">
         <div class="filters-bar">
@@ -502,6 +780,37 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       <div class="card">
         <div class="results-count" id="results-count"></div>
         <div id="table-wrap"></div>
+      </div>
+    </section>
+
+    <!-- ===================== CONSULTOR IA ===================== -->
+    <section class="view" id="view-consultor">
+      <h2 class="view-title">Consultor do sistema</h2>
+      <p class="view-sub">Faça perguntas sobre registros, filtros e relatórios. O consultor possui acesso somente para leitura.</p>
+      <div class="consultor-layout">
+        <div class="card consultor-card">
+          <div class="consultor-messages" id="consultor-messages" aria-live="polite">
+            <div class="consultor-message system">
+              <div class="consultor-bubble">Olá! Posso consultar os registros e preparar relatórios. Experimente perguntar: “Quantos registros estão ativos por promotoria?”</div>
+            </div>
+          </div>
+          <form class="consultor-form" id="consultor-form">
+            <textarea id="consultor-question" maxlength="1000" placeholder="Ex.: Mostre os registros futuros da Promotoria de ..." required></textarea>
+            <button type="submit" class="btn btn-primary" id="consultor-submit">Consultar</button>
+          </form>
+          <div class="consultor-suggestions" aria-label="Sugestões de perguntas">
+            <button type="button" class="consultor-suggestion" data-consultor-question="Quantos registros existem por situação?">Quantos por situação?</button>
+            <button type="button" class="consultor-suggestion" data-consultor-question="Mostre os registros ativos por promotoria.">Ativos por promotoria</button>
+            <button type="button" class="consultor-suggestion" data-consultor-question="Quais registros estão sem titular informado?">Sem titular informado</button>
+          </div>
+        </div>
+        <aside class="card">
+          <h3>Como funciona</h3>
+          <p class="consultor-disclaimer">A IA interpreta sua pergunta e transforma o pedido em filtros controlados. A consulta é executada pelo sistema, e a resposta é montada somente com os dados encontrados no banco.</p>
+          <hr class="section-divider">
+          <p class="consultor-disclaimer"><strong>Somente leitura:</strong> o consultor não cadastra, edita ou exclui registros.</p>
+          <p class="consultor-disclaimer" style="margin-top:10px;"><strong>Observação:</strong> os limites da versão gratuita do Gemini podem restringir a quantidade de consultas.</p>
+        </aside>
       </div>
     </section>
 
@@ -629,7 +938,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
         <div class="pill-buttons">
           <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar registro</button>
-          <button type="button" class="btn btn-ghost" id="btn-cancelar-cadastro">Cancelar</button>
+          <button type="button" class="btn btn-ghost" id="btn-cancelar-cadastro">Cancelar cadastro</button>
+          <button type="button" class="btn btn-ghost" id="btn-cancelar-edicao" hidden>Cancelar edição</button>
         </div>
       </form>
     </section>
@@ -671,6 +981,17 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   </main>
 </div>
 
+<div class="summary-popup" id="resumo-popup" hidden role="dialog" aria-modal="true" aria-labelledby="resumo-popup-titulo">
+  <div class="summary-popup-backdrop" data-fechar-resumo></div>
+  <div class="summary-popup-card">
+    <div class="summary-popup-head">
+      <h3 id="resumo-popup-titulo">Resumo do registro</h3>
+      <button type="button" class="summary-popup-close" id="btn-fechar-resumo" aria-label="Fechar resumo">×</button>
+    </div>
+    <p class="summary-popup-text" id="resumo-popup-texto"></p>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -683,8 +1004,12 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   let registros = [];
   let promotorias = [];
   let localPromotoriasSelecionado = '';
+  let localPainelSelecionado = '';
+  let membroSelecionado = '';
   let editandoId = null;
   let detalheAtualId = null;
+  let origemDetalhe = 'listagem';
+  let origemCadastro = 'listagem';
   let ordenacao = { campo: 'prioridade', dir: 'asc' };
   let filtrosAbertos = false;
   let modoPublico = true;
@@ -1044,23 +1369,42 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     if(tab) tab.classList.add('active');
     window.scrollTo({top:0, behavior:'instant'});
     if(view === 'listagem') renderListagem();
+    if(view === 'membro') renderSituacaoMembro();
     if(view === 'resumo') renderResumo();
     if(view === 'historico') renderHistorico();
+  }
+
+  function confirmarAbandonoEdicao(){
+    if(!editandoId || !document.getElementById('view-cadastro').classList.contains('active')) return true;
+    const abandonar = confirm('Este registro est\u00e1 em edi\u00e7\u00e3o. Deseja abandonar as altera\u00e7\u00f5es?');
+    if(!abandonar) return false;
+    editandoId = null;
+    origemCadastro = 'listagem';
+    detalheAtualId = null;
+    document.getElementById('tab-detalhe').style.display = 'none';
+    atualizarAcoesCadastro(false);
+    return true;
   }
 
   document.querySelectorAll('nav.tabs button[data-view]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       if(btn.dataset.view === 'cadastro'){
-        const idDoFormulario = document.getElementById('f-id').value.trim();
-        const idDoRegistroAberto = detalheAtualId;
-        const idParaEditar = idDoFormulario || idDoRegistroAberto;
-        if(idParaEditar){
-          abrirCadastro(idParaEditar);
-          return;
-        }
+        abrirCadastro(null);
+        return;
       }
+      if(!confirmarAbandonoEdicao()) return;
       irPara(btn.dataset.view);
     });
+  });
+
+  document.querySelectorAll('[data-home-view]').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      if(!confirmarAbandonoEdicao()) return;
+      irPara(card.dataset.homeView);
+    });
+  });
+  document.querySelectorAll('[data-home-placeholder]').forEach(card=>{
+    card.addEventListener('click', ()=> mostrarToast(`${card.dataset.homePlaceholder} estará disponível em breve.`));
   });
 
   /* ---------------------------------------------------------
@@ -1077,69 +1421,281 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   /* ---------------------------------------------------------
      RESUMO / DASHBOARD
   --------------------------------------------------------- */
+  function nomesMembrosDisponiveis(){
+    const nomes = new Map();
+    registros.forEach(r=>[r.titular, r.substituto].forEach(nome=>{
+      const valor = String(nome || '').trim();
+      const chave = textoChaveImportacao(valor);
+      if(chave && !nomes.has(chave)) nomes.set(chave, valor);
+    }));
+    return Array.from(nomes.values()).sort((a,b)=>a.localeCompare(b, 'pt-BR', {sensitivity:'base'}));
+  }
+
+  function renderOpcoesMembros(filtrar){
+    const input = document.getElementById('membro-busca');
+    const painel = document.getElementById('opcoes-membros');
+    const termo = filtrar ? textoChaveImportacao(input.value) : '';
+    const nomes = nomesMembrosDisponiveis().filter(nome=>!termo || textoChaveImportacao(nome).includes(termo));
+    painel.innerHTML = nomes.length
+      ? nomes.map(nome=>`<button type="button" class="member-option" role="option" data-membro="${escapeHtml(nome)}">${escapeHtml(nome)}</button>`).join('')
+      : '<div class="member-options-empty">Nenhum membro encontrado.</div>';
+    painel.querySelectorAll('[data-membro]').forEach(opcao=>{
+      opcao.addEventListener('mousedown', e=>e.preventDefault());
+      opcao.addEventListener('click', ()=>{
+        membroSelecionado = opcao.dataset.membro;
+        input.value = membroSelecionado;
+        painel.classList.remove('open');
+        input.setAttribute('aria-expanded', 'false');
+        renderSituacaoMembro();
+      });
+    });
+  }
+
+  function ordenarHistoricoMembro(a, b, campoData){
+    const dataA = parseData(a[campoData])?.getTime() ?? -Infinity;
+    const dataB = parseData(b[campoData])?.getTime() ?? -Infinity;
+    if(dataA !== dataB) return dataB - dataA;
+    return String(b.id || '').localeCompare(String(a.id || ''));
+  }
+
+  function resumoCurto(valor, limite = 115){
+    const texto = String(valor || '').trim();
+    return texto.length > limite ? texto.slice(0, limite).trimEnd() + '…' : texto;
+  }
+
+  function registroAtualDoMembro(lista, substituto){
+    const campoInicio = substituto ? 'dataInicialSubstituto' : 'dataInicial';
+    const campoFim = substituto ? 'dataFinalSubstituto' : 'dataFinal';
+    const situacao = r => calcularSituacaoPorDatas(r[campoInicio], r[campoFim]);
+    const presentes = lista.filter(r=>situacao(r) === 'Presente').sort((a,b)=>ordenarHistoricoMembro(a,b,campoInicio));
+    const futuros = lista.filter(r=>situacao(r) === 'Futuro').sort((a,b)=>{
+      const dataA = parseData(a[campoInicio])?.getTime() ?? Infinity;
+      const dataB = parseData(b[campoInicio])?.getTime() ?? Infinity;
+      return dataA - dataB;
+    });
+    return presentes[0] || futuros[0] || null;
+  }
+
+  function cardVinculoMembro(titulo, registro, substituto){
+    const campoInicio = substituto ? 'dataInicialSubstituto' : 'dataInicial';
+    const campoFim = substituto ? 'dataFinalSubstituto' : 'dataFinal';
+    const campoReferencia = substituto ? 'referenciaSubstituto' : 'referencia';
+    const campoResumo = substituto ? 'resumoSubstituto' : 'resumo';
+    if(!registro) return `<div class="member-current-card"><h4>${titulo}</h4><div class="member-place empty">Nenhum vínculo atual encontrado.</div></div>`;
+    const situacao = substituto ? situacaoSubstitutoCalculada(registro) : situacaoCalculada(registro);
+    const item = (rotulo, valor) => `<div class="dl-item"><div class="k">${rotulo}</div><div class="v ${valor ? '' : 'empty'}">${valor ? escapeHtml(valor) : 'Não informado'}</div></div>`;
+    return `<div class="member-current-card">
+      <h4>${titulo}</h4>
+      <div class="member-place">${escapeHtml(registro.promotoria || 'Promotoria não informada')}</div>
+      <span class="seal ${seloClasse(situacao)}">${escapeHtml(situacao)}</span>
+      <div class="member-current-details">
+        ${item('Tipo', registro.tipo || 'Indefinido')}
+        ${item('Referência', registro[campoReferencia])}
+        ${item('Data inicial', registro[campoInicio] ? fmtData(registro[campoInicio]) : '')}
+        ${item('Data final', registro[campoFim] ? fmtData(registro[campoFim]) : '')}
+      </div>
+      <div class="member-current-summary"><div class="k">Resumo</div><div class="v ${registro[campoResumo] ? '' : 'empty'}">${registro[campoResumo] ? escapeHtml(registro[campoResumo]) : 'Não informado'}</div></div>
+    </div>`;
+  }
+
+  function tabelaHistoricoMembro(lista, substituto){
+    if(!lista.length) return '<div class="member-history-empty">Nenhuma passagem encontrada.</div>';
+    const campoInicio = substituto ? 'dataInicialSubstituto' : 'dataInicial';
+    const campoFim = substituto ? 'dataFinalSubstituto' : 'dataFinal';
+    const campoReferencia = substituto ? 'referenciaSubstituto' : 'referencia';
+    const campoResumo = substituto ? 'resumoSubstituto' : 'resumo';
+    const linhas = [...lista].sort((a,b)=>ordenarHistoricoMembro(a,b,campoInicio)).map(r=>{
+      const situacao = substituto ? situacaoSubstitutoCalculada(r) : situacaoCalculada(r);
+      const resumo = String(r[campoResumo] || '').trim();
+      const resumoLinha = resumo
+        ? `<div class="member-history-summary"><span class="member-history-summary-text">Resumo: ${escapeHtml(resumoCurto(resumo))}</span><button type="button" class="member-summary-button" data-resumo-id="${escapeHtml(r.id)}" data-resumo-substituto="${substituto}">Ler resumo</button></div>`
+        : '<div class="member-history-summary"><span class="member-history-summary-text">Resumo: Não informado</span></div>';
+      return `<tr data-member-history-id="${escapeHtml(r.id)}"><td><div class="member-history-main">${escapeHtml(r.promotoria || 'Não informada')}</div>${resumoLinha}</td><td>${escapeHtml(r.tipo || 'Indefinido')}</td><td>${escapeHtml(r[campoReferencia] || '—')}</td><td class="num">${fmtData(r[campoInicio])}</td><td class="num">${fmtData(r[campoFim])}</td><td><span class="seal ${seloClasse(situacao)}">${escapeHtml(situacao)}</span></td></tr>`;
+    }).join('');
+    return `<div class="member-history-table"><table class="reg-table"><thead><tr><th>Promotoria</th><th>Tipo</th><th>Referência</th><th>Início</th><th>Fim</th><th>Situação</th></tr></thead><tbody>${linhas}</tbody></table></div>`;
+  }
+
+  function abrirResumoPopup(id, substituto){
+    const registro = registros.find(r=>String(r.id) === String(id));
+    if(!registro) return;
+    const resumo = substituto ? registro.resumoSubstituto : registro.resumo;
+    document.getElementById('resumo-popup-titulo').textContent = `Resumo — ${registro.promotoria || 'Registro'}`;
+    document.getElementById('resumo-popup-texto').textContent = resumo || 'Resumo não informado.';
+    document.getElementById('resumo-popup').hidden = false;
+    document.getElementById('btn-fechar-resumo').focus();
+  }
+
+  function fecharResumoPopup(){
+    document.getElementById('resumo-popup').hidden = true;
+  }
+
+  function renderSituacaoMembro(){
+    const wrap = document.getElementById('situacao-membro-wrap');
+    if(!membroSelecionado){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">⌕</div>Selecione um membro para consultar os dados.</div>';
+      return;
+    }
+    const chave = textoChaveImportacao(membroSelecionado);
+    const comoTitular = registros.filter(r=>textoChaveImportacao(r.titular) === chave);
+    const comoSubstituto = registros.filter(r=>textoChaveImportacao(r.substituto) === chave);
+    wrap.innerHTML = `<div class="card"><div class="member-profile"><div><h3>${escapeHtml(membroSelecionado)}</h3><p>${comoTitular.length + comoSubstituto.length} passagem(ns) registrada(s) no sistema.</p></div></div><div class="member-current-grid">${cardVinculoMembro('Vínculo atual como titular', registroAtualDoMembro(comoTitular, false), false)}${cardVinculoMembro('Vínculo atual como substituto', registroAtualDoMembro(comoSubstituto, true), true)}</div></div><div class="member-history-grid"><div class="card member-history-card"><h3>Histórico como titular</h3><p>Promotorias onde o membro atuou como titular.</p>${tabelaHistoricoMembro(comoTitular, false)}</div><div class="card member-history-card"><h3>Histórico como substituto</h3><p>Promotorias onde o membro atuou como substituto.</p>${tabelaHistoricoMembro(comoSubstituto, true)}</div></div>`;
+    wrap.querySelectorAll('tr[data-member-history-id]').forEach(linha=>{
+      linha.addEventListener('click', ()=>abrirDetalhe(linha.dataset.memberHistoryId, 'membro'));
+    });
+    wrap.querySelectorAll('[data-resumo-id]').forEach(botao=>{
+      botao.addEventListener('click', evento=>{
+        evento.stopPropagation();
+        abrirResumoPopup(botao.dataset.resumoId, botao.dataset.resumoSubstituto === 'true');
+      });
+    });
+  }
+
+  const inputMembro = document.getElementById('membro-busca');
+  inputMembro.addEventListener('focus', ()=>{
+    renderOpcoesMembros(false);
+    document.getElementById('opcoes-membros').classList.add('open');
+    inputMembro.setAttribute('aria-expanded', 'true');
+  });
+  inputMembro.addEventListener('click', ()=>{
+    renderOpcoesMembros(false);
+    document.getElementById('opcoes-membros').classList.add('open');
+    inputMembro.setAttribute('aria-expanded', 'true');
+  });
+  inputMembro.addEventListener('input', ()=>{
+    membroSelecionado = '';
+    renderOpcoesMembros(true);
+    document.getElementById('opcoes-membros').classList.add('open');
+    inputMembro.setAttribute('aria-expanded', 'true');
+    renderSituacaoMembro();
+  });
+  inputMembro.addEventListener('blur', ()=>setTimeout(()=>{
+    document.getElementById('opcoes-membros').classList.remove('open');
+    inputMembro.setAttribute('aria-expanded', 'false');
+  }, 160));
+  document.addEventListener('click', e=>{
+    if(!e.target.closest('.member-search-wrap')){
+      document.getElementById('opcoes-membros').classList.remove('open');
+      inputMembro.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.getElementById('btn-fechar-resumo').addEventListener('click', fecharResumoPopup);
+  document.querySelector('[data-fechar-resumo]').addEventListener('click', fecharResumoPopup);
+  document.addEventListener('keydown', evento=>{
+    if(evento.key === 'Escape' && !document.getElementById('resumo-popup').hidden) fecharResumoPopup();
+  });
+
+  function filtrosPainelAtuais(){
+    return {
+      busca: document.getElementById('painel-busca').value.trim().toLowerCase(),
+      promotoria: document.getElementById('painel-promotoria').value.trim().toLowerCase(),
+      titular: '', substituto: '', tipo: document.getElementById('painel-tipo').value,
+      destinacao: '', situacao: document.getElementById('painel-situacao').value,
+      referencia: '', resumo: '', periodoIni: '', periodoFim: '', apenasAtivos: false
+    };
+  }
+
   function renderResumo(){
-    const total = registros.length;
-    const comSit = registros.map(r => situacaoCalculada(r));
-    const cont = k => comSit.filter(s => s === k).length;
-
-    document.getElementById('stat-row').innerHTML = `
-      <div class="stat-card"><div class="n">${total}</div><div class="l">Total de registros</div></div>
-      <div class="stat-card"><div class="n">${cont('Presente')}</div><div class="l">Presentes</div></div>
-      <div class="stat-card"><div class="n">${cont('Futuro')}</div><div class="l">Futuros</div></div>
-      <div class="stat-card"><div class="n">${cont('Encerrado')}</div><div class="l">Encerrados</div></div>
-    `;
-    // próximos eventos dentro de 5 dias, por data inicial
-    const t = hoje();
-    const em5 = new Date(t); em5.setDate(em5.getDate()+4);
-    const proximos = registros
-      .filter(r => {
-        const ini = parseData(r.dataInicial);
-        return ini && ini >= t && ini <= em5;
-      })
-      .sort((a,b)=> parseData(a.dataInicial) - parseData(b.dataInicial));
-
-    const ul = document.getElementById('upcoming-list');
-    ul.innerHTML = proximos.length ? proximos.map(r => `
-      <li>
-        <span>${escapeHtml(r.titular || '—')} <span class="tag">· ${escapeHtml(r.promotoria || '—')}</span></span>
-        <span class="tag">${fmtData(r.dataInicial)}</span>
-      </li>
-    `).join('') : '<li style="color:#8a8478;">Nenhum evento nos próximos 5 dias.</li>';
-
-    const recentes = registros
-      .filter(r => r.atualizadoEm || r.criadoEm)
-      .sort((a,b)=> new Date(b.atualizadoEm || b.criadoEm) - new Date(a.atualizadoEm || a.criadoEm))
-      .slice(0,5);
-    const recentList = document.getElementById('recent-list');
-    recentList.innerHTML = recentes.length ? recentes.map(r => `
-      <li class="recent-item" data-id="${r.id}" title="Abrir registro">
-        <span><strong>${escapeHtml(r.tipo || 'Registro')}</strong><br><span class="tag">${escapeHtml(r.promotoria || '—')}</span></span>
-        <span class="tag">${fmtDataHora(r.atualizadoEm || r.criadoEm)}</span>
-      </li>
-    `).join('') : '<li style="color:#8a8478;">Nenhuma atividade recente.</li>';
-    recentList.querySelectorAll('[data-id]').forEach(item=>{
-      item.addEventListener('click', ()=> abrirDetalhe(item.dataset.id));
+    const wrap = document.getElementById('painel-promotorias-wrap');
+    const contagem = document.getElementById('painel-filtro-contagem');
+    const f = filtrosPainelAtuais();
+    const registrosFiltrados = aplicarFiltros(registros, f).filter(r=>{
+      if(!localPainelSelecionado) return true;
+      const promotoria = promotorias.find(p => p.nome === r.promotoria);
+      return promotoria && promotoria.local === localPainelSelecionado;
+    });
+    const grupos = new Map();
+    registrosFiltrados.forEach(r=>{
+      const nome = (r.promotoria || 'Não informada').trim();
+      if(!grupos.has(nome)) grupos.set(nome, []);
+      grupos.get(nome).push(r);
     });
 
-    // por tipo
-    const tipos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Termo de Posse','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
-    const maxTipo = Math.max(1, ...tipos.map(t2 => registros.filter(r=>r.tipo===t2).length));
-    document.getElementById('tipo-bars').innerHTML = tipos.map(t2 => {
-      const n = registros.filter(r=>r.tipo===t2).length;
-      const pct = Math.round((n/maxTipo)*100);
-      return `<div class="bar-row"><div class="lbl">${t2}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="cnt">${n}</div></div>`;
-    }).join('');
+    const compararDatas = (a, b, ascendente = false) => {
+      const dataA = parseData(a.dataInicial)?.getTime() ?? (ascendente ? Infinity : -Infinity);
+      const dataB = parseData(b.dataInicial)?.getTime() ?? (ascendente ? Infinity : -Infinity);
+      return ascendente ? dataA - dataB : dataB - dataA;
+    };
 
-    // por promotoria (top 8)
-    const porProm = {};
-    registros.forEach(r => { const k = r.promotoria || '—'; porProm[k] = (porProm[k]||0)+1; });
-    const listaProm = Object.entries(porProm).sort((a,b)=> b[1]-a[1]).slice(0,8);
-    const maxProm = Math.max(1, ...listaProm.map(x=>x[1]));
-    document.getElementById('promotoria-bars').innerHTML = listaProm.length ? listaProm.map(([nome,n]) => {
-      const pct = Math.round((n/maxProm)*100);
-      return `<div class="bar-row"><div class="lbl" title="${escapeHtml(nome)}">${escapeHtml(nome)}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="cnt">${n}</div></div>`;
-    }).join('') : '<p class="helper">Nenhum registro cadastrado ainda.</p>';
+    const possuiFiltroDeRegistro = Boolean(f.busca || f.promotoria || f.tipo || f.situacao);
+    const somenteLocal = Boolean(localPainelSelecionado) && !possuiFiltroDeRegistro;
+    const nomesPromotorias = new Set(
+      !possuiFiltroDeRegistro || somenteLocal
+        ? promotorias
+            .filter(p => !localPainelSelecionado || p.local === localPainelSelecionado)
+            .map(p => p.nome)
+        : registrosFiltrados.map(r => (r.promotoria || '').trim()).filter(Boolean)
+    );
+    grupos.forEach((_, nome)=> nomesPromotorias.add(nome));
+    const linhas = Array.from(nomesPromotorias)
+      .sort((a, b) => a.localeCompare(b, 'pt-BR', { numeric:true, sensitivity:'base' }))
+      .map(promotoria=>{
+        const lista = grupos.get(promotoria) || [];
+        const vigentes = lista
+          .filter(r=>situacaoCalculada(r) === 'Presente')
+          .sort((a,b)=> compararDatas(a,b));
+        const futuros = lista
+          .filter(r=>situacaoCalculada(r) === 'Futuro')
+          .sort((a,b)=> compararDatas(a,b,true));
+        const atual = vigentes[0] || futuros[0] || [...lista].sort((a,b)=> compararDatas(a,b))[0] || null;
+        return { promotoria, registro: atual };
+      });
+
+    contagem.textContent = `${registrosFiltrados.length} registro(s) encontrado(s) em ${linhas.length} promotoria(s).`;
+
+    if(!linhas.length){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">§</div>Nenhuma promotoria possui registros cadastrados ainda.</div>';
+      return;
+    }
+
+    wrap.innerHTML = `
+      <table class="reg-table panel-table">
+        <thead>
+          <tr><th>Promotoria</th><th>Titular atual</th><th>Substituto</th><th>Status do membro</th></tr>
+        </thead>
+        <tbody>
+          ${linhas.map(({promotoria, registro})=>{
+            const substituto = registro?.substituto || '—';
+            const tipo = registro?.tipo || 'Não informado';
+            const situacao = registro ? situacaoCalculada(registro) : '';
+            return `<tr>
+              <td>${escapeHtml(promotoria)}</td>
+              <td class="member-cell"><span class="member-name">${escapeHtml(registro?.titular || '—')}</span>${situacao ? `<span class="member-meta">${escapeHtml(situacao)}</span>` : ''}</td>
+              <td class="member-cell"><span class="member-name">${escapeHtml(substituto)}</span>${registro?.dataInicialSubstituto ? `<span class="member-meta">Desde ${fmtData(registro.dataInicialSubstituto)}</span>` : ''}</td>
+              <td><span class="type-badge">${escapeHtml(tipo)}</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
   }
+
+  ['painel-busca','painel-promotoria','painel-tipo','painel-situacao'].forEach(id=>{
+    const campo = document.getElementById(id);
+    if(!campo) return;
+    campo.addEventListener('input', renderResumo);
+    campo.addEventListener('change', renderResumo);
+  });
+
+  document.querySelectorAll('[data-local-painel]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      localPainelSelecionado = normalizarLocalPromotoria(btn.dataset.localPainel);
+      document.querySelectorAll('[data-local-painel]').forEach(opcao=>{
+        opcao.classList.toggle('active', opcao.dataset.localPainel === localPainelSelecionado);
+      });
+      renderResumo();
+    });
+  });
+
+  document.getElementById('btn-limpar-painel').addEventListener('click', ()=>{
+    document.getElementById('painel-busca').value = '';
+    document.getElementById('painel-promotoria').value = '';
+    document.getElementById('painel-tipo').value = '';
+    document.getElementById('painel-situacao').value = '';
+    localPainelSelecionado = '';
+    document.querySelectorAll('[data-local-painel]').forEach(opcao=>{
+      opcao.classList.toggle('active', opcao.dataset.localPainel === '');
+    });
+    renderResumo();
+  });
 
   /* ---------------------------------------------------------
      LISTAGEM / FILTROS
@@ -1230,7 +1786,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   const configuracoesPromotorias = [
     { inputId:'f-promotoria', optionsId:'opcoes-promotorias-filtro', filtrarLocal:false },
     { inputId:'c-promotoria', optionsId:'opcoes-promotorias-cadastro', filtrarLocal:true },
-    { inputId:'h-promotoria', optionsId:'opcoes-promotorias-historico', filtrarLocal:false }
+    { inputId:'h-promotoria', optionsId:'opcoes-promotorias-historico', filtrarLocal:false },
+    { inputId:'painel-promotoria', optionsId:'opcoes-promotorias-painel', filtrarLocal:false }
   ];
 
   function opcoesDisponiveisPromotorias(config){
@@ -1462,6 +2019,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   });
 
   document.getElementById('btn-novo-listagem').addEventListener('click', ()=> abrirCadastro(null));
+  document.getElementById('btn-novo-resumo').addEventListener('click', ()=> abrirCadastro(null));
+  document.getElementById('btn-resumo-listagem').addEventListener('click', ()=> irPara('listagem'));
 
   document.getElementById('btn-export').addEventListener('click', ()=>{
     const f = filtrosAtuais();
@@ -1699,19 +2258,34 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     atualizarSituacao();
   });
 
+  function atualizarAcoesCadastro(editando){
+    document.getElementById('btn-salvar').textContent = editando ? 'Salvar altera\u00e7\u00f5es' : 'Salvar registro';
+    document.getElementById('btn-cancelar-cadastro').hidden = editando;
+    document.getElementById('btn-cancelar-edicao').hidden = !editando;
+  }
+
   function abrirCadastro(id){
     if(!ehAdmin()){
       mostrarToast('Apenas administradores podem acessar o cadastro.');
       return;
     }
+    if(!id && !confirmarAbandonoEdicao()) return;
+    const viewAtual = document.querySelector('section.view.active')?.id;
+    origemCadastro = id && viewAtual === 'view-detalhe' ? 'detalhe' : 'listagem';
     editandoId = id || null;
-    if(!id) detalheAtualId = null;
+    if(!id){
+      detalheAtualId = null;
+      document.getElementById('tab-detalhe').style.display = 'none';
+    }
+    if(id && origemCadastro === 'listagem') detalheAtualId = null;
+    atualizarAcoesCadastro(Boolean(id));
     limparForm();
     if(id){
       const r = registros.find(x=>x.id===id);
       if(!r){
         editandoId = null;
         detalheAtualId = null;
+        atualizarAcoesCadastro(false);
         document.getElementById('cadastro-title').textContent = 'Novo registro';
         document.getElementById('cadastro-sub').textContent = 'Informe a promotoria; os demais campos são opcionais.';
         mostrarToast('O registro não está mais disponível. Abrindo um novo cadastro.');
@@ -1761,23 +2335,51 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const salvou = await salvarRegistro(dados, idParaSalvar);
     if(!salvou) return;
     mostrarToast(idParaSalvar ? 'Registro atualizado com sucesso.' : 'Registro cadastrado com sucesso.');
+    const voltarParaDetalhe = origemCadastro === 'detalhe' && Boolean(idParaSalvar);
     editandoId = null;
-    irPara('listagem');
+    origemCadastro = 'listagem';
+    if(voltarParaDetalhe){
+      detalheAtualId = idParaSalvar;
+      irPara('detalhe');
+    } else {
+      detalheAtualId = null;
+      document.getElementById('tab-detalhe').style.display = 'none';
+      irPara('listagem');
+    }
     renderResumo();
   });
 
   document.getElementById('btn-cancelar-cadastro').addEventListener('click', ()=>{
     editandoId = null;
+    origemCadastro = 'listagem';
+    detalheAtualId = null;
+    document.getElementById('tab-detalhe').style.display = 'none';
+    irPara('listagem');
+  });
+
+  document.getElementById('btn-cancelar-edicao').addEventListener('click', ()=>{
+    const idEditado = editandoId;
+    editandoId = null;
+    if(origemCadastro === 'detalhe' && idEditado){
+      origemCadastro = 'listagem';
+      detalheAtualId = idEditado;
+      irPara('detalhe');
+      return;
+    }
+    origemCadastro = 'listagem';
+    detalheAtualId = null;
+    document.getElementById('tab-detalhe').style.display = 'none';
     irPara('listagem');
   });
 
   /* ---------------------------------------------------------
      DETALHE
   --------------------------------------------------------- */
-  function abrirDetalhe(id){
+  function abrirDetalhe(id, origem = 'listagem'){
     const r = registros.find(x=>x.id===id);
     if(!r){ mostrarToast('Registro não encontrado.'); return; }
     detalheAtualId = id;
+    origemDetalhe = origem;
     const sit = situacaoCalculada(r);
 
     document.getElementById('d-titulo').textContent = `Registro — ${r.titular || ''}`;
@@ -1813,7 +2415,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
   document.getElementById('btn-voltar-detalhe').addEventListener('click', ()=>{
     document.getElementById('tab-detalhe').style.display = 'none';
-    irPara('listagem');
+    irPara(origemDetalhe === 'membro' ? 'membro' : 'listagem');
   });
   document.getElementById('btn-editar-detalhe').addEventListener('click', ()=>{
     if(!ehAdmin()){
@@ -1885,6 +2487,93 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     });
   }
 
+  /* ---------------------------------------------------------
+     CONSULTOR IA — somente leitura
+  --------------------------------------------------------- */
+  function adicionarMensagemConsultor(texto, tipo = 'system', html = false){
+    const wrap = document.getElementById('consultor-messages');
+    const item = document.createElement('div');
+    item.className = 'consultor-message ' + tipo;
+    const bubble = document.createElement('div');
+    bubble.className = 'consultor-bubble';
+    if(html) bubble.innerHTML = texto;
+    else bubble.textContent = texto;
+    item.appendChild(bubble);
+    wrap.appendChild(item);
+    wrap.scrollTop = wrap.scrollHeight;
+    return bubble;
+  }
+
+  function renderRespostaConsultor(data){
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    const linhas = rows.slice(0, 30).map(row => `
+      <tr>
+        <td>${escapeHtml(row.promotoria || '—')}</td>
+        <td>${escapeHtml(row.titular || '—')}</td>
+        <td>${escapeHtml(row.substituto || '—')}</td>
+        <td>${escapeHtml(row.situacao || '—')}</td>
+        <td>${escapeHtml(row.tipo || '—')}</td>
+      </tr>`).join('');
+    const tabela = rows.length ? `
+      <div class="consultor-table-wrap">
+        <table class="consultor-table">
+          <thead><tr><th>Promotoria</th><th>Titular</th><th>Substituto</th><th>Situação</th><th>Tipo</th></tr></thead>
+          <tbody>${linhas}</tbody>
+        </table>
+        ${data.truncated || rows.length > 30 ? '<p class="helper">A tabela exibe uma amostra dos resultados. O total informado considera todos os registros encontrados.</p>' : ''}
+      </div>` : '';
+    const filtros = data.plan?.filters ? Object.entries(data.plan.filters)
+      .filter(([, value]) => value !== '' && value !== false && value != null)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join(' · ') : '';
+    return `<strong>${escapeHtml(data.answer || 'Consulta concluída.')}</strong>${filtros ? `<div class="helper">Filtros aplicados: ${escapeHtml(filtros)}</div>` : ''}${tabela}`;
+  }
+
+  document.querySelectorAll('[data-consultor-question]').forEach(button=>{
+    button.addEventListener('click', ()=>{
+      const campo = document.getElementById('consultor-question');
+      campo.value = button.dataset.consultorQuestion || '';
+      campo.focus();
+    });
+  });
+
+  document.getElementById('consultor-form').addEventListener('submit', async event=>{
+    event.preventDefault();
+    const campo = document.getElementById('consultor-question');
+    const botao = document.getElementById('consultor-submit');
+    const question = campo.value.trim();
+    if(!question) return;
+    adicionarMensagemConsultor(question, 'user');
+    campo.value = '';
+    botao.disabled = true;
+    botao.textContent = 'Consultando...';
+    const carregando = adicionarMensagemConsultor('Consultando os registros...', 'system');
+    try{
+      if(!supabaseClient) throw new Error('A conexão com o Supabase não está configurada.');
+      const { data, error } = await supabaseClient.functions.invoke('consultor-ia', { body: { question } });
+      carregando.parentElement.remove();
+      if(error){
+        let detalhe = error.message || 'A Edge Function retornou um erro.';
+        if(error.context && typeof error.context.json === 'function'){
+          try{
+            const corpo = await error.context.json();
+            detalhe = corpo?.error || corpo?.message || detalhe;
+          }catch(_erro){ /* mantém a mensagem original quando o corpo não é JSON */ }
+        }
+        throw new Error(detalhe);
+      }
+      if(!data || data.error) throw new Error(data?.error || 'A consulta não retornou uma resposta.');
+      adicionarMensagemConsultor(renderRespostaConsultor(data), 'system', true);
+    }catch(error){
+      console.error(error);
+      carregando.textContent = error?.message || 'Não foi possível consultar o sistema.';
+    }finally{
+      botao.disabled = false;
+      botao.textContent = 'Consultar';
+      campo.focus();
+    }
+  });
+
   document.getElementById('h-promotoria').addEventListener('input', renderHistoricoLista);
   document.getElementById('h-promotoria').addEventListener('change', ()=>{
     const campo = document.getElementById('h-promotoria');
@@ -1904,6 +2593,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   --------------------------------------------------------- */
   function render(){
     atualizarSelectPromotorias();
+    renderSituacaoMembro();
     renderResumo();
     renderListagem();
     renderHistorico();
