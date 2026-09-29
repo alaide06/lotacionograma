@@ -156,10 +156,31 @@ textarea{ resize:vertical; min-height:64px; font-family:var(--sans); }
 }
 .promotoria-option:hover, .promotoria-option:focus{ background:#f0ede5; outline:none; }
 .promotoria-options-empty{ padding:9px 10px; color:var(--ink-soft); font-size:12px; }
-.local-promotoria-filter{ margin-bottom:18px; }
-.local-promotoria-buttons{ display:flex; gap:8px; flex-wrap:wrap; }
-.local-promotoria-btn.active{ background:var(--navy); color:#fff; border-color:var(--navy); }
+.local-promotoria-filter{
+  margin-bottom:20px; padding:14px 16px 12px; border:1px solid #d9d4c8;
+  border-radius:10px; background:linear-gradient(135deg,#faf8f2,#f2eee5);
+}
+.local-promotoria-filter > label{
+  display:block; margin-bottom:9px; color:var(--navy-deep); font-size:12px;
+  font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+}
+.local-promotoria-buttons{
+  display:inline-flex; gap:3px; flex-wrap:wrap; padding:4px; border:1px solid #d9d4c8;
+  border-radius:10px; background:#e9e5db;
+}
+.local-promotoria-btn{
+  min-width:92px; border:0 !important; border-radius:7px; background:transparent;
+  color:var(--ink-soft); transition:background .18s ease,color .18s ease,box-shadow .18s ease;
+}
+.local-promotoria-btn:hover:not(.active){ background:#f8f6f0; color:var(--navy); }
+.local-promotoria-btn.active{
+  background:var(--navy); color:#fff; border-color:var(--navy);
+  box-shadow:0 3px 8px rgba(20,35,52,.18);
+}
 .local-promotoria-btn.active:hover{ background:var(--navy-deep); border-color:var(--navy-deep); }
+.local-promotoria-filter > .helper{
+  margin:9px 0 0; color:var(--ink-soft); font-size:12px; line-height:1.45;
+}
 .grid{ display:grid; gap:14px; }
 .grid-2{ grid-template-columns: repeat(2, 1fr); }
 .grid-3{ grid-template-columns: repeat(3, 1fr); }
@@ -309,6 +330,19 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .member-cell .member-meta{ display:block; margin-top:4px; color:var(--ink-soft); font-size:11px; }
 .type-badge{ display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--brass-soft); color:var(--navy-deep); font-size:12px; font-weight:700; white-space:nowrap; }
 .member-search-card{ max-width:720px; }
+.auxiliary-card{ height:100%; }
+.auxiliary-heading{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:16px; }
+.auxiliary-heading h3{ margin:0 0 5px; color:var(--navy-deep); }
+.auxiliary-heading p{ margin:0; max-width:450px; color:var(--ink-soft); font-size:13px; line-height:1.45; }
+.auxiliary-form{ margin:0 0 20px; padding:16px; border:1px solid var(--line); border-radius:8px; background:#fbfaf6; }
+.auxiliary-list{ overflow-x:auto; }
+.auxiliary-list .reg-table{ min-width:420px; }
+.auxiliary-list .reg-table tbody tr{ cursor:default; }
+.auxiliary-list .reg-table tbody tr:hover{ background:#fbfaf6; }
+.auxiliary-empty{ padding:18px 4px; color:var(--ink-soft); font-size:13px; }
+.auxiliary-status{ font-size:11px; font-weight:700; color:var(--ok); }
+.auxiliary-status.inactive{ color:var(--ink-soft); }
+.auxiliary-actions{ white-space:nowrap; }
 .member-search-wrap{ position:relative; max-width:560px; }
 .member-options{ display:none; position:absolute; z-index:40; top:calc(100% + 4px); left:0; right:0; max-height:260px; overflow-y:auto; padding:4px; background:#fff; border:1px solid var(--line); border-radius:7px; box-shadow:0 10px 24px rgba(20,35,52,.18); }
 .member-options.open{ display:block; }
@@ -318,6 +352,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .member-profile{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; }
 .member-profile h3{ margin:0 0 5px; color:var(--navy-deep); font-family:var(--serif); font-size:23px; }
 .member-profile p{ margin:0; color:var(--ink-soft); font-size:13px; }
+.member-profile-data{ max-width:340px; color:var(--ink-soft); font-size:12px; line-height:1.5; text-align:right; }
+@media (max-width:760px){ .member-profile{ flex-direction:column; } .member-profile-data{ max-width:none; text-align:left; } }
 .member-current-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .member-current-card{ border:1px solid var(--line); border-radius:7px; padding:14px; background:#fbfaf6; }
 .member-current-card h4{ margin:0 0 10px; color:var(--navy-deep); font-size:13px; text-transform:uppercase; letter-spacing:.5px; }
@@ -345,6 +381,23 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .member-summary-button{ flex:none; padding:0; border:0; background:none; color:var(--navy); font:inherit; font-size:11px; font-weight:700; cursor:pointer; text-decoration:underline; }
 .member-summary-button:hover{ color:var(--navy-deep); }
 .member-history-empty{ color:var(--ink-soft); font-size:13px; padding:18px 4px; }
+.member-roster-filters{ display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap; }
+.member-roster-filters .quick-search{ min-width:260px; flex:1; }
+.member-roster-count{ margin:10px 0 0; color:var(--ink-soft); font-size:12px; }
+.member-roster-wrap{ overflow-x:auto; }
+.member-roster-table{ min-width:980px; }
+.member-roster-table tbody tr{ cursor:pointer; }
+.member-roster-table tbody tr:hover{ background:#f7f4ec; }
+.member-roster-table td:first-child{ min-width:190px; font-weight:700; color:var(--navy-deep); }
+.member-roster-entry{ display:flex; flex-direction:column; gap:4px; margin-bottom:10px; padding-bottom:9px; border-bottom:1px dashed var(--line); }
+.member-roster-entry:last-child{ margin-bottom:0; padding-bottom:0; border-bottom:0; }
+.member-roster-entry strong{ color:var(--navy-deep); font-size:13px; }
+.member-roster-entry .member-roster-period{ color:var(--ink-soft); font-size:12px; }
+.member-roster-empty{ color:var(--ink-soft); font-size:13px; font-style:italic; }
+.member-proximity-badge{ display:inline-flex; align-items:center; width:max-content; padding:4px 8px; border-radius:999px; font-size:11px; font-weight:700; letter-spacing:.2px; }
+.member-proximity-badge.yes{ color:var(--ok); background:var(--ok-bg); }
+.member-proximity-badge.no{ color:var(--alert); background:var(--alert-bg); }
+.member-proximity-detail{ display:block; margin-top:4px; color:var(--ink-soft); font-size:11px; line-height:1.35; }
 @media (max-width:760px){ .member-current-grid,.member-history-grid{ grid-template-columns:1fr; } }
 @media (max-width:900px){
   .home-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
@@ -508,10 +561,12 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     <nav class="tabs">
       <button data-view="inicio" class="active">Início</button>
       <button data-view="membro">Situação do membro</button>
+      <button data-view="membros">Situação dos membros</button>
       <button data-view="resumo">Quadro resumido</button>
       <button data-view="listagem">Painel geral</button>
       <button data-view="consultor" hidden>Consultor IA</button>
       <button data-view="cadastro" data-admin-only>Cadastro</button>
+      <button data-view="auxiliares" data-admin-only>Cadastros de apoio</button>
       <button data-view="historico">Histórico</button>
       <button data-view="detalhe" id="tab-detalhe" style="display:none;">Detalhe</button>
     </nav>
@@ -535,10 +590,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           <span>Selecione uma área para começar</span>
         </div>
         <div class="home-grid" aria-label="Módulos do sistema">
-          <button type="button" class="home-card" data-home-view="membro">
+          <button type="button" class="home-card" data-home-view="membros">
             <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="17" r="9"/><path d="M17 48c1-9 7-14 15-14s14 5 15 14"/><path d="M13 49h38"/><path d="M22 34l-4-12h18l7 12"/></svg></span>
-            <h3>Situação do membro</h3>
-            <p>Consulte vínculos atuais e o histórico de cada membro</p>
+            <h3>Situação dos membros</h3>
+            <p>Consulte titulares, substitutos e períodos de substituição</p>
             <span class="home-card-meta">Abrir consulta →</span>
           </button>
           <button type="button" class="home-card is-placeholder" data-home-placeholder="Situação do órgão">
@@ -595,6 +650,30 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     </section>
 
     <!-- ===================== RESUMO ===================== -->
+    <section class="view" id="view-membros">
+      <h2 class="view-title">Situação dos membros</h2>
+      <p class="view-sub">Veja em uma única relação onde cada membro atua como titular e como substituto.</p>
+
+      <div class="card">
+        <div class="member-roster-filters">
+          <div class="quick-search">
+            <label for="membros-busca">Buscar membro ou lotação</label>
+            <input type="text" id="membros-busca" placeholder="Nome do membro, promotoria ou substituição..." autocomplete="off">
+          </div>
+          <div class="checkbox-line" style="padding-bottom:9px;">
+            <input type="checkbox" id="membros-apenas-atuais" checked>
+            <label for="membros-apenas-atuais" style="margin:0;">Somente vínculos presentes</label>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-limpar-membros">Limpar busca</button>
+        </div>
+        <p class="member-roster-count" id="membros-contagem"></p>
+      </div>
+
+      <div class="card">
+        <div class="member-roster-wrap" id="membros-wrap"></div>
+      </div>
+    </section>
+
     <section class="view" id="view-resumo">
       <h2 class="view-title">Quadro resumido</h2>
       <p class="view-sub">Visão compacta da composição atual das promotorias cadastradas.</p>
@@ -614,24 +693,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           </div>
           <div class="field panel-filter-select" style="margin-bottom:0;">
             <label for="painel-tipo">Tipo</label>
-            <select id="painel-tipo">
+            <select id="painel-tipo" data-tipos-movimentacao>
               <option value="">Todos os tipos</option>
-              <option>Remoção</option>
-              <option>Nomeação</option>
-              <option>Exoneração</option>
-              <option>Autorização</option>
-              <option>Afastamento</option>
-              <option>Declaração</option>
-              <option>Convocação</option>
-              <option>Acúmulo</option>
-              <option>Designação</option>
-              <option>Promoção</option>
-              <option>Indicação</option>
-              <option>Vacância</option>
-              <option>Aposentadoria</option>
-              <option>Instalação</option>
-              <option>Termo de Posse</option>
-              <option>Outro</option>
             </select>
           </div>
           <div class="field panel-filter-select" style="margin-bottom:0;">
@@ -700,32 +763,22 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             </div>
             <div class="field">
               <label for="f-titular">Titular</label>
-              <input type="text" id="f-titular" placeholder="Todos">
+              <div class="member-search-wrap" data-filtro-membro-wrap>
+                <input type="text" id="f-titular" placeholder="Todos" autocomplete="off" aria-controls="opcoes-filtro-titular" aria-expanded="false">
+                <div class="member-options" id="opcoes-filtro-titular" role="listbox"></div>
+              </div>
             </div>
             <div class="field">
               <label for="f-substituto">Substituto</label>
-              <input type="text" id="f-substituto" placeholder="Todos">
+              <div class="member-search-wrap" data-filtro-membro-wrap>
+                <input type="text" id="f-substituto" placeholder="Todos" autocomplete="off" aria-controls="opcoes-filtro-substituto" aria-expanded="false">
+                <div class="member-options" id="opcoes-filtro-substituto" role="listbox"></div>
+              </div>
             </div>
             <div class="field">
               <label for="f-tipo">Tipo</label>
-              <select id="f-tipo">
+              <select id="f-tipo" data-tipos-movimentacao>
                 <option value="">Todos</option>
-                <option>Remoção</option>
-                <option>Nomeação</option>
-                <option>Autorização</option>
-                <option>Afastamento</option>
-                <option>Acúmulo</option>
-                <option>Designação</option>
-                <option>Declaração</option>
-                <option>Convocação</option>
-                <option>Exoneração</option>
-                <option>Termo de Posse</option>
-                <option>Vacância</option>
-                <option>Aposentadoria</option>
-                <option>Instalação</option>
-                <option>Indicação</option>
-                <option>Promoção</option>
-                <option>Outro</option>
               </select>
             </div>
           </div>
@@ -815,7 +868,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     </section>
 
     <!-- ===================== CADASTRO ===================== -->
-    <section class="view" id="view-cadastro">
+    <section class="view" id="view-cadastro" data-admin-only>
       <h2 class="view-title" id="cadastro-title">Novo registro</h2>
       <p class="view-sub" id="cadastro-sub">Informe a promotoria; os demais campos são opcionais.</p>
       <div class="pill-buttons" style="margin-bottom:14px;">
@@ -823,12 +876,12 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
         <input type="file" id="arquivo-importacao" accept=".csv,text/csv" hidden>
       </div>
 
-      <form id="form-registro">
+      <form id="form-registro" data-admin-only>
         <input type="hidden" id="f-id">
 
         <div class="card">
           <h3>Dados do registro</h3>
-          <div class="field local-promotoria-filter">
+          <div class="field local-promotoria-filter" id="filtro-local-cadastro">
             <label>Local da promotoria</label>
             <div class="local-promotoria-buttons" id="filtro-local-promotorias" role="group" aria-label="Filtrar promotorias por local">
               <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn active" data-local-promotoria="">Todos</button>
@@ -847,31 +900,27 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             </div>
             <div class="field">
               <label for="c-tipo">Tipo da movimentação</label>
-              <select id="c-tipo">
-                <option value="">Selecione...</option>
-                <option>Remoção</option>
-                <option>Nomeação</option>
-                <option>Autorização</option>
-                <option>Afastamento</option>
-                <option>Acúmulo</option>
-                <option>Designação</option>
-                <option>Declaração</option>
-                <option>Convocação</option>
-                <option>Exoneração</option>
-                <option>Termo de Posse</option>
-                <option>Vacância</option>
-                <option>Aposentadoria</option>
-                <option>Instalação</option>
-                <option>Indicação</option>
-                <option>Promoção</option>
-                <option>Outro</option>
+               <select id="c-tipo" data-tipos-movimentacao>
+                 <option value="">Selecione...</option>
+               </select>
+             </div>
+            <div class="field" id="campo-promotoria-origem" hidden>
+              <label for="c-promotoria-origem">Promotoria de origem</label>
+              <select id="c-promotoria-origem">
+                <option value="">Selecione de onde o promotor está saindo...</option>
               </select>
+              <p class="helper">Usada em Promoção e Remoção para encerrar a lotação anterior.</p>
             </div>
-          </div>
+           </div>
+          <div id="campos-registro-gerais">
           <div class="grid grid-2">
             <div class="field">
-              <label for="c-titular">Titular</label>
-              <input type="text" id="c-titular">
+              <label for="c-titular">Promotor titular</label>
+              <div class="member-search-wrap" data-cadastro-membro-wrap>
+                <input type="text" id="c-titular" placeholder="Digite para pesquisar um promotor..." autocomplete="off" aria-controls="opcoes-promotores-cadastro" aria-expanded="false">
+                <div class="member-options" id="opcoes-promotores-cadastro" role="listbox"></div>
+              </div>
+              <p class="helper">Para cadastrar um novo promotor ou atualizar seus dados, use a tela Cadastros de apoio.</p>
             </div>
             <div class="field">
               <label for="c-destinacao">Destinação</label>
@@ -901,14 +950,19 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             <label for="c-resumo">Resumo</label>
             <textarea id="c-resumo"></textarea>
           </div>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Substituto (opcional)</h3>
+        <div class="card" id="card-substituto" hidden>
+          <h3 id="titulo-substituto">Substituto (opcional)</h3>
+          <p class="helper" id="substituto-regra" hidden>Para os tipos marcados como substitutivos, informe um promotor da lista. Ele será vinculado à promotoria neste registro.</p>
           <div class="grid grid-2">
             <div class="field">
               <label for="c-substituto">Substituto</label>
-              <input type="text" id="c-substituto">
+              <div class="member-search-wrap" data-cadastro-membro-wrap>
+                <input type="text" id="c-substituto" placeholder="Digite para pesquisar um promotor..." autocomplete="off" aria-controls="opcoes-substitutos-cadastro" aria-expanded="false">
+                <div class="member-options" id="opcoes-substitutos-cadastro" role="listbox"></div>
+              </div>
             </div>
             <div class="field">
               <label for="c-referencia-sub">Referência do substituto</label>
@@ -937,11 +991,76 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
         </div>
 
         <div class="pill-buttons">
-          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar registro</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar" data-admin-only>Salvar registro</button>
           <button type="button" class="btn btn-ghost" id="btn-cancelar-cadastro">Cancelar cadastro</button>
           <button type="button" class="btn btn-ghost" id="btn-cancelar-edicao" hidden>Cancelar edição</button>
         </div>
       </form>
+    </section>
+
+    <!-- ===================== CADASTROS DE APOIO ===================== -->
+    <section class="view" id="view-auxiliares" data-admin-only>
+      <h2 class="view-title">Cadastros de apoio</h2>
+      <p class="view-sub">Gerencie os nomes dos promotores e os tipos disponíveis no cadastro de registros.</p>
+
+      <div class="two-col auxiliary-grid">
+        <div class="card auxiliary-card">
+          <div class="auxiliary-heading">
+            <div>
+              <h3>Promotores</h3>
+              <p>Cadastre os nomes que poderão ser selecionados como titular ou substituto.</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-novo-promotor">+ Novo</button>
+          </div>
+          <form id="form-promotor-auxiliar" class="auxiliary-form" hidden>
+            <input type="hidden" id="aux-promotor-id">
+            <div class="field">
+              <label for="aux-promotor-nome">Nome *</label>
+              <input type="text" id="aux-promotor-nome" required>
+            </div>
+            <div class="field">
+              <label for="aux-promotor-observacoes">Observações</label>
+              <textarea id="aux-promotor-observacoes" rows="2"></textarea>
+            </div>
+            <div class="pill-buttons">
+              <button type="submit" class="btn btn-primary" id="btn-salvar-promotor">Salvar promotor</button>
+              <button type="button" class="btn btn-ghost" id="btn-cancelar-promotor">Cancelar</button>
+            </div>
+          </form>
+          <div class="auxiliary-list" id="tabela-promotores-auxiliar"></div>
+        </div>
+
+        <div class="card auxiliary-card">
+          <div class="auxiliary-heading">
+            <div>
+              <h3>Tipos de movimentação</h3>
+              <p>Crie tipos personalizados para usar nos registros e nos filtros.</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-novo-tipo">+ Novo</button>
+          </div>
+          <form id="form-tipo-auxiliar" class="auxiliary-form" hidden>
+            <input type="hidden" id="aux-tipo-id">
+            <div class="field">
+              <label for="aux-tipo-nome">Nome do tipo *</label>
+              <input type="text" id="aux-tipo-nome" required placeholder="Ex.: Permuta">
+            </div>
+            <div class="checkbox-line">
+              <input type="checkbox" id="aux-tipo-ativo" checked>
+              <label for="aux-tipo-ativo" style="margin:0;">Disponível para novos registros</label>
+            </div>
+            <div class="checkbox-line">
+              <input type="checkbox" id="aux-tipo-exige-substituto">
+              <label for="aux-tipo-exige-substituto" style="margin:0;">Exige cadastro de substituto</label>
+            </div>
+            <p class="helper">Tipos marcados assim exibem os campos do substituto e exigem uma promotoria no registro.</p>
+            <div class="pill-buttons">
+              <button type="submit" class="btn btn-primary" id="btn-salvar-tipo">Salvar tipo</button>
+              <button type="button" class="btn btn-ghost" id="btn-cancelar-tipo">Cancelar</button>
+            </div>
+          </form>
+          <div class="auxiliary-list" id="tabela-tipos-auxiliar"></div>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== HISTÓRICO ===================== -->
@@ -1003,6 +1122,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   --------------------------------------------------------- */
   let registros = [];
   let promotorias = [];
+  let promotores = [];
+  let tiposMovimentacao = [];
   let localPromotoriasSelecionado = '';
   let localPainelSelecionado = '';
   let membroSelecionado = '';
@@ -1020,7 +1141,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   const SUPABASE_URL = 'https://cserkovxfkapmnlonuzr.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_nVox92qsvHa2Q0Asd9nmNA_4AkFGcS1';
 
-  
   const CONFIG_SUPABASE_OK =
     !SUPABASE_URL.includes('SEU-PROJETO') &&
     !SUPABASE_ANON_KEY.includes('COLE_SUA_CHAVE');
@@ -1050,22 +1170,59 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       : (usuarioAtual?.email || 'Usuário autenticado') + (ehAdmin() ? ' · administrador' : ' · visualizador');
   }
 
+  const caracteresWindows1252 = {
+    '\u20AC':0x80, '\u201A':0x82, '\u0192':0x83, '\u201E':0x84, '\u2026':0x85,
+    '\u2020':0x86, '\u2021':0x87, '\u02C6':0x88, '\u2030':0x89, '\u0160':0x8a,
+    '\u2039':0x8b, '\u0152':0x8c, '\u017D':0x8e, '\u2018':0x91, '\u2019':0x92,
+    '\u201C':0x93, '\u201D':0x94, '\u2022':0x95, '\u2013':0x96, '\u2014':0x97,
+    '\u02DC':0x98, '\u2122':0x99, '\u0161':0x9a, '\u203A':0x9b, '\u0153':0x9c,
+    '\u017E':0x9e, '\u0178':0x9f
+  };
+
+  function corrigirTextoMojibake(valor){
+    if(valor == null) return '';
+    let texto = String(valor);
+    for(let tentativa=0; tentativa<3; tentativa++){
+      if(!/[\u00c3\u00c2\u00e2\u00f0\u0192\u0160\u0152\u017d\u2122\u0161\u017e]/.test(texto)) break;
+      const bytes = [];
+      let conversaoPossivel = true;
+      for(const caractere of texto){
+        const codigo = caractere.codePointAt(0);
+        if(codigo <= 0xff) bytes.push(codigo);
+        else if(caracteresWindows1252[caractere] != null) bytes.push(caracteresWindows1252[caractere]);
+        else { conversaoPossivel = false; break; }
+      }
+      if(!conversaoPossivel) break;
+      const candidato = new TextDecoder('utf-8').decode(new Uint8Array(bytes));
+      if(candidato === texto || candidato.includes('\uFFFD')) break;
+      texto = candidato;
+    }
+    return texto;
+  }
+
   function bancoParaRegistro(row){
+    const texto = valor => corrigirTextoMojibake(valor);
     return {
       ...row,
-      promotoria: row.promotoria || '',
-      titular: row.titular || '',
-      tipo: row.tipo || '',
-      destinacao: row.destinacao || '',
+      promotoria: texto(row.promotoria),
+      promotoriaId: row.promotoria_id || '',
+      promotoriaOrigem: texto(row.promotoria_origem),
+      promotoriaOrigemId: row.promotoria_origem_id || '',
+      promotorId: row.promotor_id || '',
+      titular: texto(row.titular),
+      tipoId: row.tipo_id || '',
+      tipo: texto(row.tipo),
+      destinacao: texto(row.destinacao),
       situacao: '',
-      referencia: row.referencia || '',
-      resumo: row.resumo || '',
-      substituto: row.substituto || '',
+      referencia: texto(row.referencia),
+      resumo: texto(row.resumo),
+      substitutoId: row.substituto_id || '',
+      substituto: texto(row.substituto),
       dataInicial: row.data_inicial || '',
       dataFinal: row.data_final || '',
       situacaoSubstituto: '',
-      referenciaSubstituto: row.referencia_substituto || row.referenciaSubstituto || '',
-      resumoSubstituto: row.resumo_substituto || row.resumoSubstituto || '',
+      referenciaSubstituto: texto(row.referencia_substituto || row.referenciaSubstituto),
+      resumoSubstituto: texto(row.resumo_substituto || row.resumoSubstituto),
       dataInicialSubstituto: row.data_inicial_substituto || '',
       dataFinalSubstituto: row.data_final_substituto || '',
       criadoEm: row.criado_em || '',
@@ -1075,22 +1232,67 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
   function registroParaBanco(dados){
     const valorOuNulo = valor => valor || null;
+    const exigeSubstituto = tipoExigeSubstituto(dados.tipo);
+    const usaDadosGerais = !exigeSubstituto;
+    const usaDestinacao = usaDadosGerais && !tipoMudaPromotoria(dados.tipo);
     return {
       promotoria: dados.promotoria,
-      titular: valorOuNulo(dados.titular),
+      promotoria_id: valorOuNulo(dados.promotoriaId),
+      promotoria_origem: valorOuNulo(dados.promotoriaOrigem),
+      promotoria_origem_id: valorOuNulo(dados.promotoriaOrigemId),
+      titular: usaDadosGerais ? valorOuNulo(dados.titular) : null,
+      promotor_id: usaDadosGerais ? valorOuNulo(dados.promotorId) : null,
       tipo: valorOuNulo(dados.tipo),
-      destinacao: valorOuNulo(dados.destinacao),
-      data_inicial: valorOuNulo(dados.dataInicial),
-      data_final: valorOuNulo(dados.dataFinal),
+      tipo_id: valorOuNulo(dados.tipoId),
+      destinacao: usaDestinacao ? valorOuNulo(dados.destinacao) : null,
+      data_inicial: usaDadosGerais ? valorOuNulo(dados.dataInicial) : null,
+      data_final: usaDadosGerais ? valorOuNulo(dados.dataFinal) : null,
       situacao: null,
-      referencia: valorOuNulo(dados.referencia),
-      resumo: valorOuNulo(dados.resumo),
-      substituto: valorOuNulo(dados.substituto),
-      data_inicial_substituto: valorOuNulo(dados.dataInicialSubstituto),
-      data_final_substituto: valorOuNulo(dados.dataFinalSubstituto),
+      referencia: usaDadosGerais ? valorOuNulo(dados.referencia) : null,
+      resumo: usaDadosGerais ? valorOuNulo(dados.resumo) : null,
+      substituto: exigeSubstituto ? valorOuNulo(dados.substituto) : null,
+      substituto_id: exigeSubstituto ? valorOuNulo(dados.substitutoId) : null,
+      data_inicial_substituto: exigeSubstituto ? valorOuNulo(dados.dataInicialSubstituto) : null,
+      data_final_substituto: exigeSubstituto ? valorOuNulo(dados.dataFinalSubstituto) : null,
       situacao_substituto: null,
-      referencia_substituto: valorOuNulo(dados.referenciaSubstituto),
-      resumo_substituto: valorOuNulo(dados.resumoSubstituto)
+      referencia_substituto: exigeSubstituto ? valorOuNulo(dados.referenciaSubstituto) : null,
+      resumo_substituto: exigeSubstituto ? valorOuNulo(dados.resumoSubstituto) : null
+    };
+  }
+
+  function membroPorNome(lista, nome){
+    const chave = textoChaveImportacao(nome);
+    return lista.find(item => textoChaveImportacao(item.nome) === chave) || null;
+  }
+
+  async function prepararRelacionamentos(dados){
+    const promotoria = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoria));
+    const promotoriaOrigem = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoriaOrigem));
+    if(dados.promotoriaOrigem && !promotoriaOrigem){
+      mostrarToast('A promotoria de origem não foi encontrada na base.');
+      return null;
+    }
+    const nomeTitular = tipoExigeSubstituto(dados.tipo) ? '' : dados.titular;
+    const promotor = membroPorNome(promotores, nomeTitular);
+    if(nomeTitular && !promotor){
+      mostrarToast('Cadastre o promotor na tela Cadastros de apoio antes de vinculá-lo ao registro.');
+      return null;
+    }
+    const nomeSubstituto = tipoExigeSubstituto(dados.tipo) ? dados.substituto : '';
+    const promotorSubstituto = membroPorNome(promotores, nomeSubstituto);
+    if(nomeSubstituto && !promotorSubstituto){
+      mostrarToast('Cadastre o promotor substituto na tela Cadastros de apoio antes de vinculá-lo ao registro.');
+      return null;
+    }
+    const tipo = tiposMovimentacao.find(item => textoChaveImportacao(item.nome) === textoChaveImportacao(dados.tipo));
+    return {
+      ...dados,
+      promotoriaOrigem: promotoriaOrigem?.nome || '',
+      promotoriaId: promotoria?.id || '',
+      promotoriaOrigemId: promotoriaOrigem?.id || '',
+      promotorId: promotor?.id || '',
+      substitutoId: promotorSubstituto?.id || '',
+      tipoId: tipo?.id || ''
     };
   }
 
@@ -1217,11 +1419,19 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       render();
       return;
     }
-    const [resultadoRegistros, resultadoPromotorias] = await Promise.all([
+    const [resultadoRegistros, resultadoPromotorias, resultadoPromotores, resultadoTipos] = await Promise.all([
       carregarTodosRegistros(),
       supabasePublicClient
         .from('promotorias')
-        .select('nome, local')
+        .select('id, nome, local')
+        .order('nome', { ascending: true }),
+      supabasePublicClient
+        .from('promotores')
+        .select('id, nome, observacoes')
+        .order('nome', { ascending: true }),
+      supabasePublicClient
+        .from('tipos_movimentacao')
+        .select('id, nome, ativo, exige_substituto')
         .order('nome', { ascending: true })
     ]);
     if(resultadoRegistros.error){
@@ -1237,11 +1447,78 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       mostrarToast('Não foi possível carregar a lista de promotorias.');
     } else {
       promotorias = (resultadoPromotorias.data || [])
-        .map(row => ({ nome: row.nome, local: normalizarLocalPromotoria(row.local) }))
+        .map(row => ({ id: row.id, nome: corrigirTextoMojibake(row.nome), local: normalizarLocalPromotoria(corrigirTextoMojibake(row.local)) }))
         .filter(row => row.nome)
         .sort(ordenarPromotorias);
     }
+
+    if(resultadoPromotores.error){
+      console.error(resultadoPromotores.error);
+      promotores = [];
+      mostrarToast('A tabela de promotores ainda não está disponível. Execute a migração do Supabase.');
+    } else {
+      promotores = (resultadoPromotores.data || []).map(row => ({
+        id: row.id, nome: corrigirTextoMojibake(row.nome), matricula: corrigirTextoMojibake(row.matricula), email: corrigirTextoMojibake(row.email),
+        telefone: corrigirTextoMojibake(row.telefone), observacoes: corrigirTextoMojibake(row.observacoes), promotoriaId: row.promotoria_id || ''
+      })).filter(row => row.nome);
+    }
+    if(resultadoTipos.error){
+      console.error(resultadoTipos.error);
+      tiposMovimentacao = [];
+      mostrarToast('A tabela de tipos ainda não está disponível. Execute a migração do Supabase.');
+    } else {
+      tiposMovimentacao = (resultadoTipos.data || []).map(row => ({
+        id: row.id, nome: corrigirTextoMojibake(row.nome), ativo: row.ativo !== false,
+        exigeSubstituto: row.exige_substituto === true
+      })).filter(row => row.nome);
+    }
+    const promotoresPorId = new Map(promotores.map(item => [item.id, item]));
+    registros = registros.map(registro => {
+      const promotor = promotoresPorId.get(registro.promotorId);
+      const substituto = promotoresPorId.get(registro.substitutoId);
+      return {
+        ...registro,
+        titular: promotor?.nome || registro.titular,
+        substituto: substituto?.nome || registro.substituto
+      };
+    });
     render();
+  }
+
+  function diaAnterior(data){
+    const dataBase = parseData(data);
+    if(!dataBase) return '';
+    dataBase.setDate(dataBase.getDate() - 1);
+    const ano = dataBase.getFullYear();
+    const mes = String(dataBase.getMonth() + 1).padStart(2, '0');
+    const dia = String(dataBase.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+  }
+
+  async function fecharRegistroAnteriorDaMovimentacao(dados, idIgnorado){
+    if(!tipoMudaPromotoria(dados.tipo) || !dados.promotorId || !dados.dataInicial || !dados.promotoriaOrigem) return { registro: null };
+    const dataFinalAnterior = diaAnterior(dados.dataInicial);
+    let consulta = supabaseClient
+      .from('registros')
+      .select('id, data_final')
+      .eq('promotor_id', dados.promotorId)
+      .is('data_final', null)
+      .lt('data_inicial', dados.dataInicial)
+      .order('data_inicial', { ascending: false, nullsLast: true })
+      .limit(1);
+    consulta = dados.promotoriaOrigemId
+      ? consulta.eq('promotoria_id', dados.promotoriaOrigemId)
+      : consulta.eq('promotoria', dados.promotoriaOrigem);
+    if(idIgnorado) consulta = consulta.neq('id', idIgnorado);
+    const { data: anterior, error: erroBusca } = await consulta.maybeSingle();
+    if(erroBusca) return { erro: erroBusca };
+    if(!anterior) return { registro: null };
+    const { error: erroAtualizacao } = await supabaseClient
+      .from('registros')
+      .update({ data_final: dataFinalAnterior })
+      .eq('id', anterior.id);
+    if(erroAtualizacao) return { erro: erroAtualizacao };
+    return { registro: anterior, dataFinalAnterior };
   }
 
   async function salvarRegistro(dados, id){
@@ -1249,12 +1526,25 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       mostrarToast('Somente o administrador pode alterar registros.');
       return false;
     }
-    const payload = registroParaBanco(dados);
+    const dadosComRelacionamentos = await prepararRelacionamentos(dados);
+    if(!dadosComRelacionamentos) return false;
+    const payload = registroParaBanco(dadosComRelacionamentos);
+    const fechamentoAnterior = !id
+      ? await fecharRegistroAnteriorDaMovimentacao(dadosComRelacionamentos, id)
+      : { registro: null };
+    if(fechamentoAnterior.erro){
+      console.error(fechamentoAnterior.erro);
+      mostrarToast('Não foi possível encerrar a lotação anterior.');
+      return false;
+    }
     const query = id
       ? supabaseClient.from('registros').update(payload).eq('id', id)
       : supabaseClient.from('registros').insert(payload);
     const { error } = await query;
     if(error){
+      if(fechamentoAnterior.registro){
+        await supabaseClient.from('registros').update({ data_final: fechamentoAnterior.registro.data_final }).eq('id', fechamentoAnterior.registro.id);
+      }
       console.error(error);
       mostrarToast('Não foi possível cadastrar: ' + (error.message || 'verifique as permissões.'));
       return false;
@@ -1315,6 +1605,25 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     return calcularSituacaoPorDatas(reg.dataInicialSubstituto, reg.dataFinalSubstituto);
   }
 
+  function dataInicialPrincipal(reg){
+    return reg.dataInicial || reg.dataInicialSubstituto || '';
+  }
+
+  function datasExibidasRegistro(reg){
+    const usarDatasDoSubstituto = tipoExigeSubstituto(reg.tipo) ||
+      (!reg.dataInicial && Boolean(reg.dataInicialSubstituto || reg.dataFinalSubstituto));
+    return {
+      inicial: usarDatasDoSubstituto ? (reg.dataInicialSubstituto || '') : (reg.dataInicial || ''),
+      final: usarDatasDoSubstituto ? (reg.dataFinalSubstituto || '') : (reg.dataFinal || '')
+    };
+  }
+
+  function situacaoPrincipalCalculada(reg){
+    const situacoes = [situacaoCalculada(reg), situacaoSubstitutoCalculada(reg)]
+      .filter(situacao => situacao !== 'Indefinido');
+    return ['Presente', 'Futuro', 'Encerrado'].find(situacao => situacoes.includes(situacao)) || 'Indefinido';
+  }
+
   function seloClasse(sit){
     switch(sit){
       case 'Presente': return 'presente';
@@ -1358,8 +1667,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
      NAVEGAÇÃO ENTRE VIEWS
   --------------------------------------------------------- */
   function irPara(view){
-    if(view === 'cadastro' && !ehAdmin()){
-      mostrarToast('Apenas administradores podem acessar o cadastro.');
+    if((view === 'cadastro' || view === 'auxiliares') && !ehAdmin()){
+      mostrarToast('Apenas administradores podem acessar esta área.');
       return;
     }
     document.querySelectorAll('section.view').forEach(s => s.classList.remove('active'));
@@ -1368,10 +1677,12 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const tab = document.querySelector(`nav.tabs button[data-view="${view}"]`);
     if(tab) tab.classList.add('active');
     window.scrollTo({top:0, behavior:'instant'});
-    if(view === 'listagem') renderListagem();
-    if(view === 'membro') renderSituacaoMembro();
-    if(view === 'resumo') renderResumo();
+     if(view === 'listagem') renderListagem();
+     if(view === 'membro') renderSituacaoMembro();
+     if(view === 'membros') renderSituacaoMembros();
+     if(view === 'resumo') renderResumo();
     if(view === 'historico') renderHistorico();
+    if(view === 'auxiliares') renderAuxiliares();
   }
 
   function confirmarAbandonoEdicao(){
@@ -1423,6 +1734,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   --------------------------------------------------------- */
   function nomesMembrosDisponiveis(){
     const nomes = new Map();
+    promotores.forEach(membro=>{
+      const valor = String(membro.nome || '').trim();
+      const chave = textoChaveImportacao(valor);
+      if(chave && !nomes.has(chave)) nomes.set(chave, valor);
+    });
     registros.forEach(r=>[r.titular, r.substituto].forEach(nome=>{
       const valor = String(nome || '').trim();
       const chave = textoChaveImportacao(valor);
@@ -1538,7 +1854,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const chave = textoChaveImportacao(membroSelecionado);
     const comoTitular = registros.filter(r=>textoChaveImportacao(r.titular) === chave);
     const comoSubstituto = registros.filter(r=>textoChaveImportacao(r.substituto) === chave);
-    wrap.innerHTML = `<div class="card"><div class="member-profile"><div><h3>${escapeHtml(membroSelecionado)}</h3><p>${comoTitular.length + comoSubstituto.length} passagem(ns) registrada(s) no sistema.</p></div></div><div class="member-current-grid">${cardVinculoMembro('Vínculo atual como titular', registroAtualDoMembro(comoTitular, false), false)}${cardVinculoMembro('Vínculo atual como substituto', registroAtualDoMembro(comoSubstituto, true), true)}</div></div><div class="member-history-grid"><div class="card member-history-card"><h3>Histórico como titular</h3><p>Promotorias onde o membro atuou como titular.</p>${tabelaHistoricoMembro(comoTitular, false)}</div><div class="card member-history-card"><h3>Histórico como substituto</h3><p>Promotorias onde o membro atuou como substituto.</p>${tabelaHistoricoMembro(comoSubstituto, true)}</div></div>`;
+    const cadastroMembro = membroPorNome(promotores, membroSelecionado);
+    const dadosMembro = cadastroMembro?.observacoes ? `Observação: ${cadastroMembro.observacoes}` : '';
+    const dadosMembroHtml = dadosMembro ? `<div class="member-profile-data">${escapeHtml(dadosMembro)}</div>` : '';
+    wrap.innerHTML = `<div class="card"><div class="member-profile"><div><h3>${escapeHtml(membroSelecionado)}</h3><p>${comoTitular.length + comoSubstituto.length} passagem(ns) registrada(s) no sistema.</p></div>${dadosMembroHtml}</div><div class="member-current-grid">${cardVinculoMembro('Vínculo atual como titular', registroAtualDoMembro(comoTitular, false), false)}${cardVinculoMembro('Vínculo atual como substituto', registroAtualDoMembro(comoSubstituto, true), true)}</div></div><div class="member-history-grid"><div class="card member-history-card"><h3>Histórico como titular</h3><p>Promotorias onde o membro atuou como titular.</p>${tabelaHistoricoMembro(comoTitular, false)}</div><div class="card member-history-card"><h3>Histórico como substituto</h3><p>Promotorias onde o membro atuou como substituto.</p>${tabelaHistoricoMembro(comoSubstituto, true)}</div></div>`;
     wrap.querySelectorAll('tr[data-member-history-id]').forEach(linha=>{
       linha.addEventListener('click', ()=>abrirDetalhe(linha.dataset.memberHistoryId, 'membro'));
     });
@@ -1549,6 +1868,132 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       });
     });
   }
+
+  function renderSituacaoMembros(){
+    const wrap = document.getElementById('membros-wrap');
+    const contagem = document.getElementById('membros-contagem');
+    const busca = textoChaveImportacao(document.getElementById('membros-busca').value);
+    const apenasAtuais = document.getElementById('membros-apenas-atuais').checked;
+    const mapa = new Map();
+    const situacoesAtuais = new Set(['Presente']);
+
+    const adicionarVinculo = (nome, campo, registro, situacao, inicio, fim) => {
+      const valor = String(nome || '').trim();
+      const chave = textoChaveImportacao(valor);
+      if(!chave) return;
+      if(!mapa.has(chave)) mapa.set(chave, { nome: valor, titular: [], substituto: [] });
+      const pessoa = mapa.get(chave);
+      const lista = pessoa[campo];
+      const assinatura = `${registro.id}|${campo}`;
+      if(lista.some(item => item.assinatura === assinatura)) return;
+      lista.push({
+        assinatura,
+        id: registro.id,
+        promotoria: registro.promotoria || 'Lotação não informada',
+        situacao,
+        inicio: inicio || '',
+        fim: fim || ''
+      });
+    };
+
+    registros.forEach(registro=>{
+      adicionarVinculo(registro.titular, 'titular', registro, situacaoCalculada(registro), registro.dataInicial, registro.dataFinal);
+      adicionarVinculo(registro.substituto, 'substituto', registro, situacaoSubstitutoCalculada(registro), registro.dataInicialSubstituto, registro.dataFinalSubstituto);
+    });
+
+    const lista = Array.from(mapa.values())
+      .filter(pessoa=>{
+        const ehComarca = vinculo => textoChaveImportacao(vinculo.promotoria).includes('comarca');
+        const titularesVisiveis = pessoa.titular.filter(vinculo => !apenasAtuais || situacoesAtuais.has(vinculo.situacao));
+        const substitutosVisiveis = pessoa.substituto.filter(vinculo => !apenasAtuais || situacoesAtuais.has(vinculo.situacao));
+        const titularesComarca = titularesVisiveis.filter(ehComarca);
+        const substitutosComarca = substitutosVisiveis.filter(ehComarca);
+        // A proximidade deve partir da lotação em que o membro é titular
+        // atualmente. Vínculos titulares históricos não podem alterar o resultado.
+        const titularesParaComparacao = pessoa.titular.filter(vinculo =>
+          ehComarca(vinculo) && situacoesAtuais.has(vinculo.situacao)
+        );
+        const estaEmOutraComarca = titularesComarca.some(titular =>
+          substitutosComarca.some(substituto =>
+            textoChaveImportacao(titular.promotoria) !== textoChaveImportacao(substituto.promotoria)
+          )
+        );
+        if(!titularesComarca.length || !substitutosComarca.length || !estaEmOutraComarca) return false;
+        pessoa.titular = titularesComarca;
+        pessoa.substituto = substitutosComarca;
+        pessoa.titularParaComparacao = titularesParaComparacao;
+        if(!busca) return true;
+        const alvo = textoChaveImportacao([
+          pessoa.nome,
+          ...pessoa.titular.map(item=>item.promotoria),
+          ...pessoa.substituto.map(item=>item.promotoria)
+        ].join(' '));
+        return alvo.includes(busca);
+      })
+      .sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}));
+
+    lista.forEach(pessoa=>{
+      const ordenarVinculos = (a,b)=>{
+        const atualA = situacoesAtuais.has(a.situacao) ? 0 : 1;
+        const atualB = situacoesAtuais.has(b.situacao) ? 0 : 1;
+        if(atualA !== atualB) return atualA - atualB;
+        return (parseData(b.inicio)?.getTime() ?? -Infinity) - (parseData(a.inicio)?.getTime() ?? -Infinity);
+      };
+      pessoa.titular.sort(ordenarVinculos);
+      pessoa.substituto.sort(ordenarVinculos);
+    });
+
+    const totalVinculos = lista.reduce((total, pessoa)=>total + pessoa.titular.length + pessoa.substituto.length, 0);
+    contagem.textContent = `${lista.length} membro(s) encontrado(s), com ${totalVinculos} vínculo(s) listado(s).`;
+    if(!lista.length){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">⌕</div>Nenhum membro corresponde aos filtros selecionados.</div>';
+      return;
+    }
+
+    const renderTitular = listaVinculos => listaVinculos.length
+      ? listaVinculos.map(item=>`<div class="member-roster-entry"><strong>${escapeHtml(item.promotoria)}</strong><span class="seal ${seloClasse(item.situacao)}">${escapeHtml(item.situacao)}</span></div>`).join('')
+      : '<span class="member-roster-empty">Não consta como titular.</span>';
+    const renderSubstituto = listaVinculos => listaVinculos.length
+      ? listaVinculos.map(item=>{
+          const periodo = item.inicio
+            ? `${fmtData(item.inicio)}${item.fim ? ` até ${fmtData(item.fim)}` : ' em diante'}`
+            : (item.fim ? `Até ${fmtData(item.fim)}` : 'Data não informada');
+          return `<div class="member-roster-entry"><strong>${escapeHtml(item.promotoria)}</strong><span class="member-roster-period">${escapeHtml(periodo)}</span><span class="seal ${seloClasse(item.situacao)}">${escapeHtml(item.situacao)}</span></div>`;
+        }).join('')
+      : '<span class="member-roster-empty">Não consta como substituto.</span>';
+
+    const renderProximidade = pessoa => pessoa.substituto.map(item=>{
+      const resultado = classificarProximidade(pessoa.titularParaComparacao || pessoa.titular, item);
+      const referencia = resultado.comparacoes.find(comparacao=>comparacao.proxima)?.titular || pessoa.titular[0]?.promotoria || 'Titularidade não informada';
+      return `<div class="member-roster-entry"><span class="member-proximity-badge ${resultado.proxima ? 'yes' : 'no'}">${resultado.proxima ? 'CONTÍGUA/PRÓXIMA' : 'NÃO PRÓXIMA'}</span><span class="member-proximity-detail">Comparação com: ${escapeHtml(referencia)}</span></div>`;
+    }).join('');
+
+    wrap.innerHTML = `<table class="reg-table member-roster-table">
+      <thead><tr><th>Membro</th><th>Lotação como titular</th><th>Lotação como substituto e período</th><th>Contíguas/próximas</th></tr></thead>
+      <tbody>${lista.map(pessoa=>`<tr data-membro-roster="${escapeHtml(pessoa.nome)}">
+        <td>${escapeHtml(pessoa.nome)}</td>
+        <td>${renderTitular(pessoa.titular)}</td>
+        <td>${renderSubstituto(pessoa.substituto)}</td>
+        <td>${renderProximidade(pessoa)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+
+    wrap.querySelectorAll('[data-membro-roster]').forEach(linha=>{
+      linha.addEventListener('click', ()=>{
+        membroSelecionado = linha.dataset.membroRoster;
+        document.getElementById('membro-busca').value = membroSelecionado;
+        irPara('membro');
+      });
+    });
+  }
+
+  document.getElementById('membros-busca').addEventListener('input', renderSituacaoMembros);
+  document.getElementById('membros-apenas-atuais').addEventListener('change', renderSituacaoMembros);
+  document.getElementById('btn-limpar-membros').addEventListener('click', ()=>{
+    document.getElementById('membros-busca').value = '';
+    document.getElementById('membros-apenas-atuais').checked = true;
+    renderSituacaoMembros();
+  });
 
   const inputMembro = document.getElementById('membro-busca');
   inputMembro.addEventListener('focus', ()=>{
@@ -1611,8 +2056,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     });
 
     const compararDatas = (a, b, ascendente = false) => {
-      const dataA = parseData(a.dataInicial)?.getTime() ?? (ascendente ? Infinity : -Infinity);
-      const dataB = parseData(b.dataInicial)?.getTime() ?? (ascendente ? Infinity : -Infinity);
+      const dataA = parseData(dataInicialPrincipal(a))?.getTime() ?? (ascendente ? Infinity : -Infinity);
+      const dataB = parseData(dataInicialPrincipal(b))?.getTime() ?? (ascendente ? Infinity : -Infinity);
       return ascendente ? dataA - dataB : dataB - dataA;
     };
 
@@ -1631,10 +2076,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       .map(promotoria=>{
         const lista = grupos.get(promotoria) || [];
         const vigentes = lista
-          .filter(r=>situacaoCalculada(r) === 'Presente')
+          .filter(r=>situacaoPrincipalCalculada(r) === 'Presente')
           .sort((a,b)=> compararDatas(a,b));
         const futuros = lista
-          .filter(r=>situacaoCalculada(r) === 'Futuro')
+          .filter(r=>situacaoPrincipalCalculada(r) === 'Futuro')
           .sort((a,b)=> compararDatas(a,b,true));
         const atual = vigentes[0] || futuros[0] || [...lista].sort((a,b)=> compararDatas(a,b))[0] || null;
         return { promotoria, registro: atual };
@@ -1656,7 +2101,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           ${linhas.map(({promotoria, registro})=>{
             const substituto = registro?.substituto || '—';
             const tipo = registro?.tipo || 'Não informado';
-            const situacao = registro ? situacaoCalculada(registro) : '';
+            const situacao = registro?.titular ? situacaoCalculada(registro) : '';
             return `<tr>
               <td>${escapeHtml(promotoria)}</td>
               <td class="member-cell"><span class="member-name">${escapeHtml(registro?.titular || '—')}</span>${situacao ? `<span class="member-meta">${escapeHtml(situacao)}</span>` : ''}</td>
@@ -1666,6 +2111,31 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
           }).join('')}
         </tbody>
       </table>`;
+
+    wrap.querySelectorAll('tbody tr').forEach((linha, indice) => {
+      const registro = linhas[indice]?.registro;
+      if(!registro?.substituto) return;
+      const situacao = situacaoSubstitutoCalculada(registro);
+      if(situacao === 'Indefinido') return;
+      const celula = linha.cells[2];
+      let meta = celula.querySelector('.member-meta');
+      if(!meta){
+        meta = document.createElement('span');
+        meta.className = 'member-meta';
+        celula.appendChild(meta);
+      }
+      meta.textContent = `${situacao}${registro.dataInicialSubstituto ? ` · Desde ${fmtData(registro.dataInicialSubstituto)}` : ''}`;
+    });
+    wrap.querySelectorAll('tbody tr').forEach((linha, indice) => {
+      const registro = linhas[indice]?.registro;
+      if(!registro?.substituto) return;
+      const periodo = registro.dataInicialSubstituto
+        ? `Desde ${fmtData(registro.dataInicialSubstituto)}${registro.dataFinalSubstituto ? ` até ${fmtData(registro.dataFinalSubstituto)}` : ''}`
+        : (registro.dataFinalSubstituto ? `Até ${fmtData(registro.dataFinalSubstituto)}` : '');
+      if(!periodo) return;
+      const meta = linha.cells[2].querySelector('.member-meta');
+      if(meta) meta.textContent = `${situacaoSubstitutoCalculada(registro)} · ${periodo}`;
+    });
   }
 
   ['painel-busca','painel-promotoria','painel-tipo','painel-situacao'].forEach(id=>{
@@ -1719,9 +2189,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
   function aplicarFiltros(lista, f){
     return lista.filter(r => {
-      const sit = situacaoCalculada(r);
+      const sit = situacaoPrincipalCalculada(r);
+      const datas = datasExibidasRegistro(r);
       if(f.busca){
-        const alvo = [r.titular, r.substituto, r.promotoria, r.referencia, r.resumo]
+        const alvo = [r.titular, r.substituto, r.promotoria, r.promotoriaOrigem, r.referencia, r.resumo]
           .map(x => (x||'').toLowerCase()).join(' | ');
         if(!alvo.includes(f.busca)) return false;
       }
@@ -1735,11 +2206,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       if(f.resumo && !(((r.resumo||'')+' '+(r.resumoSubstituto||'')).toLowerCase().includes(f.resumo))) return false;
       if(f.apenasAtivos && sit !== 'Presente') return false;
       if(f.periodoIni){
-        const ini = parseData(r.dataInicial);
+        const ini = parseData(datas.inicial);
         if(!ini || ini < parseData(f.periodoIni)) return false;
       }
       if(f.periodoFim){
-        const ini = parseData(r.dataInicial);
+        const ini = parseData(datas.inicial);
         if(!ini || ini > parseData(f.periodoFim)) return false;
       }
       return true;
@@ -1752,23 +2223,26 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     arr.sort((a,b)=>{
       if(campo === 'prioridade'){
         const ordemSituacao = { Futuro:0, Presente:1, Encerrado:2, Indefinido:3 };
-        const situacaoA = situacaoCalculada(a);
-        const situacaoB = situacaoCalculada(b);
+        const situacaoA = situacaoPrincipalCalculada(a);
+        const situacaoB = situacaoPrincipalCalculada(b);
         const prioridadeA = ordemSituacao[situacaoA] ?? 3;
         const prioridadeB = ordemSituacao[situacaoB] ?? 3;
         if(prioridadeA !== prioridadeB) return prioridadeA - prioridadeB;
 
-        const inicioA = parseData(a.dataInicial)?.getTime() ?? -Infinity;
-        const inicioB = parseData(b.dataInicial)?.getTime() ?? -Infinity;
+        const inicioA = parseData(datasExibidasRegistro(a).inicial)?.getTime() ?? -Infinity;
+        const inicioB = parseData(datasExibidasRegistro(b).inicial)?.getTime() ?? -Infinity;
         if(inicioA !== inicioB) return inicioB - inicioA;
 
-        const fimA = parseData(a.dataFinal)?.getTime() ?? -Infinity;
-        const fimB = parseData(b.dataFinal)?.getTime() ?? -Infinity;
+        const fimA = parseData(datasExibidasRegistro(a).final)?.getTime() ?? -Infinity;
+        const fimB = parseData(datasExibidasRegistro(b).final)?.getTime() ?? -Infinity;
         if(fimA !== fimB) return fimB - fimA;
         return 0;
       }
       let va = a[campo], vb = b[campo];
       if(campo === 'dataInicial' || campo === 'dataFinal'){
+        const campoData = campo === 'dataInicial' ? 'inicial' : 'final';
+        va = datasExibidasRegistro(a)[campoData];
+        vb = datasExibidasRegistro(b)[campoData];
         va = parseData(va); vb = parseData(vb);
         va = va ? va.getTime() : -Infinity;
         vb = vb ? vb.getTime() : -Infinity;
@@ -1787,8 +2261,31 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     { inputId:'f-promotoria', optionsId:'opcoes-promotorias-filtro', filtrarLocal:false },
     { inputId:'c-promotoria', optionsId:'opcoes-promotorias-cadastro', filtrarLocal:true },
     { inputId:'h-promotoria', optionsId:'opcoes-promotorias-historico', filtrarLocal:false },
-    { inputId:'painel-promotoria', optionsId:'opcoes-promotorias-painel', filtrarLocal:false }
+    { inputId:'painel-promotoria', optionsId:'opcoes-promotorias-painel', filtrarLocal:false },
+    { inputId:'c-promotoria-origem', optionsId:'opcoes-promotorias-origem', filtrarLocal:false }
   ];
+
+  function converterPromotoriaOrigemParaBusca(){
+    const select = document.getElementById('c-promotoria-origem');
+    if(!select || select.tagName !== 'SELECT') return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'promotoria-combobox';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'c-promotoria-origem';
+    input.placeholder = 'Digite para pesquisar...';
+    input.autocomplete = 'off';
+    input.setAttribute('aria-controls', 'opcoes-promotorias-origem');
+    input.setAttribute('aria-expanded', 'false');
+    const options = document.createElement('div');
+    options.className = 'promotoria-options';
+    options.id = 'opcoes-promotorias-origem';
+    options.setAttribute('role', 'listbox');
+    wrapper.append(input, options);
+    select.replaceWith(wrapper);
+  }
+
+  converterPromotoriaOrigemParaBusca();
 
   function opcoesDisponiveisPromotorias(config){
     return promotorias
@@ -1855,17 +2352,27 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       .sort(ordenarPromotorias);
     const filtro = document.getElementById('f-promotoria');
     const cadastro = document.getElementById('c-promotoria');
+    const origem = document.getElementById('c-promotoria-origem');
     const historico = document.getElementById('h-promotoria');
     const valorFiltro = filtro.value;
     const valorCadastro = cadastro.value;
+    const valorOrigem = origem.value;
     const valorHistorico = historico.value;
 
     renderOpcoesPromotorias(configuracoesPromotorias[0], false);
     renderOpcoesPromotorias(configuracoesPromotorias[1], false);
     renderOpcoesPromotorias(configuracoesPromotorias[2], false);
+    renderOpcoesPromotorias(configuracoesPromotorias[4], false);
     filtro.value = valorFiltro;
     if(promotoriasDoLocal.some(p => p.nome === valorCadastro)) cadastro.value = valorCadastro;
     else cadastro.value = '';
+    origem.innerHTML = '<option value="">Selecione de onde o promotor está saindo...</option>' +
+      promotorias.slice().sort(ordenarPromotorias)
+        .map(p => `<option value="${escapeHtml(p.nome)}">${escapeHtml(p.nome)}</option>`)
+        .join('');
+    renderOpcoesPromotorias(configuracoesPromotorias[4], false);
+    if(promotorias.some(p => p.nome === valorOrigem)) origem.value = valorOrigem;
+    else origem.value = '';
     if(promotorias.some(p => p.nome === valorHistorico)) historico.value = valorHistorico;
     else historico.value = '';
   }
@@ -1936,6 +2443,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     }
 
     const cols = [
+      {k:'promotoriaOrigem', l:'Promotoria de origem'},
       {k:'promotoria', l:'Promotoria'},
       {k:'titular', l:'Titular'},
       {k:'tipo', l:'Tipo'},
@@ -1952,18 +2460,20 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     html += '<th>Situação</th><th></th></tr></thead><tbody>';
 
     lista.forEach(r=>{
-      const sit = situacaoCalculada(r);
+      const sit = situacaoPrincipalCalculada(r);
+      const datas = datasExibidasRegistro(r);
       const acaoEditar = ehAdmin()
         ? `<button class="btn btn-ghost btn-sm" data-action="editar" data-id="${r.id}">Editar</button>`
         : '';
       html += `<tr data-id="${r.id}">
+        <td>${escapeHtml(r.promotoriaOrigem||'—')}</td>
         <td>${escapeHtml(r.promotoria||'—')}</td>
         <td>${escapeHtml(r.titular||'—')}</td>
         <td>${escapeHtml(r.tipo||'—')}</td>
         <td>${escapeHtml(r.substituto||'—')}</td>
-        <td class="num">${fmtData(r.dataInicial)}</td>
-        <td class="num">${fmtData(r.dataFinal)}</td>
-        <td><span class="seal ${seloClasse(sit)}">${sit}</span></td>
+        <td class="num">${fmtData(datas.inicial)}</td>
+        <td class="num">${fmtData(datas.final)}</td>
+        <td><span class="seal ${seloClasse(sit)}">${escapeHtml(sit)}</span></td>
         <td>
           <div class="row-actions">
             <button class="btn btn-ghost btn-sm" data-action="ver" data-id="${r.id}">Ver</button>
@@ -2027,11 +2537,16 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const lista = ordenarLista(aplicarFiltros(registros, f));
     if(!lista.length){ mostrarToast('Não há registros para exportar com os filtros atuais.'); return; }
     const headers = ['Promotoria','Titular','Tipo','Destinação','Data inicial','Data final','Situação','Referência','Resumo','Substituto','Data inicial substituto','Data final substituto','Situação substituto','Referência substituto','Resumo substituto'];
-    const linhas = lista.map(r => [
-      r.promotoria, r.titular, r.tipo, r.destinacao, r.dataInicial||'', r.dataFinal||'',
-      situacaoCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'', situacaoSubstitutoCalculada(r),
+    const linhas = lista.map(r => {
+      const datas = datasExibidasRegistro(r);
+      return [
+      r.promotoria, r.titular, r.tipo, r.destinacao, datas.inicial||'', datas.final||'',
+       situacaoPrincipalCalculada(r), r.referencia, r.resumo, r.substituto, r.dataInicialSubstituto||'', r.dataFinalSubstituto||'', situacaoSubstitutoCalculada(r),
       r.referenciaSubstituto, r.resumoSubstituto
-    ]);
+      ];
+    });
+    headers.unshift('Promotoria de origem');
+    linhas.forEach((linha, indice) => linha.unshift(lista[indice].promotoriaOrigem || ''));
     const csvEsc = v => `"${String(v==null?'':v).replace(/"/g,'""')}"`;
     const csv = [headers.map(csvEsc).join(';'), ...linhas.map(l=> l.map(csvEsc).join(';'))].join('\r\n');
     const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8;'});
@@ -2050,6 +2565,33 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       .toLowerCase()
       .trim()
       .replace(/\s+/g, ' ');
+  }
+
+  // Fonte: arquivo de comarcas contiguas/próximas fornecido pelo usuário.
+  const COMARCAS_CONTIGUAS = {"alvaraes":["japura","maraa","tefe","uarini"],"amatura":["jutai","santo antonio do ica","sao paulo de olivenca","tabatinga"],"anama":["anori","beruri","caapiranga","codajas","iranduba","manacapuru","novo airao"],"anori":["anama","beruri","caapiranga","coari","codajas","iranduba"],"apui":["humaita","labrea","manicore"],"atalaia do norte":["benjamin constant","guajara","santo antonio do ica","sao paulo de olivenca","tabatinga"],"autazes":["borba","careiro castanho","careiro da varzea","iranduba","manaquiri","nova olinda do norte"],"barcelos":["novo airao","santa isabel do rio negro","sao gabriel da cachoeira"],"barreirinha":["boa vista do ramos","maues","nhamunda","parintins"],"benjamin constant":["atalaia do norte","santo antonio do ica","sao paulo de olivenca","tabatinga"],"beruri":["anama","anori","caapiranga","canutama","codajas","iranduba","manacapuru","novo airao","tapaua"],"boa vista do ramos":["barreirinha","maues","nhamunda","parintins","urucara"],"boca do acre":["eirunepe","envira","pauini"],"borba":["autazes","manicore","nova olinda do norte","novo aripuana"],"caapiranga":["anama","anori","beruri","iranduba","manacapuru","novo airao"],"canutama":["beruri","labrea","tapaua"],"carauari":["itamarati","jurua"],"careiro castanho":["autazes","careiro da varzea","manaquiri","nova olinda do norte"],"careiro da varzea":["autazes","careiro castanho","manaquiri","nova olinda do norte"],"coari":["anori","codajas"],"codajas":["anama","anori","beruri","coari","iranduba","manacapuru"],"eirunepe":["boca do acre","envira","guajara","ipixuna","itamarati"],"envira":["boca do acre","eirunepe","pauini"],"fonte boa":["japura","jutai","maraa"],"guajara":["atalaia do norte","eirunepe","ipixuna"],"humaita":["apui","labrea","manicore"],"ipixuna":["eirunepe","guajara"],"iranduba":["anama","anori","autazes","beruri","caapiranga","codajas","manacapuru","novo airao"],"itacoatiara":["itapiranga","presidente figueiredo","sao sebastiao do uatuma","urucara","urucurituba"],"itamarati":["carauari","eirunepe","jurua"],"itapiranga":["itacoatiara","rio preto da eva","silves","sao sebastiao do uatuma","urucara"],"japura":["alvaraes","fonte boa","jutai","maraa","tefe","uarini"],"jurua":["carauari","itamarati"],"jutai":["amatura","fonte boa","japura","maraa"],"labrea":["apui","canutama","humaita","tapaua"],"manacapuru":["beruri","caapiranga","codajas","iranduba","novo airao"],"manaquiri":["autazes","careiro castanho","careiro da varzea","nova olinda do norte","novo aripuana"],"manicore":["apui","borba","humaita","novo aripuana"],"maraa":["alvaraes","fonte boa","japura","jutai","tefe","uarini"],"maues":["barreirinha","boa vista do ramos","nhamunda","parintins","sao sebastiao do uatuma"],"nhamunda":["barreirinha","boa vista do ramos","maues","parintins"],"nova olinda do norte":["autazes","borba","careiro castanho","careiro da varzea","manaquiri","novo aripuana"],"novo airao":["anama","barcelos","beruri","caapiranga","iranduba","manacapuru"],"novo aripuana":["borba","manicore","nova olinda do norte"],"parintins":["barreirinha","boa vista do ramos","maues","nhamunda"],"pauini":["boca do acre","envira"],"presidente figueiredo":["itacoatiara","rio preto da eva","urucurituba"],"rio preto da eva":["itapiranga","presidente figueiredo","silves"],"santa isabel do rio negro":["barcelos","sao gabriel da cachoeira"],"santo antonio do ica":["amatura","atalaia do norte","benjamin constant","sao paulo de olivenca","tabatinga"],"sao gabriel da cachoeira":["barcelos","santa isabel do rio negro"],"sao paulo de olivenca":["amatura","atalaia do norte","benjamin constant","santo antonio do ica","tabatinga"],"sao sebastiao do uatuma":["itacoatiara","itapiranga","maues","silves","urucara"],"silves":["itapiranga","rio preto da eva","sao sebastiao do uatuma","urucara"],"tabatinga":["amatura","atalaia do norte","benjamin constant","santo antonio do ica","sao paulo de olivenca"],"tapaua":["beruri","canutama","labrea"],"tefe":["alvaraes","japura","maraa","uarini"],"uarini":["alvaraes","japura","maraa","tefe"],"urucara":["boa vista do ramos","itacoatiara","itapiranga","silves","sao sebastiao do uatuma"],"urucurituba":["itacoatiara","presidente figueiredo"],"tonantins":[]};
+
+  function comarcaDaLotacao(lotacao){
+    const chave = textoChaveImportacao(lotacao);
+    const marcador = 'comarca de ';
+    const indice = chave.lastIndexOf(marcador);
+    return indice >= 0 ? chave.slice(indice + marcador.length).trim() : '';
+  }
+
+  function classificarProximidade(titulares, substituto){
+    const comarcaSubstituto = comarcaDaLotacao(substituto.promotoria);
+    const comparacoes = titulares.map(titular=>{
+      const comarcaTitular = comarcaDaLotacao(titular.promotoria);
+      const listaDireta = COMARCAS_CONTIGUAS[comarcaTitular] || [];
+      const listaInversa = COMARCAS_CONTIGUAS[comarcaSubstituto] || [];
+      const proxima = Boolean(comarcaTitular && comarcaSubstituto && (
+        listaDireta.includes(comarcaSubstituto) || listaInversa.includes(comarcaTitular)
+      ));
+      return { titular: titular.promotoria, proxima };
+    });
+    return {
+      proxima: comparacoes.some(item=>item.proxima),
+      comparacoes
+    };
   }
 
   function separarCsv(texto){
@@ -2127,7 +2669,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     }
 
     const camposPorCabecalho = {
-      promotoria:'promotoria', titular:'titular', tipo:'tipo', destinacao:'destinacao',
+      promotoria:'promotoria', 'promotoria de origem':'promotoriaOrigem', titular:'titular', tipo:'tipo', destinacao:'destinacao',
       'data inicial':'dataInicial', 'data final':'dataFinal',
       referencia:'referencia', resumo:'resumo', substituto:'substituto',
       'data inicial substituto':'dataInicialSubstituto',
@@ -2142,11 +2684,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       return;
     }
 
-    const tiposValidos = ['Remoção','Nomeação','Exoneração','Autorização','Afastamento','Acúmulo','Designação','Declaração','Convocação','Termo de Posse','Vacância','Aposentadoria','Instalação','Indicação','Promoção','Outro'];
+    const tiposValidos = tiposDisponiveis(false).map(tipo => tipo.nome);
     const erros = [];
-    const payloads = [];
-    linhas.forEach((valores, indice)=>{
-      if(valores.every(valor => !String(valor || '').trim())) return;
+    const dadosImportacao = [];
+    for(const [indice, valores] of linhas.entries()){
+      if(valores.every(valor => !String(valor || '').trim())) continue;
       const linha = indice + 2;
       const dados = {};
       campos.forEach((campo, coluna)=>{
@@ -2154,33 +2696,58 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       });
 
       const promotoria = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoria));
+      const promotoriaOrigem = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoriaOrigem));
       if(!promotoria) erros.push(`Linha ${linha}: promotoria não encontrada na base.`);
       if(dados.tipo && !tiposValidos.some(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo))){
         erros.push(`Linha ${linha}: tipo de movimentação inválido.`);
       }
-      ['dataInicial','dataFinal','dataInicialSubstituto','dataFinalSubstituto'].forEach(campo=>{
+      const tipoCanonico = tiposValidos.find(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo));
+      if(dados.tipo) dados.tipo = tipoCanonico || dados.tipo;
+      const exigeSubstituto = tipoExigeSubstituto(dados.tipo);
+      if(tipoMudaPromotoria(dados.tipo)){
+        if(!dados.titular) erros.push(`Linha ${linha}: Promoção e Remoção exigem um titular.`);
+        if(!dados.dataInicial) erros.push(`Linha ${linha}: Promoção e Remoção exigem data inicial.`);
+        if(!promotoriaOrigem) erros.push(`Linha ${linha}: informe uma promotoria de origem válida.`);
+        if(promotoria && promotoriaOrigem && promotoria.id === promotoriaOrigem.id) erros.push(`Linha ${linha}: origem e destino não podem ser iguais.`);
+      }
+      const camposData = exigeSubstituto
+        ? ['dataInicialSubstituto','dataFinalSubstituto']
+        : ['dataInicial','dataFinal'];
+      camposData.forEach(campo=>{
         const convertido = dataImportada(dados[campo]);
         if(convertido === null) erros.push(`Linha ${linha}: ${campo} tem uma data inválida.`);
         dados[campo] = convertido || '';
       });
-      if(dados.dataInicial && dados.dataFinal && dados.dataFinal < dados.dataInicial){
+      if(!exigeSubstituto && dados.dataInicial && dados.dataFinal && dados.dataFinal < dados.dataInicial){
         erros.push(`Linha ${linha}: data final anterior à data inicial.`);
       }
-      if(dados.dataInicialSubstituto && dados.dataFinalSubstituto && dados.dataFinalSubstituto < dados.dataInicialSubstituto){
+      if(exigeSubstituto && dados.dataInicialSubstituto && dados.dataFinalSubstituto && dados.dataFinalSubstituto < dados.dataInicialSubstituto){
         erros.push(`Linha ${linha}: data final do substituto anterior à data inicial.`);
       }
       if(promotoria) dados.promotoria = promotoria.nome;
-      const tipoCanonico = tiposValidos.find(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo));
-      if(dados.tipo) dados.tipo = tipoCanonico || dados.tipo;
+      if(promotoriaOrigem) dados.promotoriaOrigem = promotoriaOrigem.nome;
       if(promotoria && (!dados.tipo || tipoCanonico)){
-        payloads.push(registroParaBanco(dados));
+        if(tipoExigeSubstituto(dados.tipo) && !dados.substituto){
+          erros.push(`Linha ${linha}: o tipo selecionado exige um substituto.`);
+        } else {
+          dadosImportacao.push({ linha, dados });
+        }
       }
-    });
+    }
 
     if(erros.length){
       console.warn('Importação cancelada:', erros);
       window.alert(`Importação cancelada com ${erros.length} erro(s):\n\n${erros.slice(0,12).join('\n')}${erros.length > 12 ? '\n...' : ''}`);
       return;
+    }
+    const payloads = [];
+    for(const item of dadosImportacao){
+      const dadosRelacionados = await prepararRelacionamentos(item.dados);
+      if(!dadosRelacionados){
+        window.alert(`Importação cancelada. Não foi possível salvar o promotor ou substituto da linha ${item.linha}.`);
+        return;
+      }
+      payloads.push(registroParaBanco(dadosRelacionados));
     }
     if(!payloads.length){
       mostrarToast('Nenhuma linha válida para importar.');
@@ -2210,7 +2777,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
      CADASTRO / EDIÇÃO
   --------------------------------------------------------- */
   const camposForm = {
-    promotoria:'c-promotoria', titular:'c-titular', tipo:'c-tipo',
+    promotoria:'c-promotoria', promotoriaOrigem:'c-promotoria-origem', titular:'c-titular', tipo:'c-tipo',
     destinacao:'c-destinacao', dataInicial:'c-data-ini', dataFinal:'c-data-fim',
     referencia:'c-referencia', resumo:'c-resumo',
     substituto:'c-substituto', dataInicialSubstituto:'c-data-ini-sub',
@@ -2218,12 +2785,326 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     resumoSubstituto:'c-resumo-sub'
   };
 
+  function organizarCamposCadastro(){
+    if(document.getElementById('campos-lotacao')) return;
+    const campoTipo = document.getElementById('c-tipo').closest('.field');
+    const campoOrigem = document.getElementById('c-promotoria-origem').closest('.field');
+    const campoTitular = document.getElementById('c-titular').closest('.field');
+    const campoDestino = document.getElementById('c-promotoria').closest('.field');
+    const primeiroGrid = campoTipo.parentElement;
+    const cardDados = primeiroGrid.parentElement;
+    const gridTipo = document.createElement('div');
+    gridTipo.className = 'grid grid-2';
+    gridTipo.id = 'campo-tipo-movimentacao';
+    const gridLotacao = document.createElement('div');
+    gridLotacao.className = 'grid grid-2';
+    gridLotacao.id = 'campos-lotacao';
+    cardDados.insertBefore(gridTipo, primeiroGrid);
+    cardDados.insertBefore(gridLotacao, primeiroGrid);
+    gridTipo.appendChild(campoTipo);
+    [campoOrigem, campoTitular, campoDestino].forEach(campo => gridLotacao.appendChild(campo));
+    primeiroGrid.remove();
+  }
+
+  organizarCamposCadastro();
+
+  function atualizarListasMembros(){
+    renderOpcoesPromotoresCadastro(false);
+    renderOpcoesSubstitutosCadastro(false);
+    renderOpcoesFiltroTitular(false);
+    renderOpcoesFiltroSubstituto(false);
+  }
+
+  function fecharOpcoesMembroCadastro(inputId, optionsId){
+    const painel = document.getElementById(optionsId);
+    const input = document.getElementById(inputId);
+    if(painel) painel.classList.remove('open');
+    if(input) input.setAttribute('aria-expanded', 'false');
+  }
+
+  function renderOpcoesMembroCadastro(inputId, optionsId, filtrar){
+    const input = document.getElementById(inputId);
+    const painel = document.getElementById(optionsId);
+    if(!input || !painel) return;
+    const termo = filtrar ? textoChaveImportacao(input.value) : '';
+    const lista = promotores
+      .slice().sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}))
+      .filter(promotor => !termo || textoChaveImportacao(promotor.nome).includes(termo));
+    painel.innerHTML = lista.length
+      ? lista.map(promotor=>`<button type="button" class="member-option" role="option" data-promotor-cadastro="${escapeHtml(promotor.id)}">${escapeHtml(promotor.nome)}</button>`).join('')
+      : '<div class="member-options-empty">Nenhum promotor cadastrado encontrado.</div>';
+    painel.querySelectorAll('[data-promotor-cadastro]').forEach(opcao=>{
+      opcao.addEventListener('mousedown', evento=>evento.preventDefault());
+      opcao.addEventListener('click', ()=>{
+        const promotor = promotores.find(item=>item.id === opcao.dataset.promotorCadastro);
+        if(!promotor) return;
+        input.value = promotor.nome;
+        input.dispatchEvent(new Event('input', {bubbles:true}));
+        fecharOpcoesMembroCadastro(inputId, optionsId);
+      });
+    });
+  }
+
+  function renderOpcoesPromotoresCadastro(filtrar){
+    renderOpcoesMembroCadastro('c-titular', 'opcoes-promotores-cadastro', filtrar);
+  }
+
+  function renderOpcoesSubstitutosCadastro(filtrar){
+    renderOpcoesMembroCadastro('c-substituto', 'opcoes-substitutos-cadastro', filtrar);
+  }
+
+  function renderOpcoesFiltroTitular(filtrar){
+    renderOpcoesMembroCadastro('f-titular', 'opcoes-filtro-titular', filtrar);
+  }
+
+  function renderOpcoesFiltroSubstituto(filtrar){
+    renderOpcoesMembroCadastro('f-substituto', 'opcoes-filtro-substituto', filtrar);
+  }
+
+  function configurarAutocompletesMembrosCadastro(){
+    [
+      ['c-titular', 'opcoes-promotores-cadastro'],
+      ['c-substituto', 'opcoes-substitutos-cadastro'],
+      ['f-titular', 'opcoes-filtro-titular'],
+      ['f-substituto', 'opcoes-filtro-substituto']
+    ].forEach(([inputId, optionsId])=>{
+      const input = document.getElementById(inputId);
+      const painel = document.getElementById(optionsId);
+      if(!input || !painel) return;
+      input.addEventListener('focus', ()=>{
+        renderOpcoesMembroCadastro(inputId, optionsId, false);
+        painel.classList.add('open');
+        input.setAttribute('aria-expanded', 'true');
+      });
+      input.addEventListener('click', ()=>{
+        renderOpcoesMembroCadastro(inputId, optionsId, false);
+        painel.classList.add('open');
+        input.setAttribute('aria-expanded', 'true');
+      });
+      input.addEventListener('input', ()=>{
+        renderOpcoesMembroCadastro(inputId, optionsId, true);
+        painel.classList.add('open');
+        input.setAttribute('aria-expanded', 'true');
+      });
+      input.addEventListener('blur', ()=>setTimeout(()=>fecharOpcoesMembroCadastro(inputId, optionsId), 160));
+    });
+    document.addEventListener('click', evento=>{
+      if(!evento.target.closest('[data-cadastro-membro-wrap], [data-filtro-membro-wrap]')){
+        fecharOpcoesMembroCadastro('c-titular', 'opcoes-promotores-cadastro');
+        fecharOpcoesMembroCadastro('c-substituto', 'opcoes-substitutos-cadastro');
+        fecharOpcoesMembroCadastro('f-titular', 'opcoes-filtro-titular');
+        fecharOpcoesMembroCadastro('f-substituto', 'opcoes-filtro-substituto');
+      }
+    });
+  }
+
+  configurarAutocompletesMembrosCadastro();
+
+  function tiposDisponiveis(incluirInativos = true){
+    return tiposMovimentacao
+      .filter(tipo => incluirInativos || tipo.ativo !== false)
+      .slice()
+      .sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}));
+  }
+
+  function encontrarTipo(nome){
+    const chave = textoChaveImportacao(nome);
+    return tiposMovimentacao.find(tipo => textoChaveImportacao(tipo.nome) === chave) || null;
+  }
+
+  function renderSelectTipos(){
+    document.querySelectorAll('[data-tipos-movimentacao]').forEach(select=>{
+      const valorAtual = select.value;
+      const textoPadrao = select.id === 'c-tipo' ? 'Selecione...' : (select.id === 'f-tipo' ? 'Todos' : 'Todos os tipos');
+      const tipoAtual = encontrarTipo(valorAtual);
+      const opcoes = tiposDisponiveis(false);
+      if(tipoAtual && !tipoAtual.ativo) opcoes.push(tipoAtual);
+      if(!opcoes.length){
+        select.disabled = true;
+        select.innerHTML = `<option value="">${tiposMovimentacao.length ? 'Nenhum tipo ativo' : 'Nenhum tipo cadastrado'}</option>`;
+        return;
+      }
+      select.disabled = false;
+      const vistos = new Set();
+      select.innerHTML = `<option value="">${textoPadrao}</option>` + opcoes
+        .filter(tipo=>{
+          const chave = textoChaveImportacao(tipo.nome);
+          if(vistos.has(chave)) return false;
+          vistos.add(chave);
+          return true;
+        })
+        .map(tipo=>`<option value="${escapeHtml(tipo.nome)}">${escapeHtml(tipo.nome)}${tipo.ativo === false ? ' (inativo)' : ''}</option>`)
+        .join('');
+      const opcaoCorrespondente = Array.from(select.options).find(opcao => textoChaveImportacao(opcao.value) === textoChaveImportacao(valorAtual));
+      select.value = opcaoCorrespondente ? opcaoCorrespondente.value : '';
+    });
+  }
+
+  function renderAuxiliares(){
+    const promotoresWrap = document.getElementById('tabela-promotores-auxiliar');
+    const tiposWrap = document.getElementById('tabela-tipos-auxiliar');
+    if(!promotoresWrap || !tiposWrap) return;
+    const listaPromotores = promotores.slice().sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}));
+    promotoresWrap.innerHTML = listaPromotores.length ? `
+      <div class="auxiliary-table-wrap"><table class="reg-table auxiliary-table">
+        <thead><tr><th>Nome</th><th>Observação</th><th></th></tr></thead>
+        <tbody>${listaPromotores.map(promotor=>{
+          return `<tr>
+            <td><strong>${escapeHtml(promotor.nome)}</strong></td>
+            <td>${escapeHtml(promotor.observacoes || '—')}</td>
+            <td class="auxiliary-actions"><button type="button" class="btn btn-ghost btn-sm" data-aux-promotor-editar="${escapeHtml(promotor.id)}">Editar</button></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>` : '<div class="auxiliary-empty">Nenhum promotor cadastrado ainda.</div>';
+
+    const listaTipos = tiposMovimentacao.slice().sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}));
+    tiposWrap.innerHTML = listaTipos.length ? `
+      <div class="auxiliary-table-wrap"><table class="reg-table auxiliary-table">
+        <thead><tr><th>Tipo</th><th>Substituto</th><th>Estado</th><th></th></tr></thead>
+        <tbody>${listaTipos.map(tipo=>`<tr>
+          <td><strong>${escapeHtml(tipo.nome)}</strong></td>
+          <td>${tipo.exigeSubstituto === true ? 'Obrigatório' : 'Não se aplica'}</td>
+          <td><span class="auxiliary-status ${tipo.ativo === false ? 'inactive' : ''}">${tipo.ativo === false ? 'Inativo' : 'Ativo'}</span></td>
+          <td class="auxiliary-actions"><button type="button" class="btn btn-ghost btn-sm" data-aux-tipo-editar="${escapeHtml(tipo.id)}">Editar</button></td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<div class="auxiliary-empty">Nenhum tipo carregado. Execute a migração do Supabase para criar os tipos padrão.</div>';
+
+    promotoresWrap.querySelectorAll('[data-aux-promotor-editar]').forEach(button=>{
+      button.addEventListener('click', ()=>abrirFormPromotorAuxiliar(button.dataset.auxPromotorEditar));
+    });
+    tiposWrap.querySelectorAll('[data-aux-tipo-editar]').forEach(button=>{
+      button.addEventListener('click', ()=>abrirFormTipoAuxiliar(button.dataset.auxTipoEditar));
+    });
+  }
+
+  function tipoExigeSubstituto(tipo){
+    const tipoCadastrado = encontrarTipo(tipo);
+    return tipoCadastrado?.exigeSubstituto === true;
+  }
+
+  function tipoMudaPromotoria(tipo){
+    const chave = textoChaveImportacao(tipo);
+    return chave.startsWith('promoc') || chave.startsWith('remo');
+  }
+
+  function registroAbertoAnteriorDoPromotor(promotorId, promotoriaOrigemId, dataInicial, idIgnorado){
+    return registros
+      .filter(registro => registro.id !== idIgnorado)
+      .filter(registro => registro.promotorId === promotorId)
+      .filter(registro => !promotoriaOrigemId || registro.promotoriaId === promotoriaOrigemId)
+      .filter(registro => !registro.dataFinal && registro.dataInicial)
+      .filter(registro => !dataInicial || registro.dataInicial < dataInicial)
+      .sort((a, b) => String(b.dataInicial).localeCompare(String(a.dataInicial)))[0] || null;
+  }
+
+  function registroAbertoDaPromotoria(promotoriaId, dataInicial, idIgnorado){
+    return registros
+      .filter(registro => registro.id !== idIgnorado)
+      .filter(registro => registro.promotoriaId === promotoriaId)
+      .filter(registro => !registro.dataFinal && registro.dataInicial && registro.promotorId)
+      .filter(registro => !dataInicial || registro.dataInicial < dataInicial)
+      .sort((a, b) => String(b.dataInicial).localeCompare(String(a.dataInicial)))[0] || null;
+  }
+
+  function preencherPromotoriaOrigemAutomatica(){
+    const select = document.getElementById('c-promotoria-origem');
+    if(!select) return;
+    if(!tipoMudaPromotoria(document.getElementById('c-tipo').value)){
+      select.value = '';
+      delete select.dataset.preenchidaAutomaticamente;
+      return;
+    }
+    if(select.value && select.dataset.preenchidaAutomaticamente !== 'true') return;
+    const promotor = membroPorNome(promotores, document.getElementById('c-titular').value);
+    if(!promotor){
+      select.value = '';
+      return;
+    }
+    const registroOrigem = registroAbertoAnteriorDoPromotor(
+      promotor.id,
+      '',
+      document.getElementById('c-data-ini').value,
+      editandoId
+    );
+    if(!registroOrigem) return;
+    const promotoria = promotorias.find(item => item.id === registroOrigem.promotoriaId) ||
+      promotorias.find(item => textoChaveImportacao(item.nome) === textoChaveImportacao(registroOrigem.promotoria));
+    if(promotoria){
+      select.value = promotoria.nome;
+      select.dataset.preenchidaAutomaticamente = 'true';
+    }
+  }
+
+  function preencherPromotorAutomatico(){
+    if(!tipoMudaPromotoria(document.getElementById('c-tipo').value)) return;
+    const campoTitular = document.getElementById('c-titular');
+    if(campoTitular.value.trim()) return;
+    const promotoriaOrigem = promotorias.find(item => textoChaveImportacao(item.nome) === textoChaveImportacao(document.getElementById('c-promotoria-origem').value));
+    if(!promotoriaOrigem) return;
+    const registroOrigem = registroAbertoDaPromotoria(
+      promotoriaOrigem.id,
+      document.getElementById('c-data-ini').value,
+      editandoId
+    );
+    if(!registroOrigem) return;
+    const promotor = promotores.find(item => item.id === registroOrigem.promotorId) || membroPorNome(promotores, registroOrigem.titular);
+    if(!promotor) return;
+    campoTitular.value = promotor.nome;
+    campoTitular.dataset.preenchidaAutomaticamente = 'true';
+  }
+
+  function sincronizarCamposTransferencia(){
+    preencherPromotoriaOrigemAutomatica();
+    preencherPromotorAutomatico();
+  }
+
+  function atualizarRegraSubstituto(){
+    const exige = tipoExigeSubstituto(document.getElementById('c-tipo').value);
+    const mudaPromotoria = tipoMudaPromotoria(document.getElementById('c-tipo').value);
+    const input = document.getElementById('c-substituto');
+    const card = document.getElementById('card-substituto');
+    const origem = document.getElementById('c-promotoria-origem');
+    const campoOrigem = document.getElementById('campo-promotoria-origem');
+    const camposGerais = document.getElementById('campos-registro-gerais');
+    const campoTitular = document.getElementById('c-titular').closest('.field');
+    const campoDestinacao = document.getElementById('c-destinacao').closest('.field');
+    const filtroLocal = document.getElementById('filtro-local-cadastro');
+    const titulo = document.getElementById('titulo-substituto');
+    const regra = document.getElementById('substituto-regra');
+    input.required = exige;
+    card.hidden = !exige;
+    origem.required = mudaPromotoria;
+    campoOrigem.hidden = !mudaPromotoria;
+    campoTitular.hidden = exige;
+    document.querySelector('label[for="c-promotoria"]').textContent = mudaPromotoria ? 'Promotoria de destino *' : 'Promotoria *';
+    document.querySelector('label[for="c-promotoria-origem"]').textContent = mudaPromotoria ? 'Promotoria de origem *' : 'Promotoria de origem';
+    camposGerais.hidden = exige;
+    filtroLocal.hidden = exige;
+    campoDestinacao.hidden = mudaPromotoria;
+    if(mudaPromotoria) document.getElementById('c-destinacao').value = '';
+    titulo.textContent = 'Substituto (obrigatório)';
+    regra.hidden = !exige;
+    preencherPromotoriaOrigemAutomatica();
+  }
+
   function limparForm(){
     Object.values(camposForm).forEach(id => { document.getElementById(id).value = ''; });
+    delete document.getElementById('c-promotoria-origem').dataset.preenchidaAutomaticamente;
     document.getElementById('f-id').value = '';
     definirFiltroLocalPromotorias('');
+    atualizarRegraSubstituto();
     atualizarSituacoesCalculadas();
   }
+
+  document.getElementById('c-tipo').addEventListener('change', ()=>{
+    atualizarRegraSubstituto();
+    sincronizarCamposTransferencia();
+  });
+  document.getElementById('c-titular').addEventListener('input', sincronizarCamposTransferencia);
+  document.getElementById('c-promotoria-origem').addEventListener('change', ()=>{
+    document.getElementById('c-promotoria-origem').dataset.preenchidaAutomaticamente = 'false';
+    preencherPromotorAutomatico();
+  });
 
   function atualizarSituacoesCalculadas(){
     const dataInicial = document.getElementById('c-data-ini').value;
@@ -2252,8 +3133,14 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       atualizarSituacoesCalculadas();
     };
     [inicial, final].forEach(campo=>{
-      campo.addEventListener('input', atualizarSituacao);
-      campo.addEventListener('change', atualizarSituacao);
+      campo.addEventListener('input', ()=>{
+        atualizarSituacao();
+        if(idInicial === 'c-data-ini') sincronizarCamposTransferencia();
+      });
+      campo.addEventListener('change', ()=>{
+        atualizarSituacao();
+        if(idInicial === 'c-data-ini') sincronizarCamposTransferencia();
+      });
     });
     atualizarSituacao();
   });
@@ -2296,6 +3183,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       Object.entries(camposForm).forEach(([campo, elId])=>{
         document.getElementById(elId).value = r[campo] || '';
       });
+      atualizarRegraSubstituto();
       atualizarSituacoesCalculadas();
       document.getElementById('cadastro-title').textContent = 'Editar registro';
       document.getElementById('cadastro-sub').textContent = 'Atualize os dados do titular e do substituto.';
@@ -2324,8 +3212,57 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       return;
     }
     document.getElementById('c-promotoria').value = promotoriaBase.nome;
-    if(!intervaloDeDatasValido('c-data-ini', 'c-data-fim', 'A data final não pode ser anterior à data inicial.')) return;
-    if(!intervaloDeDatasValido('c-data-ini-sub', 'c-data-fim-sub', 'A data final do substituto não pode ser anterior à data inicial.')) return;
+    const nomeTitular = document.getElementById('c-titular').value.trim();
+    if(nomeTitular){
+      const promotorBase = membroPorNome(promotores, nomeTitular);
+      if(!promotorBase){
+        mostrarToast('Cadastre o promotor na tela Cadastros de apoio antes de vinculá-lo ao registro.');
+        document.getElementById('c-titular').focus();
+        return;
+      }
+      document.getElementById('c-titular').value = promotorBase.nome;
+    }
+    const tipoSelecionado = document.getElementById('c-tipo').value;
+    const movimentacaoDeLotacao = tipoMudaPromotoria(tipoSelecionado);
+    const promotoriaOrigem = document.getElementById('c-promotoria-origem').value.trim();
+    const dataInicialMovimentacao = document.getElementById('c-data-ini').value;
+    if(movimentacaoDeLotacao && !nomeTitular){
+      mostrarToast('Para Promoção e Remoção, informe o promotor titular.');
+      document.getElementById('c-titular').focus();
+      return;
+    }
+    if(movimentacaoDeLotacao && !dataInicialMovimentacao){
+      mostrarToast('Para Promoção e Remoção, informe a data inicial.');
+      document.getElementById('c-data-ini').focus();
+      return;
+    }
+    if(movimentacaoDeLotacao && !promotoriaOrigem){
+      mostrarToast('Informe a promotoria de origem da movimentação.');
+      document.getElementById('c-promotoria-origem').focus();
+      return;
+    }
+    if(movimentacaoDeLotacao && textoChaveImportacao(promotoriaOrigem) === textoChaveImportacao(promotoriaBase.nome)){
+      mostrarToast('A promotoria de origem deve ser diferente da promotoria de destino.');
+      document.getElementById('c-promotoria-origem').focus();
+      return;
+    }
+    const nomeSubstituto = document.getElementById('c-substituto').value.trim();
+    if(tipoExigeSubstituto(tipoSelecionado) && !nomeSubstituto){
+      mostrarToast('Para Acúmulo e Designação, informe o substituto.');
+      document.getElementById('c-substituto').focus();
+      return;
+    }
+    if(tipoExigeSubstituto(tipoSelecionado) && nomeSubstituto){
+      const promotorSubstituto = membroPorNome(promotores, nomeSubstituto);
+      if(!promotorSubstituto){
+        mostrarToast('Cadastre o promotor substituto na tela Cadastros de apoio antes de vinculá-lo ao registro.');
+        document.getElementById('c-substituto').focus();
+        return;
+      }
+      document.getElementById('c-substituto').value = promotorSubstituto.nome;
+    }
+    if(!tipoExigeSubstituto(tipoSelecionado) && !intervaloDeDatasValido('c-data-ini', 'c-data-fim', 'A data final não pode ser anterior à data inicial.')) return;
+    if(tipoExigeSubstituto(tipoSelecionado) && !intervaloDeDatasValido('c-data-ini-sub', 'c-data-fim-sub', 'A data final do substituto não pode ser anterior à data inicial.')) return;
     const dados = {};
     Object.entries(camposForm).forEach(([campo, elId])=>{
       dados[campo] = document.getElementById(elId).value.trim();
@@ -2373,6 +3310,129 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   });
 
   /* ---------------------------------------------------------
+     CADASTROS DE APOIO
+  --------------------------------------------------------- */
+  function fecharFormPromotorAuxiliar(){
+    const form = document.getElementById('form-promotor-auxiliar');
+    form.reset();
+    document.getElementById('aux-promotor-id').value = '';
+    document.getElementById('btn-salvar-promotor').textContent = 'Salvar promotor';
+    form.hidden = true;
+  }
+
+  function abrirFormPromotorAuxiliar(id = null){
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem cadastrar promotores.');
+      return;
+    }
+    const form = document.getElementById('form-promotor-auxiliar');
+    form.reset();
+    document.getElementById('aux-promotor-id').value = id || '';
+    if(id){
+      const promotor = promotores.find(item=>item.id === id);
+      if(!promotor){ mostrarToast('Promotor não encontrado.'); return; }
+      document.getElementById('aux-promotor-nome').value = promotor.nome || '';
+      document.getElementById('aux-promotor-observacoes').value = promotor.observacoes || '';
+      document.getElementById('btn-salvar-promotor').textContent = 'Salvar alterações';
+    }
+    form.hidden = false;
+    document.getElementById('aux-promotor-nome').focus();
+  }
+
+  function fecharFormTipoAuxiliar(){
+    const form = document.getElementById('form-tipo-auxiliar');
+    form.reset();
+    document.getElementById('aux-tipo-id').value = '';
+    document.getElementById('aux-tipo-ativo').checked = true;
+    document.getElementById('aux-tipo-exige-substituto').checked = false;
+    document.getElementById('btn-salvar-tipo').textContent = 'Salvar tipo';
+    form.hidden = true;
+  }
+
+  function abrirFormTipoAuxiliar(id = null){
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem cadastrar tipos.');
+      return;
+    }
+    const form = document.getElementById('form-tipo-auxiliar');
+    form.reset();
+    document.getElementById('aux-tipo-id').value = id || '';
+    document.getElementById('aux-tipo-ativo').checked = true;
+    document.getElementById('aux-tipo-exige-substituto').checked = false;
+    if(id){
+      const tipo = tiposMovimentacao.find(item=>item.id === id);
+      if(!tipo){ mostrarToast('Tipo de movimentação não encontrado.'); return; }
+      document.getElementById('aux-tipo-nome').value = tipo.nome || '';
+      document.getElementById('aux-tipo-ativo').checked = tipo.ativo !== false;
+      document.getElementById('aux-tipo-exige-substituto').checked = tipo.exigeSubstituto === true;
+      document.getElementById('btn-salvar-tipo').textContent = 'Salvar alterações';
+    }
+    form.hidden = false;
+    document.getElementById('aux-tipo-nome').focus();
+  }
+
+  document.getElementById('btn-novo-promotor').addEventListener('click', ()=>abrirFormPromotorAuxiliar());
+  document.getElementById('btn-cancelar-promotor').addEventListener('click', fecharFormPromotorAuxiliar);
+  document.getElementById('form-promotor-auxiliar').addEventListener('submit', async event=>{
+    event.preventDefault();
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem salvar promotores.');
+      return;
+    }
+    const nome = document.getElementById('aux-promotor-nome').value.trim();
+    if(!nome){ mostrarToast('Informe o nome do promotor.'); return; }
+    const id = document.getElementById('aux-promotor-id').value.trim();
+    const payload = {
+      nome,
+      observacoes: document.getElementById('aux-promotor-observacoes').value.trim() || null
+    };
+    const query = id
+      ? supabaseClient.from('promotores').update(payload).eq('id', id)
+      : supabaseClient.from('promotores').insert(payload);
+    const { error } = await query;
+    if(error){
+      console.error(error);
+      mostrarToast(error.code === '23505' ? 'Já existe um promotor com esse nome.' : 'Não foi possível salvar o promotor.');
+      return;
+    }
+    fecharFormPromotorAuxiliar();
+    await carregar();
+    mostrarToast(id ? 'Promotor atualizado com sucesso.' : 'Promotor cadastrado com sucesso.');
+  });
+
+  document.getElementById('btn-novo-tipo').addEventListener('click', ()=>abrirFormTipoAuxiliar());
+  document.getElementById('btn-cancelar-tipo').addEventListener('click', fecharFormTipoAuxiliar);
+  document.getElementById('form-tipo-auxiliar').addEventListener('submit', async event=>{
+    event.preventDefault();
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem salvar tipos.');
+      return;
+    }
+    const nome = document.getElementById('aux-tipo-nome').value.trim();
+    const id = document.getElementById('aux-tipo-id').value.trim();
+    if(!nome){ mostrarToast('Informe o nome do tipo de movimentação.'); return; }
+    const duplicado = tiposMovimentacao.find(tipo => tipo.id !== id && textoChaveImportacao(tipo.nome) === textoChaveImportacao(nome));
+    if(duplicado){ mostrarToast('Já existe um tipo com esse nome.'); return; }
+    const payload = {
+      nome,
+      ativo: document.getElementById('aux-tipo-ativo').checked,
+      exige_substituto: document.getElementById('aux-tipo-exige-substituto').checked
+    };
+    const query = id
+      ? supabaseClient.from('tipos_movimentacao').update(payload).eq('id', id)
+      : supabaseClient.from('tipos_movimentacao').insert(payload);
+    const { error } = await query;
+    if(error){
+      console.error(error);
+      mostrarToast(error.code === '23505' ? 'Já existe um tipo com esse nome.' : 'Não foi possível salvar o tipo.');
+      return;
+    }
+    fecharFormTipoAuxiliar();
+    await carregar();
+    mostrarToast(id ? 'Tipo atualizado com sucesso.' : 'Tipo cadastrado com sucesso.');
+  });
+
+  /* ---------------------------------------------------------
      DETALHE
   --------------------------------------------------------- */
   function abrirDetalhe(id, origem = 'listagem'){
@@ -2390,6 +3450,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
     let html = '';
     html += item('Promotoria', r.promotoria);
+    html += item('Promotoria de origem', r.promotoriaOrigem);
     html += item('Titular', r.titular);
     html += item('Tipo da movimentação', r.tipo);
     html += item('Destinação', r.destinacao);
@@ -2468,7 +3529,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const lista = registros
       .filter(r => r.promotoria === prom)
       .sort((a,b)=>{
-        const da = parseData(a.dataInicial), db = parseData(b.dataInicial);
+        const da = parseData(datasExibidasRegistro(a).inicial), db = parseData(datasExibidasRegistro(b).inicial);
         return (da? da.getTime():-Infinity) - (db? db.getTime():-Infinity);
       });
     if(!lista.length){
@@ -2476,9 +3537,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       return;
     }
     wrap.innerHTML = `<h3>Linha do tempo — ${escapeHtml(prom)}</h3>` + lista.map(r=>{
-      const sit = situacaoCalculada(r);
+      const sit = situacaoPrincipalCalculada(r);
+      const datas = datasExibidasRegistro(r);
       return `<div class="dl-item" style="cursor:pointer;" data-id="${r.id}">
-        <div class="k">${fmtData(r.dataInicial)} ${r.dataFinal ? '→ ' + fmtData(r.dataFinal) : ''} <span class="seal ${seloClasse(sit)}" style="margin-left:8px;">${sit}</span></div>
+        <div class="k">${fmtData(datas.inicial)} ${datas.final ? '→ ' + fmtData(datas.final) : ''} <span class="seal ${seloClasse(sit)}" style="margin-left:8px;">${sit}</span></div>
         <div class="v"><strong>${escapeHtml(r.tipo||'—')}</strong> — ${escapeHtml(r.titular||'—')} ${r.substituto ? '· substituto: ' + escapeHtml(r.substituto) : ''}</div>
       </div>`;
     }).join('');
@@ -2592,8 +3654,14 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
      INICIALIZAÇÃO
   --------------------------------------------------------- */
   function render(){
+    const ajudaLocalCadastro = document.querySelector('#filtro-local-cadastro .helper');
+    if(ajudaLocalCadastro) ajudaLocalCadastro.textContent = 'Filtre por local para encontrar a promotoria com mais rapidez.';
     atualizarSelectPromotorias();
+    atualizarListasMembros();
+    renderSelectTipos();
+    renderAuxiliares();
     renderSituacaoMembro();
+    renderSituacaoMembros();
     renderResumo();
     renderListagem();
     renderHistorico();

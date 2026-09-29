@@ -298,3 +298,337 @@ on public.perfis
 for select
 to authenticated
 using ((select auth.uid()) = id or (select public.is_admin()));
+
+-- ============================================================
+-- Novas tabelas de membros
+-- Execute esta seção também em instalações que já possuem as 3 tabelas.
+-- O promotor é um cadastro independente; os vínculos ficam em registros.
+-- ============================================================
+create table if not exists public.promotores (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  matricula text,
+  email text,
+  telefone text,
+  observacoes text,
+  criado_em timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+
+create table if not exists public.substitutos (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  matricula text,
+  email text,
+  telefone text,
+  observacoes text,
+  criado_em timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+
+create unique index if not exists promotores_nome_normalizado_idx
+  on public.promotores (lower(trim(nome)));
+
+create unique index if not exists substitutos_nome_normalizado_idx
+  on public.substitutos (lower(trim(nome)));
+
+alter table public.registros add column if not exists promotoria_id uuid references public.promotorias(id) on delete set null;
+alter table public.registros add column if not exists promotoria_origem text;
+alter table public.registros add column if not exists promotoria_origem_id uuid references public.promotorias(id) on delete set null;
+alter table public.registros add column if not exists promotor_id uuid references public.promotores(id) on delete set null;
+alter table public.registros add column if not exists substituto_id uuid references public.substitutos(id) on delete set null;
+
+create index if not exists registros_promotor_origem_aberto_idx
+  on public.registros (promotor_id, promotoria_origem_id, data_final);
+
+update public.registros r
+set promotoria_id = p.id
+from public.promotorias p
+where r.promotoria_id is null
+  and lower(trim(r.promotoria)) = lower(trim(p.nome));
+
+insert into public.promotores (nome)
+select distinct trim(r.titular)
+from public.registros r
+where nullif(trim(r.titular), '') is not null
+  and not exists (
+    select 1 from public.promotores p
+    where lower(trim(p.nome)) = lower(trim(r.titular))
+  );
+
+-- A mesma lista de promotores também abastece os substitutos dos registros.
+insert into public.promotores (nome)
+select distinct trim(r.substituto)
+from public.registros r
+where nullif(trim(r.substituto), '') is not null
+  and not exists (
+    select 1 from public.promotores p
+    where lower(trim(p.nome)) = lower(trim(r.substituto))
+  );
+
+insert into public.substitutos (nome)
+select distinct trim(r.substituto)
+from public.registros r
+where nullif(trim(r.substituto), '') is not null
+  and not exists (
+    select 1 from public.substitutos s
+    where lower(trim(s.nome)) = lower(trim(r.substituto))
+  );
+
+update public.registros r
+set promotor_id = p.id
+from public.promotores p
+where r.promotor_id is null
+  and nullif(trim(r.titular), '') is not null
+  and lower(trim(p.nome)) = lower(trim(r.titular));
+
+update public.registros r
+set substituto_id = s.id
+from public.substitutos s
+where r.substituto_id is null
+  and nullif(trim(r.substituto), '') is not null
+  and lower(trim(s.nome)) = lower(trim(r.substituto));
+
+-- A regra de negócio considera Acúmulo e Designação como registros de substituição.
+comment on column public.registros.substituto_id is
+  'Substituto do registro; deve ser preenchido quando tipo for Acúmulo ou Designação.';
+
+alter table public.registros drop constraint if exists registros_tipo_check;
+alter table public.registros add constraint registros_tipo_check check (
+  tipo is null or tipo in (
+    'Remoção', 'Nomeação', 'Exoneração', 'Autorização', 'Afastamento',
+    'Acúmulo', 'Designação', 'Declaração', 'Convocação', 'Termo de Posse',
+    'Vacância', 'Aposentadoria', 'Instalação', 'Indicação', 'Promoção', 'Outro'
+  )
+);
+
+alter table public.registros drop constraint if exists registros_situacao_check;
+alter table public.registros add constraint registros_situacao_check check (
+  situacao is null or situacao in ('Presente', 'Futuro', 'Plantão', 'Encerrado')
+);
+
+alter table public.registros drop constraint if exists registros_situacao_substituto_check;
+alter table public.registros add constraint registros_situacao_substituto_check check (
+  situacao_substituto is null or situacao_substituto in ('Presente', 'Futuro', 'Plantão', 'Encerrado')
+);
+
+alter table public.registros drop constraint if exists registros_tipo_substituto_check;
+alter table public.registros add constraint registros_tipo_substituto_check check (
+  tipo is null
+  or tipo not in ('Acúmulo', 'Designação')
+  or substituto_id is not null
+  or nullif(trim(substituto), '') is not null
+) not valid;
+
+create or replace function public.definir_atualizacao_membro()
+returns trigger
+language plpgsql
+security invoker
+set search_path = public
+as $$
+begin
+  new.atualizado_em = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists promotores_definir_atualizacao on public.promotores;
+create trigger promotores_definir_atualizacao
+before update on public.promotores
+for each row execute function public.definir_atualizacao_membro();
+
+drop trigger if exists substitutos_definir_atualizacao on public.substitutos;
+create trigger substitutos_definir_atualizacao
+before update on public.substitutos
+for each row execute function public.definir_atualizacao_membro();
+
+alter table public.promotores enable row level security;
+alter table public.substitutos enable row level security;
+
+grant select on public.promotores, public.substitutos to anon, authenticated;
+grant select, insert, update, delete on public.promotores, public.substitutos to authenticated;
+revoke insert, update, delete on public.promotores, public.substitutos from anon;
+
+drop policy if exists "Leitura pública dos promotores" on public.promotores;
+create policy "Leitura pública dos promotores" on public.promotores
+for select to anon, authenticated using (true);
+
+drop policy if exists "Administradores podem gerenciar promotores" on public.promotores;
+create policy "Administradores podem gerenciar promotores" on public.promotores
+for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+
+drop policy if exists "Leitura pública dos substitutos" on public.substitutos;
+create policy "Leitura pública dos substitutos" on public.substitutos
+for select to anon, authenticated using (true);
+
+drop policy if exists "Administradores podem gerenciar substitutos" on public.substitutos;
+create policy "Administradores podem gerenciar substitutos" on public.substitutos
+for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+
+-- ============================================================
+-- Tipos de movimentação cadastráveis
+-- ============================================================
+create table if not exists public.tipos_movimentacao (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  ativo boolean not null default true,
+  exige_substituto boolean not null default false,
+  criado_em timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+
+alter table public.tipos_movimentacao
+  add column if not exists exige_substituto boolean not null default false;
+
+create unique index if not exists tipos_movimentacao_nome_normalizado_idx
+  on public.tipos_movimentacao (lower(trim(nome)));
+
+insert into public.tipos_movimentacao (nome)
+select nomes.nome
+from (values
+  ('Remoção'), ('Nomeação'), ('Autorização'), ('Afastamento'), ('Acúmulo'),
+  ('Designação'), ('Declaração'), ('Convocação'), ('Exoneração'),
+  ('Termo de Posse'), ('Vacância'), ('Aposentadoria'), ('Instalação'),
+  ('Indicação'), ('Promoção'), ('Outro')
+) as nomes(nome)
+where not exists (
+  select 1 from public.tipos_movimentacao t
+  where lower(trim(t.nome)) = lower(trim(nomes.nome))
+);
+
+update public.tipos_movimentacao
+set exige_substituto = true
+where lower(trim(nome)) in (lower('Acúmulo'), lower('Designação'));
+
+-- Preserva tipos personalizados que já possam existir nos registros.
+insert into public.tipos_movimentacao (nome)
+select distinct trim(r.tipo)
+from public.registros r
+where nullif(trim(r.tipo), '') is not null
+  and not exists (
+    select 1 from public.tipos_movimentacao t
+    where lower(trim(t.nome)) = lower(trim(r.tipo))
+  );
+
+alter table public.registros add column if not exists tipo_id uuid references public.tipos_movimentacao(id) on delete set null;
+alter table public.registros drop constraint if exists registros_tipo_check;
+
+update public.registros r
+set tipo_id = t.id
+from public.tipos_movimentacao t
+where r.tipo_id is null
+  and nullif(trim(r.tipo), '') is not null
+  and lower(trim(r.tipo)) = lower(trim(t.nome));
+
+create index if not exists registros_tipo_id_idx on public.registros (tipo_id);
+
+create or replace function public.validar_substituto_do_registro()
+returns trigger
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  tipo_exige_substituto boolean := false;
+begin
+  select coalesce(t.exige_substituto, false)
+    into tipo_exige_substituto
+  from public.tipos_movimentacao t
+  where t.id = new.tipo_id;
+
+  if tipo_exige_substituto
+     or lower(trim(coalesce(new.tipo, ''))) in ('acúmulo', 'designação') then
+    if new.substituto_id is null and nullif(trim(coalesce(new.substituto, '')), '') is null then
+      raise exception 'O tipo de movimentação exige um substituto.' using errcode = 'check_violation';
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists registros_validar_substituto on public.registros;
+create trigger registros_validar_substituto
+before insert or update on public.registros
+for each row execute function public.validar_substituto_do_registro();
+
+create or replace function public.definir_atualizacao_tipo_movimentacao()
+returns trigger
+language plpgsql
+security invoker
+set search_path = public
+as $$
+begin
+  new.atualizado_em = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists tipos_movimentacao_definir_atualizacao on public.tipos_movimentacao;
+create trigger tipos_movimentacao_definir_atualizacao
+before update on public.tipos_movimentacao
+for each row execute function public.definir_atualizacao_tipo_movimentacao();
+
+alter table public.tipos_movimentacao enable row level security;
+grant select on public.tipos_movimentacao to anon, authenticated;
+grant select, insert, update, delete on public.tipos_movimentacao to authenticated;
+revoke insert, update, delete on public.tipos_movimentacao from anon;
+
+drop policy if exists "Leitura pública dos tipos de movimentação" on public.tipos_movimentacao;
+create policy "Leitura pública dos tipos de movimentação" on public.tipos_movimentacao
+for select to anon, authenticated using (true);
+
+drop policy if exists "Administradores podem gerenciar tipos de movimentação" on public.tipos_movimentacao;
+create policy "Administradores podem gerenciar tipos de movimentação" on public.tipos_movimentacao
+for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+
+-- ============================================================
+-- Consolidação: titular e substituto usam a tabela promotores
+-- ============================================================
+-- Preserva nomes que só existiam na tabela antiga de substitutos.
+insert into public.promotores (nome, observacoes)
+select distinct s.nome, s.observacoes
+from public.substitutos s
+where nullif(trim(s.nome), '') is not null
+  and not exists (
+    select 1 from public.promotores p
+    where lower(trim(p.nome)) = lower(trim(s.nome))
+  );
+
+-- Remove a FK antiga antes de trocar os IDs de substitutos pelos IDs de promotores.
+do $$
+declare
+  nome_constraint text;
+begin
+  select c.conname
+    into nome_constraint
+  from pg_constraint c
+  where c.conrelid = 'public.registros'::regclass
+    and c.confrelid = 'public.substitutos'::regclass
+    and c.contype = 'f'
+  limit 1;
+
+  if nome_constraint is not null then
+    execute format('alter table public.registros drop constraint %I', nome_constraint);
+  end if;
+end;
+$$;
+
+update public.registros r
+set substituto_id = p.id
+from public.substitutos s
+join public.promotores p on lower(trim(p.nome)) = lower(trim(s.nome))
+where r.substituto_id = s.id;
+
+update public.registros r
+set substituto_id = p.id
+from public.promotores p
+where r.substituto_id is null
+  and nullif(trim(r.substituto), '') is not null
+  and lower(trim(p.nome)) = lower(trim(r.substituto));
+
+alter table public.registros drop constraint if exists registros_substituto_id_fkey;
+alter table public.registros
+  add constraint registros_substituto_id_fkey
+  foreign key (substituto_id) references public.promotores(id) on delete set null;
+
+drop table if exists public.substitutos;
