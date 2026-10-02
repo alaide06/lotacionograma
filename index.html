@@ -381,6 +381,64 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .member-summary-button{ flex:none; padding:0; border:0; background:none; color:var(--navy); font:inherit; font-size:11px; font-weight:700; cursor:pointer; text-decoration:underline; }
 .member-summary-button:hover{ color:var(--navy-deep); }
 .member-history-empty{ color:var(--ink-soft); font-size:13px; padding:18px 4px; }
+.member-absence-card{ margin-top:18px; }
+.member-absence-card h3{ margin-bottom:5px; }
+.member-absence-card > p{ margin:0 0 12px; color:var(--ink-soft); font-size:12px; }
+.member-absence-table-wrap{ overflow-x:auto; }
+.member-absence-table{ min-width:700px; }
+.member-absence-table td{ vertical-align:top; }
+.member-absence-reference{ font-weight:600; color:var(--navy-deep); }
+.member-absence-summary{ color:var(--ink-soft); font-size:12px; line-height:1.4; white-space:pre-wrap; }
+.member-absence-days{ color:var(--ink-soft); font-size:12px; line-height:1.45; }
+.absence-toolbar{ display:grid; grid-template-columns:minmax(220px,1fr) minmax(260px,1.2fr) auto; gap:14px; align-items:end; }
+.absence-subtype-control{ display:flex; gap:8px; align-items:center; }
+.absence-subtype-control select{ flex:1; }
+.absence-month-control{ min-width:210px; }
+.absence-month-actions{ display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:36px; }
+.absence-month-actions strong{ min-width:130px; text-align:center; color:var(--navy-deep); text-transform:capitalize; }
+.absence-extra-fields{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:4px; }
+.absence-calendar-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+.absence-calendar-head h3{ margin-bottom:5px; }
+.absence-calendar-head p{ margin:0; color:var(--ink-soft); font-size:12px; }
+.absence-legend{ display:flex; gap:12px; flex-wrap:wrap; color:var(--ink-soft); font-size:11px; white-space:nowrap; }
+.absence-legend span{ display:inline-flex; align-items:center; gap:5px; }
+.absence-dot{ width:9px; height:9px; display:inline-block; border-radius:50%; background:var(--line); }
+.absence-dot.saved{ background:var(--navy); }
+.absence-dot.draft{ background:var(--brass); }
+.absence-calendar-wrap{ overflow-x:auto; }
+.absence-calendar-duo{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; min-width:760px; }
+.absence-month-panel{ min-width:0; }
+.absence-month-panel h4{ margin:0 0 8px; color:var(--navy-deep); text-align:center; text-transform:capitalize; font-size:14px; }
+.absence-calendar{ min-width:0; display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px; }
+.absence-weekday{ padding:5px; text-align:center; color:var(--ink-soft); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+.absence-day-empty{ min-height:74px; border:1px solid transparent; }
+.absence-day{ min-height:74px; padding:8px; border:1px solid var(--line); border-radius:7px; background:#fff; color:var(--ink); text-align:left; cursor:pointer; transition:background .15s ease,border-color .15s ease,transform .15s ease; }
+.absence-day:hover{ border-color:var(--brass); transform:translateY(-1px); }
+.absence-day-number{ display:block; font-weight:700; color:var(--navy-deep); }
+.absence-day-label{ display:block; margin-top:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink-soft); font-size:10px; }
+.absence-day.saved{ background:#edf3f8; border-color:#a8bfd3; }
+.absence-day.draft{ background:#f5f0e5; border-color:var(--brass); box-shadow:inset 0 0 0 1px var(--brass); }
+.absence-day.removed{ background:#f8eded; border-color:#c98282; color:#8c3d3d; }
+.absence-day.other{ background:#f3f1eb; border-style:dashed; }
+.absence-actions{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
+.absence-actions .btn{ flex:none; }
+.absence-mode-active{ color:var(--navy-deep); border-color:var(--brass); background:#f5f0e5; box-shadow:inset 0 0 0 1px var(--brass); }
+.absence-total{ color:var(--navy-deep); font-family:var(--mono); font-size:13px; }
+.absence-summary-toolbar{ display:flex; align-items:flex-end; gap:12px; margin:-2px 0 14px; }
+.absence-summary-toolbar .field{ width:min(320px,100%); margin:0; }
+.absence-summary-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+.absence-summary-item{ padding:12px; border:1px solid var(--line); border-radius:8px; background:#fbfaf6; }
+.absence-summary-item-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; color:var(--navy-deep); }
+.absence-summary-item-head strong{ font-size:13px; }
+.absence-summary-item-count{ color:var(--navy); font-family:var(--mono); font-size:12px; white-space:nowrap; }
+.absence-summary-periods{ display:block; margin-top:7px; color:var(--ink-soft); font-size:11px; line-height:1.45; }
+.absence-details{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+.absence-subtype-form-row{ display:flex; align-items:flex-end; gap:14px; }
+.absence-subtype-form-row .field{ flex:1; margin-bottom:0; }
+.absence-subtype-form-row .pill-buttons{ padding-bottom:0; }
+.absence-summary-date{ color:var(--ink-soft); font-size:12px; }
+@media (max-width:900px){ .absence-toolbar{ grid-template-columns:repeat(2,minmax(0,1fr)); } .absence-month-control{ min-width:0; } }
+@media (max-width:600px){ .absence-toolbar,.absence-extra-fields{ grid-template-columns:1fr; } .absence-calendar-duo{ grid-template-columns:1fr; min-width:0; } .absence-calendar-head,.absence-actions,.absence-subtype-form-row,.absence-summary-toolbar{ align-items:stretch; flex-direction:column; } .absence-summary-toolbar .field{ width:100%; } .absence-legend{ white-space:normal; } }
 .member-roster-filters{ display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap; }
 .member-roster-filters .quick-search{ min-width:260px; flex:1; }
 .member-roster-count{ margin:10px 0 0; color:var(--ink-soft); font-size:12px; }
@@ -444,6 +502,12 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
 .section-divider{ border:none; border-top:1px solid var(--line); margin:22px 0; }
 .pill-buttons{ display:flex; gap:8px; flex-wrap:wrap; }
+.cadastro-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:14px; }
+.cadastro-toolbar-left,.cadastro-toolbar-right{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.cadastro-toolbar-left.cadastro-tabs{ gap:3px; padding:4px; }
+.cadastro-toolbar-right{ margin-left:auto; }
+.cadastro-toolbar .btn.active{ background:var(--brass-soft); color:var(--navy-deep); border-color:var(--brass); }
+@media (max-width:640px){ .cadastro-toolbar{ align-items:stretch; flex-direction:column; } .cadastro-toolbar-right{ margin-left:0; } }
 .helper{ font-size:11.5px; color:var(--ink-soft); margin-top:4px; }
 
 /* ---------- consultor IA ---------- */
@@ -562,6 +626,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       <button data-view="inicio" class="active">Início</button>
       <button data-view="membro">Situação do membro</button>
       <button data-view="membros">Situação dos membros</button>
+      <button data-view="afastamentos">Afastamentos e férias</button>
       <button data-view="resumo">Quadro resumido</button>
       <button data-view="listagem">Painel geral</button>
       <button data-view="consultor" hidden>Consultor IA</button>
@@ -620,11 +685,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
             <p>Consulta rápida por membro, promotoria e tipo</p>
             <span class="home-card-meta">Consultar registros →</span>
           </button>
-          <button type="button" class="home-card is-placeholder" data-home-placeholder="Afastamentos">
+          <button type="button" class="home-card" data-home-view="afastamentos">
             <span class="home-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M29 10c-8 2-14 10-14 19 0 9 4 17 12 24"/><path d="M29 10c9 0 16 8 16 18 0 4-1 8-3 11"/><circle cx="29" cy="29" r="6"/><circle cx="45" cy="46" r="10"/><path d="M45 41v6l4 2"/></svg></span>
-            <h3>Afastamentos</h3>
-            <p>Membros afastados no presente, no futuro e por área</p>
-            <span class="home-card-meta muted">Em breve</span>
+            <h3>Afastamentos e férias</h3>
+            <p>Marque dias específicos e acompanhe os totais por membro</p>
+            <span class="home-card-meta">Abrir calendário →</span>
           </button>
         </div>
       </div>
@@ -672,6 +737,97 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       <div class="card">
         <div class="member-roster-wrap" id="membros-wrap"></div>
       </div>
+    </section>
+
+    <!-- ===================== AFASTAMENTOS ===================== -->
+    <section class="view" id="view-afastamentos">
+      <h2 class="view-title">Afastamentos e férias</h2>
+      <p class="view-sub">Marque dias individuais no calendário e contabilize os afastamentos de cada membro.</p>
+
+      <div class="card">
+        <div class="absence-toolbar">
+          <div class="field">
+            <label for="afastamento-membro">Membro</label>
+            <div class="promotoria-combobox">
+              <input type="text" id="afastamento-membro-busca" placeholder="Digite para pesquisar..." autocomplete="off" aria-controls="opcoes-afastamento-membros" aria-expanded="false">
+              <div class="promotoria-options" id="opcoes-afastamento-membros" role="listbox"></div>
+              <select id="afastamento-membro" hidden><option value="">Selecione o membro...</option></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="afastamento-subtipo">Subtipo do afastamento</label>
+            <div class="absence-subtype-control">
+              <select id="afastamento-subtipo"><option value="">Selecione o subtipo...</option></select>
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-novo-subtipo-afastamento" data-admin-only>+ Novo subtipo</button>
+            </div>
+          </div>
+          <div class="field absence-month-control">
+            <label>Meses do calendário</label>
+            <div class="absence-month-actions">
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-mes-anterior-afastamento" aria-label="Mês anterior">‹</button>
+              <strong id="afastamento-mes-titulo"></strong>
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-mes-proximo-afastamento" aria-label="Próximo mês">›</button>
+            </div>
+          </div>
+        </div>
+        <div class="absence-extra-fields">
+          <div class="field">
+            <label for="afastamento-referencia">Referência</label>
+            <input type="text" id="afastamento-referencia" placeholder="Opcional; aplicada aos novos dias">
+          </div>
+          <div class="field">
+            <label for="afastamento-observacao">Observação</label>
+            <input type="text" id="afastamento-observacao" placeholder="Opcional; aplicada aos novos dias">
+          </div>
+        </div>
+      </div>
+
+      <form class="card absence-subtype-form" id="form-novo-subtipo-afastamento" hidden>
+        <div class="summary-card-head"><div><h3>Novo subtipo</h3><p>Cadastre uma nova classificacao para os afastamentos.</p></div></div>
+        <div class="absence-subtype-form-row">
+          <div class="field"><label for="novo-subtipo-afastamento-nome">Nome do subtipo</label><input type="text" id="novo-subtipo-afastamento-nome" required placeholder="Ex.: Licenca paternidade"></div>
+          <div class="pill-buttons"><button type="submit" class="btn btn-primary">Salvar subtipo</button><button type="button" class="btn btn-ghost" id="btn-cancelar-subtipo-afastamento">Cancelar</button></div>
+        </div>
+      </form>
+
+      <div class="card">
+        <div class="absence-calendar-head">
+          <div>
+            <h3>Calendário de dias</h3>
+            <p>Clique nos dias para marcar ou desmarcar. Use “Selecionar sequência” para marcar um intervalo.</p>
+          </div>
+          <div class="absence-legend"><span><i class="absence-dot saved"></i>Salvo</span><span><i class="absence-dot draft"></i>Alteração pendente</span></div>
+        </div>
+        <div id="afastamento-calendario" class="absence-calendar-wrap"></div>
+        <div class="absence-actions">
+          <span id="afastamento-selecao-info" class="helper">Selecione um membro e um subtipo para começar.</span>
+          <button type="button" class="btn btn-ghost" id="btn-modo-sequencia-afastamento" data-admin-only>Selecionar sequência</button>
+          <button type="button" class="btn btn-primary" id="btn-salvar-afastamentos" data-admin-only>Salvar dias selecionados</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="summary-card-head">
+          <div><h3>Resumo dos dias registrados</h3><p>Veja quantos dias foram registrados e quais datas pertencem a cada subtipo.</p></div>
+          <strong id="afastamento-total-dias" class="absence-total"></strong>
+        </div>
+        <div class="absence-summary-toolbar">
+          <div class="field">
+            <label for="afastamento-resumo-subtipo">Filtrar por subtipo</label>
+            <select id="afastamento-resumo-subtipo"><option value="">Todos os subtipos</option></select>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-detalhes-afastamentos">Ver detalhes</button>
+        </div>
+        <div class="summary-table-wrap" id="afastamento-lista"></div>
+      </div>
+
+      <template id="modelo-subtipo-afastamento-antigo">
+        <div class="summary-card-head"><div><h3>Novo subtipo</h3><p>Cadastre uma nova classificação para os afastamentos.</p></div></div>
+        <div class="absence-subtype-form-row">
+          <div class="field"><label for="novo-subtipo-afastamento-nome">Nome do subtipo</label><input type="text" id="novo-subtipo-afastamento-nome" required placeholder="Ex.: Licença paternidade"></div>
+          <div class="pill-buttons"><button type="submit" class="btn btn-primary">Salvar subtipo</button><button type="button" class="btn btn-ghost" id="btn-cancelar-subtipo-afastamento">Cancelar</button></div>
+        </div>
+      </template>
     </section>
 
     <section class="view" id="view-resumo">
@@ -871,9 +1027,16 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     <section class="view" id="view-cadastro" data-admin-only>
       <h2 class="view-title" id="cadastro-title">Novo registro</h2>
       <p class="view-sub" id="cadastro-sub">Informe a promotoria; os demais campos são opcionais.</p>
-      <div class="pill-buttons" style="margin-bottom:14px;">
-        <button type="button" class="btn btn-ghost" id="btn-importar" data-admin-only>Importar CSV</button>
-        <input type="file" id="arquivo-importacao" accept=".csv,text/csv" hidden>
+      <div class="cadastro-toolbar">
+        <div class="cadastro-toolbar-left cadastro-tabs local-promotoria-buttons" role="tablist" aria-label="Seções de cadastro">
+          <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn active" id="btn-atalho-registro" data-cadastro-conteudo="registro" role="tab">Novo registro</button>
+          <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" id="btn-atalho-afastamentos" data-cadastro-conteudo="afastamentos" role="tab">Afastamentos e f&eacute;rias</button>
+          <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" id="btn-atalho-auxiliares" data-cadastro-conteudo="auxiliares" data-admin-only role="tab">Cadastros de apoio</button>
+        </div>
+        <div class="cadastro-toolbar-right">
+          <button type="button" class="btn btn-ghost" id="btn-importar" data-admin-only>Importar CSV</button>
+          <input type="file" id="arquivo-importacao" accept=".csv,text/csv" hidden>
+        </div>
       </div>
 
       <form id="form-registro" data-admin-only>
@@ -881,15 +1044,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
         <div class="card">
           <h3>Dados do registro</h3>
-          <div class="field local-promotoria-filter" id="filtro-local-cadastro">
-            <label>Local da promotoria</label>
-            <div class="local-promotoria-buttons" id="filtro-local-promotorias" role="group" aria-label="Filtrar promotorias por local">
-              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn active" data-local-promotoria="">Todos</button>
-              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" data-local-promotoria="capital">Capital</button>
-              <button type="button" class="btn btn-ghost btn-sm local-promotoria-btn" data-local-promotoria="interior">Interior</button>
-            </div>
-            <p class="helper">Escolha o local para filtrar as promotorias disponíveis.</p>
-          </div>
           <div class="grid grid-2">
             <div class="field">
               <label for="c-promotoria">Promotoria *</label>
@@ -1124,7 +1278,8 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   let promotorias = [];
   let promotores = [];
   let tiposMovimentacao = [];
-  let localPromotoriasSelecionado = '';
+  let afastamentoSubtipos = [];
+  let afastamentosDias = [];
   let localPainelSelecionado = '';
   let membroSelecionado = '';
   let editandoId = null;
@@ -1137,6 +1292,13 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   let usuarioAtual = null;
   let perfilAtual = { role: 'visualizador' };
   let ignorarProximaSessaoNula = false;
+  let afastamentoMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  let afastamentoRascunhoAdicionados = new Set();
+  let afastamentoRascunhoRemovidos = new Set();
+  let afastamentoModoSequencia = false;
+  let afastamentoInicioSequencia = '';
+  let afastamentoResumoSubtipo = '';
+  let afastamentoMostrarDetalhes = false;
 
   const SUPABASE_URL = 'https://cserkovxfkapmnlonuzr.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_nVox92qsvHa2Q0Asd9nmNA_4AkFGcS1';
@@ -1419,7 +1581,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       render();
       return;
     }
-    const [resultadoRegistros, resultadoPromotorias, resultadoPromotores, resultadoTipos] = await Promise.all([
+    const [resultadoRegistros, resultadoPromotorias, resultadoPromotores, resultadoTipos, resultadoSubtiposAfastamento, resultadoDiasAfastamento] = await Promise.all([
       carregarTodosRegistros(),
       supabasePublicClient
         .from('promotorias')
@@ -1432,7 +1594,15 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       supabasePublicClient
         .from('tipos_movimentacao')
         .select('id, nome, ativo, exige_substituto')
-        .order('nome', { ascending: true })
+        .order('nome', { ascending: true }),
+      supabasePublicClient
+        .from('afastamento_subtipos')
+        .select('id, nome, ativo')
+        .order('nome', { ascending: true }),
+      supabasePublicClient
+        .from('afastamentos_dias')
+        .select('id, promotor_id, subtipo_id, data, referencia, observacao')
+        .order('data', { ascending: true })
     ]);
     if(resultadoRegistros.error){
       console.error(resultadoRegistros.error);
@@ -1471,6 +1641,30 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
         id: row.id, nome: corrigirTextoMojibake(row.nome), ativo: row.ativo !== false,
         exigeSubstituto: row.exige_substituto === true
       })).filter(row => row.nome);
+    }
+    if(resultadoSubtiposAfastamento.error){
+      console.error(resultadoSubtiposAfastamento.error);
+      afastamentoSubtipos = [];
+      mostrarToast('A tabela de subtipos de afastamento ainda não está disponível. Execute a migração do Supabase.');
+    } else {
+      afastamentoSubtipos = (resultadoSubtiposAfastamento.data || [])
+        .map(row => ({ id: row.id, nome: corrigirTextoMojibake(row.nome), ativo: row.ativo !== false }))
+        .filter(row => row.nome && row.ativo)
+        .sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}));
+    }
+    if(resultadoDiasAfastamento.error){
+      console.error(resultadoDiasAfastamento.error);
+      afastamentosDias = [];
+      mostrarToast('A tabela de dias de afastamento ainda não está disponível. Execute a migração do Supabase.');
+    } else {
+      afastamentosDias = (resultadoDiasAfastamento.data || []).map(row => ({
+        id: row.id,
+        promotorId: row.promotor_id,
+        subtipoId: row.subtipo_id,
+        data: row.data,
+        referencia: corrigirTextoMojibake(row.referencia),
+        observacao: corrigirTextoMojibake(row.observacao)
+      }));
     }
     const promotoresPorId = new Map(promotores.map(item => [item.id, item]));
     registros = registros.map(registro => {
@@ -1666,9 +1860,48 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   /* ---------------------------------------------------------
      NAVEGAÇÃO ENTRE VIEWS
   --------------------------------------------------------- */
+  function prepararSubtelasCadastro(){
+    const cadastro = document.getElementById('view-cadastro');
+    const form = document.getElementById('form-registro');
+    const afastamentos = document.getElementById('view-afastamentos');
+    const auxiliares = document.getElementById('view-auxiliares');
+    if(!cadastro || !form || !afastamentos || !auxiliares || cadastro.dataset.subtelasPreparadas === 'true') return;
+    const area = document.createElement('div');
+    area.id = 'cadastro-conteudo-interno';
+    cadastro.appendChild(area);
+    area.append(form, afastamentos, auxiliares);
+    cadastro.dataset.subtelasPreparadas = 'true';
+  }
+
+  function mostrarConteudoCadastro(conteudo = 'registro'){
+    prepararSubtelasCadastro();
+    const cadastro = document.getElementById('view-cadastro');
+    const form = document.getElementById('form-registro');
+    const afastamentos = document.getElementById('view-afastamentos');
+    const auxiliares = document.getElementById('view-auxiliares');
+    if(!cadastro || !form || !afastamentos || !auxiliares) return;
+    cadastro.classList.add('active');
+    form.hidden = conteudo !== 'registro';
+    afastamentos.classList.toggle('active', conteudo === 'afastamentos');
+    auxiliares.classList.toggle('active', conteudo === 'auxiliares');
+    document.querySelectorAll('[data-cadastro-conteudo]').forEach(botao=>{
+      botao.classList.toggle('active', botao.dataset.cadastroConteudo === conteudo);
+    });
+    document.querySelectorAll('nav.tabs button').forEach(botao=>botao.classList.toggle('active', botao.dataset.view === 'cadastro'));
+    if(conteudo === 'afastamentos') renderAfastamentos();
+    if(conteudo === 'auxiliares') renderAuxiliares();
+  }
+
   function irPara(view){
-    if((view === 'cadastro' || view === 'auxiliares') && !ehAdmin()){
+    if((view === 'cadastro' || view === 'auxiliares' || view === 'afastamentos') && !ehAdmin()){
       mostrarToast('Apenas administradores podem acessar esta área.');
+      return;
+    }
+    if(view === 'afastamentos' || view === 'auxiliares'){
+      document.querySelectorAll('section.view').forEach(s => s.classList.remove('active'));
+      document.getElementById('view-cadastro').classList.add('active');
+      mostrarConteudoCadastro(view);
+      window.scrollTo({top:0, behavior:'instant'});
       return;
     }
     document.querySelectorAll('section.view').forEach(s => s.classList.remove('active'));
@@ -1677,9 +1910,11 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const tab = document.querySelector(`nav.tabs button[data-view="${view}"]`);
     if(tab) tab.classList.add('active');
     window.scrollTo({top:0, behavior:'instant'});
+    if(view === 'cadastro') mostrarConteudoCadastro('registro');
      if(view === 'listagem') renderListagem();
      if(view === 'membro') renderSituacaoMembro();
      if(view === 'membros') renderSituacaoMembros();
+     if(view === 'afastamentos') renderAfastamentos();
      if(view === 'resumo') renderResumo();
     if(view === 'historico') renderHistorico();
     if(view === 'auxiliares') renderAuxiliares();
@@ -1845,6 +2080,53 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     document.getElementById('resumo-popup').hidden = true;
   }
 
+  function agruparAfastamentosPorReferencia(promotorId){
+    const grupos = new Map();
+    afastamentosDias
+      .filter(item=>item.promotorId === promotorId)
+      .forEach(item=>{
+        const referencia = String(item.referencia || '').trim();
+        const chave = textoChaveImportacao(referencia) || '__sem_referencia__';
+        if(!grupos.has(chave)){
+          grupos.set(chave, {
+            referencia: referencia || 'Sem referência',
+            tipos: new Map(),
+            resumos: new Map(),
+            datas: []
+          });
+        }
+        const grupo = grupos.get(chave);
+        const tipo = nomeSubtipoAfastamento(item.subtipoId);
+        grupo.tipos.set(textoChaveImportacao(tipo), tipo);
+        const resumo = String(item.observacao || '').trim();
+        if(resumo) grupo.resumos.set(textoChaveImportacao(resumo), resumo);
+        if(item.data) grupo.datas.push(item.data);
+      });
+    return Array.from(grupos.values())
+      .map(grupo=>({
+        ...grupo,
+        tipos: Array.from(grupo.tipos.values()),
+        resumos: Array.from(grupo.resumos.values()),
+        datas: [...new Set(grupo.datas)].sort()
+      }))
+      .sort((a,b)=>String(b.datas[b.datas.length - 1] || '').localeCompare(String(a.datas[a.datas.length - 1] || '')));
+  }
+
+  function tabelaResumoAfastamentosMembro(nome){
+    const membro = membroPorNome(promotores, nome);
+    const grupos = membro ? agruparAfastamentosPorReferencia(membro.id) : [];
+    if(!grupos.length){
+      return `<div class="card member-absence-card"><h3>Férias e afastamentos</h3><p>Resumo dos dias registrados para o membro.</p><div class="member-history-empty">Nenhuma férias ou afastamento registrado.</div></div>`;
+    }
+    const linhas = grupos.map(grupo=>{
+      const periodos = agruparPeriodosAfastamento(grupo.datas);
+      const dias = `${grupo.datas.length} dia(s)${periodos.length ? ` · ${periodos.join(' · ')}` : ''}`;
+      const resumo = grupo.resumos.length ? resumoCurto(grupo.resumos.join(' · '), 180) : 'Não informado';
+      return `<tr><td class="member-absence-reference">${escapeHtml(grupo.referencia)}</td><td>${escapeHtml(grupo.tipos.join(' · '))}</td><td class="member-absence-summary">${escapeHtml(resumo)}</td><td class="member-absence-days">${escapeHtml(dias)}</td></tr>`;
+    }).join('');
+    return `<div class="card member-absence-card"><h3>Férias e afastamentos</h3><p>Resumo consolidado por referência, com uma linha para cada referência cadastrada.</p><div class="member-absence-table-wrap"><table class="reg-table member-absence-table"><thead><tr><th>Referência</th><th>Tipo</th><th>Resumo</th><th>Dias</th></tr></thead><tbody>${linhas}</tbody></table></div></div>`;
+  }
+
   function renderSituacaoMembro(){
     const wrap = document.getElementById('situacao-membro-wrap');
     if(!membroSelecionado){
@@ -1857,7 +2139,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const cadastroMembro = membroPorNome(promotores, membroSelecionado);
     const dadosMembro = cadastroMembro?.observacoes ? `Observação: ${cadastroMembro.observacoes}` : '';
     const dadosMembroHtml = dadosMembro ? `<div class="member-profile-data">${escapeHtml(dadosMembro)}</div>` : '';
-    wrap.innerHTML = `<div class="card"><div class="member-profile"><div><h3>${escapeHtml(membroSelecionado)}</h3><p>${comoTitular.length + comoSubstituto.length} passagem(ns) registrada(s) no sistema.</p></div>${dadosMembroHtml}</div><div class="member-current-grid">${cardVinculoMembro('Vínculo atual como titular', registroAtualDoMembro(comoTitular, false), false)}${cardVinculoMembro('Vínculo atual como substituto', registroAtualDoMembro(comoSubstituto, true), true)}</div></div><div class="member-history-grid"><div class="card member-history-card"><h3>Histórico como titular</h3><p>Promotorias onde o membro atuou como titular.</p>${tabelaHistoricoMembro(comoTitular, false)}</div><div class="card member-history-card"><h3>Histórico como substituto</h3><p>Promotorias onde o membro atuou como substituto.</p>${tabelaHistoricoMembro(comoSubstituto, true)}</div></div>`;
+    wrap.innerHTML = `<div class="card"><div class="member-profile"><div><h3>${escapeHtml(membroSelecionado)}</h3><p>${comoTitular.length + comoSubstituto.length} passagem(ns) registrada(s) no sistema.</p></div>${dadosMembroHtml}</div><div class="member-current-grid">${cardVinculoMembro('Vínculo atual como titular', registroAtualDoMembro(comoTitular, false), false)}${cardVinculoMembro('Vínculo atual como substituto', registroAtualDoMembro(comoSubstituto, true), true)}</div></div>${tabelaResumoAfastamentosMembro(membroSelecionado)}<div class="member-history-grid"><div class="card member-history-card"><h3>Histórico como titular</h3><p>Promotorias onde o membro atuou como titular.</p>${tabelaHistoricoMembro(comoTitular, false)}</div><div class="card member-history-card"><h3>Histórico como substituto</h3><p>Promotorias onde o membro atuou como substituto.</p>${tabelaHistoricoMembro(comoSubstituto, true)}</div></div>`;
     wrap.querySelectorAll('tr[data-member-history-id]').forEach(linha=>{
       linha.addEventListener('click', ()=>abrirDetalhe(linha.dataset.memberHistoryId, 'membro'));
     });
@@ -2028,6 +2310,414 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   document.addEventListener('keydown', evento=>{
     if(evento.key === 'Escape' && !document.getElementById('resumo-popup').hidden) fecharResumoPopup();
   });
+
+  function nomeSubtipoAfastamento(id){
+    return afastamentoSubtipos.find(item=>item.id === id)?.nome || 'Subtipo não informado';
+  }
+
+  function limparRascunhoAfastamento(){
+    afastamentoRascunhoAdicionados = new Set();
+    afastamentoRascunhoRemovidos = new Set();
+  }
+
+  function preencherSelectAfastamentos(){
+    const membro = document.getElementById('afastamento-membro');
+    const membroBusca = document.getElementById('afastamento-membro-busca');
+    const subtipo = document.getElementById('afastamento-subtipo');
+    const membroAtual = membro.value;
+    const subtipoAtual = subtipo.value;
+    const membrosOrdenados = [...promotores].sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}));
+    membro.innerHTML = '<option value="">Selecione o membro...</option>' + membrosOrdenados.map(item=>`<option value="${escapeHtml(item.id)}">${escapeHtml(item.nome)}</option>`).join('');
+    subtipo.innerHTML = '<option value="">Selecione o subtipo...</option>' + afastamentoSubtipos.map(item=>`<option value="${escapeHtml(item.id)}">${escapeHtml(item.nome)}</option>`).join('');
+    if(membrosOrdenados.some(item=>item.id === membroAtual)) membro.value = membroAtual;
+    if(afastamentoSubtipos.some(item=>item.id === subtipoAtual)) subtipo.value = subtipoAtual;
+    const membroSelecionado = membrosOrdenados.find(item=>item.id === membro.value);
+    membroBusca.value = membroSelecionado?.nome || '';
+  }
+
+  function renderOpcoesMembrosAfastamentos(filtrar){
+    const input = document.getElementById('afastamento-membro-busca');
+    const painel = document.getElementById('opcoes-afastamento-membros');
+    if(!input || !painel) return;
+    const termo = filtrar ? textoChaveImportacao(input.value) : '';
+    const opcoes = [...promotores]
+      .sort((a,b)=>a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity:'base'}))
+      .filter(item=>!termo || textoChaveImportacao(item.nome).includes(termo));
+    painel.innerHTML = opcoes.length
+      ? opcoes.map(item=>`<button type="button" class="promotoria-option" role="option" data-afastamento-membro-id="${escapeHtml(item.id)}" data-afastamento-membro-nome="${escapeHtml(item.nome)}">${escapeHtml(item.nome)}</button>`).join('')
+      : '<div class="promotoria-options-empty">Nenhum membro encontrado.</div>';
+    painel.querySelectorAll('[data-afastamento-membro-id]').forEach(opcao=>{
+      opcao.addEventListener('mousedown', e=>e.preventDefault());
+      opcao.addEventListener('click', ()=>{
+        const membro = document.getElementById('afastamento-membro');
+        membro.value = opcao.dataset.afastamentoMembroId;
+        input.value = opcao.dataset.afastamentoMembroNome;
+        membro.dispatchEvent(new Event('change', {bubbles:true}));
+        painel.classList.remove('open');
+        input.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  function configurarBuscaMembroAfastamento(){
+    const input = document.getElementById('afastamento-membro-busca');
+    const painel = document.getElementById('opcoes-afastamento-membros');
+    const membro = document.getElementById('afastamento-membro');
+    if(!input || !painel || !membro) return;
+    const abrir = filtrar=>{
+      renderOpcoesMembrosAfastamentos(filtrar);
+      painel.classList.add('open');
+      input.setAttribute('aria-expanded', 'true');
+    };
+    input.addEventListener('focus', ()=>abrir(false));
+    input.addEventListener('click', ()=>abrir(false));
+    input.addEventListener('input', ()=>{
+      membro.value = '';
+      abrir(true);
+    });
+    input.addEventListener('blur', ()=>setTimeout(()=>{
+      painel.classList.remove('open');
+      input.setAttribute('aria-expanded', 'false');
+      const selecionado = promotores.find(item=>item.id === membro.value);
+      if(selecionado) input.value = selecionado.nome;
+      else input.value = '';
+    }, 160));
+  }
+
+  configurarBuscaMembroAfastamento();
+
+  function dataIsoAfastamento(ano, mes, dia){
+    return `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+  }
+
+  function intervaloDiasAfastamento(inicio, fim){
+    let dataInicial = inicio;
+    let dataFinal = fim;
+    if(dataInicial > dataFinal) [dataInicial, dataFinal] = [dataFinal, dataInicial];
+    const [anoInicial, mesInicial, diaInicial] = dataInicial.split('-').map(Number);
+    const [anoFinal, mesFinal, diaFinal] = dataFinal.split('-').map(Number);
+    const atual = new Date(anoInicial, mesInicial - 1, diaInicial);
+    const limite = new Date(anoFinal, mesFinal - 1, diaFinal);
+    const datas = [];
+    while(atual <= limite){
+      datas.push(dataIsoAfastamento(atual.getFullYear(), atual.getMonth(), atual.getDate()));
+      atual.setDate(atual.getDate() + 1);
+    }
+    return datas;
+  }
+
+  function aplicarIntervaloAfastamento(inicio, fim, existentes, subtipoId){
+    const datas = intervaloDiasAfastamento(inicio, fim);
+    const conflito = datas.find(data=>{
+      const existente = existentes.get(data);
+      return existente && existente.subtipoId !== subtipoId;
+    });
+    if(conflito){
+      const existente = existentes.get(conflito);
+      mostrarToast(`O intervalo inclui ${fmtData(conflito)}, já registrado como ${nomeSubtipoAfastamento(existente.subtipoId)}.`);
+      return false;
+    }
+    datas.forEach(data=>{
+      const existente = existentes.get(data);
+      if(existente) afastamentoRascunhoRemovidos.delete(data);
+      else afastamentoRascunhoAdicionados.add(data);
+    });
+    return true;
+  }
+
+  function montarMesCalendarioAfastamento(ano, mes, existentes, subtipoId){
+    const primeiroDia = new Date(ano, mes, 1).getDay();
+    const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+    const semana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    let html = `<div class="absence-month-panel"><h4>${new Date(ano, mes, 1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'})}</h4><div class="absence-calendar">`;
+    html += semana.map(dia=>`<div class="absence-weekday">${dia}</div>`).join('');
+    for(let vazio = 0; vazio < primeiroDia; vazio++) html += '<div class="absence-day-empty"></div>';
+    for(let dia = 1; dia <= ultimoDia; dia++){
+      const data = dataIsoAfastamento(ano, mes, dia);
+      const existente = existentes.get(data);
+      const adicionado = afastamentoRascunhoAdicionados.has(data);
+      const removido = afastamentoRascunhoRemovidos.has(data);
+      const outroSubtipo = existente && existente.subtipoId !== subtipoId;
+      const classes = ['absence-day'];
+      if(existente && !removido && !outroSubtipo) classes.push('saved');
+      if(adicionado) classes.push('draft');
+      if(removido) classes.push('removed');
+      if(outroSubtipo) classes.push('other');
+      const rotulo = outroSubtipo
+        ? `Já: ${nomeSubtipoAfastamento(existente.subtipoId)}`
+        : (removido ? 'Será removido' : (adicionado ? nomeSubtipoAfastamento(subtipoId) : (existente ? nomeSubtipoAfastamento(existente.subtipoId) : '')));
+      html += `<button type="button" class="${classes.join(' ')}" data-afastamento-dia="${data}" title="${escapeHtml(rotulo || 'Marcar dia')}"><span class="absence-day-number">${dia}</span>${rotulo ? `<span class="absence-day-label">${escapeHtml(rotulo)}</span>` : ''}</button>`;
+    }
+    return `${html}</div></div>`;
+  }
+
+  function renderCalendarioAfastamentos(){
+    const wrap = document.getElementById('afastamento-calendario');
+    const membroId = document.getElementById('afastamento-membro').value;
+    const subtipoId = document.getElementById('afastamento-subtipo').value;
+    const titulo = document.getElementById('afastamento-mes-titulo');
+    const proximoMes = new Date(afastamentoMes.getFullYear(), afastamentoMes.getMonth() + 1, 1);
+    titulo.textContent = `${afastamentoMes.toLocaleDateString('pt-BR', {month:'long', year:'numeric'})} · ${proximoMes.toLocaleDateString('pt-BR', {month:'long', year:'numeric'})}`;
+    if(!membroId || !subtipoId){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">▦</div>Selecione o membro e o subtipo para visualizar o calendário.</div>';
+      return;
+    }
+    const existentes = new Map(afastamentosDias.filter(item=>item.promotorId === membroId).map(item=>[item.data, item]));
+    wrap.innerHTML = `<div class="absence-calendar-duo">${montarMesCalendarioAfastamento(afastamentoMes.getFullYear(), afastamentoMes.getMonth(), existentes, subtipoId)}${montarMesCalendarioAfastamento(proximoMes.getFullYear(), proximoMes.getMonth(), existentes, subtipoId)}</div>`;
+    wrap.querySelectorAll('[data-afastamento-dia]').forEach(botao=>{
+      botao.addEventListener('click', ()=>{
+        const data = botao.dataset.afastamentoDia;
+        const existente = existentes.get(data);
+        if(existente && existente.subtipoId !== subtipoId){
+          mostrarToast(`Este dia já está registrado como ${nomeSubtipoAfastamento(existente.subtipoId)}.`);
+          return;
+        }
+        if(afastamentoModoSequencia){
+          if(!afastamentoInicioSequencia){
+            afastamentoInicioSequencia = data;
+            renderAfastamentos();
+            return;
+          }
+          const aplicado = aplicarIntervaloAfastamento(afastamentoInicioSequencia, data, existentes, subtipoId);
+          afastamentoInicioSequencia = '';
+          afastamentoModoSequencia = false;
+          if(aplicado) renderAfastamentos();
+          else renderAfastamentoSelecaoInfo();
+          return;
+        }
+        if(existente){
+          if(afastamentoRascunhoRemovidos.has(data)) afastamentoRascunhoRemovidos.delete(data);
+          else afastamentoRascunhoRemovidos.add(data);
+        } else if(afastamentoRascunhoAdicionados.has(data)) {
+          afastamentoRascunhoAdicionados.delete(data);
+        } else {
+          afastamentoRascunhoAdicionados.add(data);
+        }
+        renderAfastamentos();
+      });
+    });
+  }
+
+  function agruparPeriodosAfastamento(datas){
+    const ordenadas = [...new Set(datas)].sort();
+    if(!ordenadas.length) return [];
+    const periodos = [];
+    let inicio = ordenadas[0];
+    let fim = ordenadas[0];
+    ordenadas.slice(1).forEach(data=>{
+      const proximo = intervaloDiasAfastamento(fim, data);
+      if(proximo.length === 2 && proximo[1] === data){
+        fim = data;
+        return;
+      }
+      periodos.push({inicio, fim});
+      inicio = data;
+      fim = data;
+    });
+    periodos.push({inicio, fim});
+    return periodos.map(periodo=>periodo.inicio === periodo.fim
+      ? fmtData(periodo.inicio)
+      : `${fmtData(periodo.inicio)} a ${fmtData(periodo.fim)}`);
+  }
+
+  function preencherFiltroResumoAfastamento(){
+    const filtro = document.getElementById('afastamento-resumo-subtipo');
+    if(!filtro) return;
+    const valorAtual = afastamentoResumoSubtipo || filtro.value;
+    filtro.innerHTML = '<option value="">Todos os subtipos</option>' + afastamentoSubtipos.map(item=>`<option value="${escapeHtml(item.id)}">${escapeHtml(item.nome)}</option>`).join('');
+    if(afastamentoSubtipos.some(item=>item.id === valorAtual)){
+      filtro.value = valorAtual;
+      afastamentoResumoSubtipo = valorAtual;
+    } else {
+      filtro.value = '';
+      afastamentoResumoSubtipo = '';
+    }
+  }
+
+  function renderListaAfastamentos(){
+    const wrap = document.getElementById('afastamento-lista');
+    const total = document.getElementById('afastamento-total-dias');
+    const membroId = document.getElementById('afastamento-membro').value;
+    preencherFiltroResumoAfastamento();
+    if(!membroId){
+      total.textContent = '';
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">⌕</div>Selecione um membro para consultar os dias registrados.</div>';
+      return;
+    }
+    const lista = afastamentosDias
+      .filter(item=>item.promotorId === membroId && (!afastamentoResumoSubtipo || item.subtipoId === afastamentoResumoSubtipo))
+      .sort((a,b)=>String(b.data).localeCompare(String(a.data)));
+    total.textContent = `${lista.length} dia(s)${afastamentoResumoSubtipo ? ` · ${nomeSubtipoAfastamento(afastamentoResumoSubtipo)}` : ''}`;
+    if(!lista.length){
+      wrap.innerHTML = '<div class="empty-state"><div class="glyph">▦</div>Nenhum dia de afastamento registrado para este membro.</div>';
+      return;
+    }
+    const grupos = Array.from(lista.reduce((mapa, item)=>{
+      if(!mapa.has(item.subtipoId)) mapa.set(item.subtipoId, []);
+      mapa.get(item.subtipoId).push(item);
+      return mapa;
+    }, new Map()).entries());
+    const resumo = grupos.map(([subtipoId, itens])=>{
+      const periodos = agruparPeriodosAfastamento(itens.map(item=>item.data));
+      return `<div class="absence-summary-item"><div class="absence-summary-item-head"><strong>${escapeHtml(nomeSubtipoAfastamento(subtipoId))}</strong><span class="absence-summary-item-count">${itens.length} dia(s)</span></div><span class="absence-summary-periods">${escapeHtml(periodos.join(' · '))}</span></div>`;
+    }).join('');
+    let html = `<div class="absence-summary-grid">${resumo}</div>`;
+    if(afastamentoMostrarDetalhes){
+      html += `<div class="absence-details"><table class="reg-table"><thead><tr><th>Data</th><th>Subtipo</th><th>Referência</th><th>Observação</th></tr></thead><tbody>${lista.map(item=>`<tr><td class="num">${fmtData(item.data)}</td><td>${escapeHtml(nomeSubtipoAfastamento(item.subtipoId))}</td><td>${escapeHtml(item.referencia || '—')}</td><td>${escapeHtml(item.observacao || '—')}</td></tr>`).join('')}</tbody></table></div>`;
+    }
+    wrap.innerHTML = html;
+    const botaoDetalhes = document.getElementById('btn-detalhes-afastamentos');
+    if(botaoDetalhes) botaoDetalhes.textContent = afastamentoMostrarDetalhes ? 'Ocultar detalhes' : 'Ver detalhes';
+  }
+
+  function renderAfastamentoSelecaoInfo(){
+    const info = document.getElementById('afastamento-selecao-info');
+    const modo = document.getElementById('btn-modo-sequencia-afastamento');
+    const adicionados = afastamentoRascunhoAdicionados.size;
+    const removidos = afastamentoRascunhoRemovidos.size;
+    modo.classList.toggle('absence-mode-active', afastamentoModoSequencia);
+    if(afastamentoModoSequencia && afastamentoInicioSequencia){
+      info.textContent = `Primeiro dia: ${fmtData(afastamentoInicioSequencia)}. Clique no último dia da sequência.`;
+      return;
+    }
+    if(afastamentoModoSequencia){
+      info.textContent = 'Modo sequência ativo. Clique no primeiro dia.';
+      return;
+    }
+    if(!adicionados && !removidos){
+      info.textContent = 'Clique nos dias do calendário para marcar ou desmarcar.';
+      return;
+    }
+    info.textContent = `${adicionados} dia(s) para adicionar${removidos ? ` e ${removidos} para remover` : ''}.`;
+  }
+
+  function renderAfastamentos(){
+    preencherSelectAfastamentos();
+    renderCalendarioAfastamentos();
+    renderListaAfastamentos();
+    renderAfastamentoSelecaoInfo();
+  }
+
+  async function salvarDiasAfastamento(){
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem salvar afastamentos.');
+      return;
+    }
+    const promotorId = document.getElementById('afastamento-membro').value;
+    const subtipoId = document.getElementById('afastamento-subtipo').value;
+    if(!promotorId || !subtipoId){
+      mostrarToast('Selecione o membro e o subtipo do afastamento.');
+      return;
+    }
+    const adicionar = Array.from(afastamentoRascunhoAdicionados).map(data=>({
+      promotor_id: promotorId,
+      subtipo_id: subtipoId,
+      data,
+      referencia: document.getElementById('afastamento-referencia').value.trim() || null,
+      observacao: document.getElementById('afastamento-observacao').value.trim() || null
+    }));
+    const remover = Array.from(afastamentoRascunhoRemovidos);
+    if(!adicionar.length && !remover.length){
+      mostrarToast('Nenhuma alteração de dia foi feita.');
+      return;
+    }
+    if(adicionar.length){
+      const { error } = await supabaseClient.from('afastamentos_dias').insert(adicionar);
+      if(error){
+        console.error(error);
+        mostrarToast(error.code === '23505' ? 'Um dos dias já está registrado para este membro.' : 'Não foi possível salvar os dias de afastamento.');
+        return;
+      }
+    }
+    if(remover.length){
+      const { error } = await supabaseClient.from('afastamentos_dias').delete()
+        .eq('promotor_id', promotorId)
+        .eq('subtipo_id', subtipoId)
+        .in('data', remover);
+      if(error){
+        console.error(error);
+        mostrarToast('Os novos dias foram salvos, mas não foi possível remover todos os dias.');
+        await carregar();
+        return;
+      }
+    }
+    limparRascunhoAfastamento();
+    await carregar();
+    mostrarToast('Dias de afastamento atualizados.');
+  }
+
+  async function salvarNovoSubtipoAfastamento(evento){
+    evento.preventDefault();
+    if(!ehAdmin()){
+      mostrarToast('Somente administradores podem cadastrar subtipos.');
+      return;
+    }
+    const campo = document.getElementById('novo-subtipo-afastamento-nome');
+    const nome = campo.value.trim();
+    if(!nome) return;
+    if(afastamentoSubtipos.some(item=>textoChaveImportacao(item.nome) === textoChaveImportacao(nome))){
+      mostrarToast('Já existe um subtipo com esse nome.');
+      return;
+    }
+    const { data, error } = await supabaseClient.from('afastamento_subtipos').insert({nome}).select('id').single();
+    if(error){
+      console.error(error);
+      mostrarToast('Não foi possível cadastrar o subtipo.');
+      return;
+    }
+    document.getElementById('form-novo-subtipo-afastamento').hidden = true;
+    campo.value = '';
+    await carregar();
+    if(data?.id) document.getElementById('afastamento-subtipo').value = data.id;
+    renderAfastamentos();
+    mostrarToast('Subtipo cadastrado.');
+  }
+
+  document.getElementById('afastamento-membro').addEventListener('change', ()=>{
+    limparRascunhoAfastamento();
+    afastamentoModoSequencia = false;
+    afastamentoInicioSequencia = '';
+    afastamentoResumoSubtipo = '';
+    afastamentoMostrarDetalhes = false;
+    renderAfastamentos();
+  });
+  document.getElementById('afastamento-subtipo').addEventListener('change', ()=>{
+    limparRascunhoAfastamento();
+    afastamentoModoSequencia = false;
+    afastamentoInicioSequencia = '';
+    renderAfastamentos();
+  });
+  document.getElementById('afastamento-resumo-subtipo').addEventListener('change', evento=>{
+    afastamentoResumoSubtipo = evento.target.value;
+    renderListaAfastamentos();
+  });
+  document.getElementById('btn-detalhes-afastamentos').addEventListener('click', ()=>{
+    afastamentoMostrarDetalhes = !afastamentoMostrarDetalhes;
+    renderListaAfastamentos();
+  });
+  document.getElementById('btn-modo-sequencia-afastamento').addEventListener('click', ()=>{
+    afastamentoModoSequencia = !afastamentoModoSequencia;
+    afastamentoInicioSequencia = '';
+    renderAfastamentos();
+  });
+  document.getElementById('btn-mes-anterior-afastamento').addEventListener('click', ()=>{
+    afastamentoMes = new Date(afastamentoMes.getFullYear(), afastamentoMes.getMonth() - 1, 1);
+    renderAfastamentos();
+  });
+  document.getElementById('btn-mes-proximo-afastamento').addEventListener('click', ()=>{
+    afastamentoMes = new Date(afastamentoMes.getFullYear(), afastamentoMes.getMonth() + 1, 1);
+    renderAfastamentos();
+  });
+  document.getElementById('btn-salvar-afastamentos').addEventListener('click', salvarDiasAfastamento);
+  document.getElementById('btn-novo-subtipo-afastamento').addEventListener('click', ()=>{
+    document.getElementById('form-novo-subtipo-afastamento').hidden = false;
+    document.getElementById('novo-subtipo-afastamento-nome').focus();
+  });
+  document.getElementById('btn-cancelar-subtipo-afastamento').addEventListener('click', ()=>{
+    document.getElementById('form-novo-subtipo-afastamento').hidden = true;
+    document.getElementById('novo-subtipo-afastamento-nome').value = '';
+  });
+  document.getElementById('form-novo-subtipo-afastamento').addEventListener('submit', salvarNovoSubtipoAfastamento);
 
   function filtrosPainelAtuais(){
     return {
@@ -2259,7 +2949,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
   const configuracoesPromotorias = [
     { inputId:'f-promotoria', optionsId:'opcoes-promotorias-filtro', filtrarLocal:false },
-    { inputId:'c-promotoria', optionsId:'opcoes-promotorias-cadastro', filtrarLocal:true },
+    { inputId:'c-promotoria', optionsId:'opcoes-promotorias-cadastro', filtrarLocal:false },
     { inputId:'h-promotoria', optionsId:'opcoes-promotorias-historico', filtrarLocal:false },
     { inputId:'painel-promotoria', optionsId:'opcoes-promotorias-painel', filtrarLocal:false },
     { inputId:'c-promotoria-origem', optionsId:'opcoes-promotorias-origem', filtrarLocal:false }
@@ -2288,9 +2978,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   converterPromotoriaOrigemParaBusca();
 
   function opcoesDisponiveisPromotorias(config){
-    return promotorias
-      .filter(p => !config.filtrarLocal || !localPromotoriasSelecionado || p.local === localPromotoriasSelecionado)
-      .sort(ordenarPromotorias);
+    return promotorias.slice().sort(ordenarPromotorias);
   }
 
   function fecharOpcoesPromotorias(config){
@@ -2347,9 +3035,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   }
 
   function atualizarSelectPromotorias(){
-    const promotoriasDoLocal = promotorias
-      .filter(p => !localPromotoriasSelecionado || p.local === localPromotoriasSelecionado)
-      .sort(ordenarPromotorias);
+    const promotoriasDoLocal = promotorias.slice().sort(ordenarPromotorias);
     const filtro = document.getElementById('f-promotoria');
     const cadastro = document.getElementById('c-promotoria');
     const origem = document.getElementById('c-promotoria-origem');
@@ -2378,18 +3064,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   }
 
   configurarAutocompletesPromotorias();
-
-  function definirFiltroLocalPromotorias(local){
-    localPromotoriasSelecionado = normalizarLocalPromotoria(local);
-    document.querySelectorAll('[data-local-promotoria]').forEach(btn=>{
-      btn.classList.toggle('active', btn.dataset.localPromotoria === localPromotoriasSelecionado);
-    });
-    atualizarSelectPromotorias();
-  }
-
-  document.querySelectorAll('[data-local-promotoria]').forEach(btn=>{
-    btn.addEventListener('click', ()=> definirFiltroLocalPromotorias(btn.dataset.localPromotoria));
-  });
 
   function renderChips(f){
     const chips = [];
@@ -2767,6 +3441,9 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   document.getElementById('btn-importar').addEventListener('click', ()=>{
     document.getElementById('arquivo-importacao').click();
   });
+  document.querySelectorAll('[data-cadastro-conteudo]').forEach(botao=>{
+    botao.addEventListener('click', ()=>mostrarConteudoCadastro(botao.dataset.cadastroConteudo));
+  });
   document.getElementById('arquivo-importacao').addEventListener('change', async e=>{
     const arquivo = e.target.files[0];
     e.target.value = '';
@@ -3068,7 +3745,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const camposGerais = document.getElementById('campos-registro-gerais');
     const campoTitular = document.getElementById('c-titular').closest('.field');
     const campoDestinacao = document.getElementById('c-destinacao').closest('.field');
-    const filtroLocal = document.getElementById('filtro-local-cadastro');
     const titulo = document.getElementById('titulo-substituto');
     const regra = document.getElementById('substituto-regra');
     input.required = exige;
@@ -3079,7 +3755,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     document.querySelector('label[for="c-promotoria"]').textContent = mudaPromotoria ? 'Promotoria de destino *' : 'Promotoria *';
     document.querySelector('label[for="c-promotoria-origem"]').textContent = mudaPromotoria ? 'Promotoria de origem *' : 'Promotoria de origem';
     camposGerais.hidden = exige;
-    filtroLocal.hidden = exige;
     campoDestinacao.hidden = mudaPromotoria;
     if(mudaPromotoria) document.getElementById('c-destinacao').value = '';
     titulo.textContent = 'Substituto (obrigatório)';
@@ -3091,7 +3766,6 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     Object.values(camposForm).forEach(id => { document.getElementById(id).value = ''; });
     delete document.getElementById('c-promotoria-origem').dataset.preenchidaAutomaticamente;
     document.getElementById('f-id').value = '';
-    definirFiltroLocalPromotorias('');
     atualizarRegraSubstituto();
     atualizarSituacoesCalculadas();
   }
@@ -3272,6 +3946,19 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const salvou = await salvarRegistro(dados, idParaSalvar);
     if(!salvou) return;
     mostrarToast(idParaSalvar ? 'Registro atualizado com sucesso.' : 'Registro cadastrado com sucesso.');
+    if(!idParaSalvar){
+      editandoId = null;
+      origemCadastro = 'listagem';
+      detalheAtualId = null;
+      document.getElementById('tab-detalhe').style.display = 'none';
+      limparForm();
+      atualizarAcoesCadastro(false);
+      document.getElementById('cadastro-title').textContent = 'Novo registro';
+      document.getElementById('cadastro-sub').textContent = 'Informe a promotoria; os demais campos sÃ£o opcionais.';
+      mostrarConteudoCadastro('registro');
+      renderResumo();
+      return;
+    }
     const voltarParaDetalhe = origemCadastro === 'detalhe' && Boolean(idParaSalvar);
     editandoId = null;
     origemCadastro = 'listagem';
@@ -3654,14 +4341,16 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
      INICIALIZAÇÃO
   --------------------------------------------------------- */
   function render(){
-    const ajudaLocalCadastro = document.querySelector('#filtro-local-cadastro .helper');
-    if(ajudaLocalCadastro) ajudaLocalCadastro.textContent = 'Filtre por local para encontrar a promotoria com mais rapidez.';
+    ['afastamentos','auxiliares'].forEach(viewInterna=>{
+      document.querySelector(`nav.tabs button[data-view="${viewInterna}"]`)?.remove();
+    });
     atualizarSelectPromotorias();
     atualizarListasMembros();
     renderSelectTipos();
     renderAuxiliares();
     renderSituacaoMembro();
     renderSituacaoMembros();
+    renderAfastamentos();
     renderResumo();
     renderListagem();
     renderHistorico();

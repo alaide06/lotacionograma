@@ -632,3 +632,76 @@ alter table public.registros
   foreign key (substituto_id) references public.promotores(id) on delete set null;
 
 drop table if exists public.substitutos;
+
+-- ============================================================
+-- Afastamentos por dia
+-- ============================================================
+-- Cada linha representa um dia específico. Isso permite registrar
+-- datas não consecutivas e contabilizar os dias sem cálculos frágeis.
+create table if not exists public.afastamento_subtipos (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  ativo boolean not null default true,
+  criado_por uuid references auth.users(id) on delete set null default auth.uid(),
+  criado_em timestamptz not null default now()
+);
+
+create unique index if not exists afastamento_subtipos_nome_normalizado_idx
+  on public.afastamento_subtipos (lower(trim(nome)));
+
+insert into public.afastamento_subtipos (nome)
+select nomes.nome
+from (values
+  ('Férias'),
+  ('Folgas Plantão'),
+  ('Tratamento de saúde')
+) as nomes(nome)
+where not exists (
+  select 1 from public.afastamento_subtipos s
+  where lower(trim(s.nome)) = lower(trim(nomes.nome))
+);
+
+create table if not exists public.afastamentos_dias (
+  id uuid primary key default gen_random_uuid(),
+  promotor_id uuid not null references public.promotores(id) on delete restrict,
+  subtipo_id uuid not null references public.afastamento_subtipos(id) on delete restrict,
+  data date not null,
+  referencia text,
+  observacao text,
+  criado_por uuid references auth.users(id) on delete set null default auth.uid(),
+  criado_em timestamptz not null default now(),
+  constraint afastamentos_dias_membro_data_unique unique (promotor_id, data)
+);
+
+create index if not exists afastamentos_dias_promotor_data_idx
+  on public.afastamentos_dias (promotor_id, data desc);
+
+create index if not exists afastamentos_dias_subtipo_data_idx
+  on public.afastamentos_dias (subtipo_id, data desc);
+
+alter table public.afastamento_subtipos enable row level security;
+alter table public.afastamentos_dias enable row level security;
+
+grant select on public.afastamento_subtipos, public.afastamentos_dias to anon, authenticated;
+grant insert, update, delete on public.afastamento_subtipos, public.afastamentos_dias to authenticated;
+revoke insert, update, delete on public.afastamento_subtipos, public.afastamentos_dias from anon;
+
+drop policy if exists "Leitura pública dos subtipos de afastamento" on public.afastamento_subtipos;
+create policy "Leitura pública dos subtipos de afastamento"
+on public.afastamento_subtipos for select to anon, authenticated using (true);
+
+drop policy if exists "Administradores gerenciam subtipos de afastamento" on public.afastamento_subtipos;
+create policy "Administradores gerenciam subtipos de afastamento"
+on public.afastamento_subtipos for all to authenticated
+using ((select public.is_admin()))
+with check ((select public.is_admin()));
+
+drop policy if exists "Leitura pública dos afastamentos" on public.afastamentos_dias;
+create policy "Leitura pública dos afastamentos"
+on public.afastamentos_dias for select to anon, authenticated using (true);
+
+drop policy if exists "Administradores gerenciam afastamentos" on public.afastamentos_dias;
+create policy "Administradores gerenciam afastamentos"
+on public.afastamentos_dias for all to authenticated
+using ((select public.is_admin()))
+with check ((select public.is_admin()));
