@@ -195,10 +195,8 @@ textarea{ resize:vertical; min-height:64px; font-family:var(--sans); }
 .seal::before{ content:""; width:6px; height:6px; border-radius:50%; display:inline-block; }
 .seal.presente{ background: var(--ok-bg); color: var(--ok); }
 .seal.presente::before{ background: var(--ok); }
-.seal.futuro{ background: var(--warn-bg); color: var(--warn); }
-.seal.futuro::before{ background: var(--warn); }
-.seal.plantao{ background: var(--plantao-bg); color: var(--plantao); }
-.seal.plantao::before{ background: var(--plantao); }
+.seal.futuro{ background: var(--plantao-bg); color: var(--plantao); }
+.seal.futuro::before{ background: var(--plantao); }
 .seal.encerrado{ background:#e7e5e0; color:#6b6558; }
 .seal.encerrado::before{ background:#9a9284; }
 
@@ -263,6 +261,12 @@ table.reg-table thead th.sorted::after{ content:" ▾"; font-size:9px; }
 table.reg-table thead th.sorted.desc::after{ content:" ▴"; }
 table.reg-table tbody tr{ border-bottom:1px solid var(--line); cursor:pointer; }
 table.reg-table tbody tr:hover{ background: #f7f4ec; }
+table.reg-table tbody tr.status-row-presente{ background:var(--ok-bg); }
+table.reg-table tbody tr.status-row-futuro{ background:var(--plantao-bg); }
+table.reg-table tbody tr.status-row-encerrado{ background:#e7e5e0; }
+table.reg-table tbody tr.status-row-presente:hover{ background:#d3e8d8; }
+table.reg-table tbody tr.status-row-futuro:hover{ background:#dcd4ec; }
+table.reg-table tbody tr.status-row-encerrado:hover{ background:#d9d6ce; }
 table.reg-table td{ padding:9px 10px; vertical-align:top; }
 table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .row-actions{ display:flex; gap:6px; }
@@ -375,6 +379,9 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 .member-history-table td{ vertical-align:top; }
 .member-history-table tbody tr[data-member-history-id]{ cursor:pointer; }
 .member-history-table tbody tr[data-member-history-id]:hover{ background:#f7f4ec; }
+.member-history-table tbody tr.status-row-presente:hover{ background:#d3e8d8; }
+.member-history-table tbody tr.status-row-futuro:hover{ background:#dcd4ec; }
+.member-history-table tbody tr.status-row-encerrado:hover{ background:#d9d6ce; }
 .member-history-main{ font-weight:600; color:var(--navy-deep); }
 .member-history-summary{ display:flex; align-items:center; gap:7px; margin-top:5px; color:var(--ink-soft); font-size:11.5px; line-height:1.35; }
 .member-history-summary-text{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:260px; }
@@ -1398,7 +1405,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const usaDadosGerais = !exigeSubstituto;
     const usaDestinacao = usaDadosGerais && !tipoMudaPromotoria(dados.tipo);
     return {
-      promotoria: dados.promotoria,
+      promotoria: valorOuNulo(dados.promotoria),
       promotoria_id: valorOuNulo(dados.promotoriaId),
       promotoria_origem: valorOuNulo(dados.promotoriaOrigem),
       promotoria_origem_id: valorOuNulo(dados.promotoriaOrigemId),
@@ -1822,7 +1829,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     switch(sit){
       case 'Presente': return 'presente';
       case 'Futuro': return 'futuro';
-      case 'Plantão': return 'plantao';
+      case 'Plantão': return 'futuro';
       case 'Encerrado': return 'encerrado';
       default: return 'encerrado';
     }
@@ -2061,9 +2068,13 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       const resumoLinha = resumo
         ? `<div class="member-history-summary"><span class="member-history-summary-text">Resumo: ${escapeHtml(resumoCurto(resumo))}</span><button type="button" class="member-summary-button" data-resumo-id="${escapeHtml(r.id)}" data-resumo-substituto="${substituto}">Ler resumo</button></div>`
         : '<div class="member-history-summary"><span class="member-history-summary-text">Resumo: Não informado</span></div>';
-      return `<tr data-member-history-id="${escapeHtml(r.id)}"><td><div class="member-history-main">${escapeHtml(r.promotoria || 'Não informada')}</div>${resumoLinha}</td><td>${escapeHtml(r.tipo || 'Indefinido')}</td><td>${escapeHtml(r[campoReferencia] || '—')}</td><td class="num">${fmtData(r[campoInicio])}</td><td class="num">${fmtData(r[campoFim])}</td><td><span class="seal ${seloClasse(situacao)}">${escapeHtml(situacao)}</span></td></tr>`;
+      const destinacao = String(r.destinacao || '').trim();
+      const destinacaoLinha = destinacao
+        ? `<button type="button" class="member-summary-button member-destinacao-button" data-destinacao-id="${escapeHtml(r.id)}" aria-label="Ver destinação completa">...</button>`
+        : '—';
+      return `<tr class="status-row-${seloClasse(situacao)}" data-member-history-id="${escapeHtml(r.id)}"><td><div class="member-history-main">${escapeHtml(r.promotoria || 'Não informada')}</div>${resumoLinha}</td><td>${escapeHtml(r.tipo || 'Indefinido')}</td><td>${destinacaoLinha}</td><td>${escapeHtml(r[campoReferencia] || '—')}</td><td class="num">${fmtData(r[campoInicio])}</td><td class="num">${fmtData(r[campoFim])}</td></tr>`;
     }).join('');
-    return `<div class="member-history-table"><table class="reg-table"><thead><tr><th>Promotoria</th><th>Tipo</th><th>Referência</th><th>Início</th><th>Fim</th><th>Situação</th></tr></thead><tbody>${linhas}</tbody></table></div>`;
+    return `<div class="member-history-table"><table class="reg-table"><thead><tr><th>Promotoria</th><th>Tipo</th><th>Destinação</th><th>Referência</th><th>Início</th><th>Fim</th></tr></thead><tbody>${linhas}</tbody></table></div>`;
   }
 
   function abrirResumoPopup(id, substituto){
@@ -2072,6 +2083,15 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     const resumo = substituto ? registro.resumoSubstituto : registro.resumo;
     document.getElementById('resumo-popup-titulo').textContent = `Resumo — ${registro.promotoria || 'Registro'}`;
     document.getElementById('resumo-popup-texto').textContent = resumo || 'Resumo não informado.';
+    document.getElementById('resumo-popup').hidden = false;
+    document.getElementById('btn-fechar-resumo').focus();
+  }
+
+  function abrirDestinacaoPopup(id){
+    const registro = registros.find(r=>String(r.id) === String(id));
+    if(!registro) return;
+    document.getElementById('resumo-popup-titulo').textContent = `Destinação — ${registro.promotoria || 'Registro'}`;
+    document.getElementById('resumo-popup-texto').textContent = registro.destinacao || 'Destinação não informada.';
     document.getElementById('resumo-popup').hidden = false;
     document.getElementById('btn-fechar-resumo').focus();
   }
@@ -2147,6 +2167,12 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       botao.addEventListener('click', evento=>{
         evento.stopPropagation();
         abrirResumoPopup(botao.dataset.resumoId, botao.dataset.resumoSubstituto === 'true');
+      });
+    });
+    wrap.querySelectorAll('[data-destinacao-id]').forEach(botao=>{
+      botao.addEventListener('click', evento=>{
+        evento.stopPropagation();
+        abrirDestinacaoPopup(botao.dataset.destinacaoId);
       });
     });
   }
@@ -3139,7 +3165,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       const acaoEditar = ehAdmin()
         ? `<button class="btn btn-ghost btn-sm" data-action="editar" data-id="${r.id}">Editar</button>`
         : '';
-      html += `<tr data-id="${r.id}">
+      html += `<tr class="status-row-${seloClasse(sit)}" data-id="${r.id}">
         <td>${escapeHtml(r.promotoriaOrigem||'—')}</td>
         <td>${escapeHtml(r.promotoria||'—')}</td>
         <td>${escapeHtml(r.titular||'—')}</td>
@@ -3371,12 +3397,14 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
 
       const promotoria = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoria));
       const promotoriaOrigem = promotorias.find(p => textoChaveImportacao(p.nome) === textoChaveImportacao(dados.promotoriaOrigem));
-      if(!promotoria) erros.push(`Linha ${linha}: promotoria não encontrada na base.`);
       if(dados.tipo && !tiposValidos.some(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo))){
         erros.push(`Linha ${linha}: tipo de movimentação inválido.`);
       }
       const tipoCanonico = tiposValidos.find(tipo => textoChaveImportacao(tipo) === textoChaveImportacao(dados.tipo));
       if(dados.tipo) dados.tipo = tipoCanonico || dados.tipo;
+      const autorizacao = tipoAutorizacao(dados.tipo);
+      if(!promotoria && !autorizacao) erros.push(`Linha ${linha}: promotoria não encontrada na base.`);
+      if(autorizacao && !dados.titular) erros.push(`Linha ${linha}: Autorização exige um promotor titular.`);
       const exigeSubstituto = tipoExigeSubstituto(dados.tipo);
       if(tipoMudaPromotoria(dados.tipo)){
         if(!dados.titular) erros.push(`Linha ${linha}: Promoção e Remoção exigem um titular.`);
@@ -3400,7 +3428,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       }
       if(promotoria) dados.promotoria = promotoria.nome;
       if(promotoriaOrigem) dados.promotoriaOrigem = promotoriaOrigem.nome;
-      if(promotoria && (!dados.tipo || tipoCanonico)){
+      if((promotoria || autorizacao) && (!dados.tipo || tipoCanonico)){
         if(tipoExigeSubstituto(dados.tipo) && !dados.substituto){
           erros.push(`Linha ${linha}: o tipo selecionado exige um substituto.`);
         } else {
@@ -3659,6 +3687,10 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
     return tipoCadastrado?.exigeSubstituto === true;
   }
 
+  function tipoAutorizacao(tipo){
+    return textoChaveImportacao(tipo) === 'autorizacao';
+  }
+
   function tipoMudaPromotoria(tipo){
     const chave = textoChaveImportacao(tipo);
     return chave.startsWith('promoc') || chave.startsWith('remo');
@@ -3736,23 +3768,30 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
   }
 
   function atualizarRegraSubstituto(){
-    const exige = tipoExigeSubstituto(document.getElementById('c-tipo').value);
-    const mudaPromotoria = tipoMudaPromotoria(document.getElementById('c-tipo').value);
+    const tipoSelecionado = document.getElementById('c-tipo').value;
+    const exige = tipoExigeSubstituto(tipoSelecionado);
+    const mudaPromotoria = tipoMudaPromotoria(tipoSelecionado);
+    const autorizacao = tipoAutorizacao(tipoSelecionado);
     const input = document.getElementById('c-substituto');
     const card = document.getElementById('card-substituto');
     const origem = document.getElementById('c-promotoria-origem');
     const campoOrigem = document.getElementById('campo-promotoria-origem');
+    const campoPromotoria = document.getElementById('c-promotoria');
     const camposGerais = document.getElementById('campos-registro-gerais');
     const campoTitular = document.getElementById('c-titular').closest('.field');
+    const inputTitular = document.getElementById('c-titular');
     const campoDestinacao = document.getElementById('c-destinacao').closest('.field');
     const titulo = document.getElementById('titulo-substituto');
     const regra = document.getElementById('substituto-regra');
     input.required = exige;
     card.hidden = !exige;
+    campoPromotoria.required = !autorizacao;
+    inputTitular.required = autorizacao;
     origem.required = mudaPromotoria;
     campoOrigem.hidden = !mudaPromotoria;
     campoTitular.hidden = exige;
-    document.querySelector('label[for="c-promotoria"]').textContent = mudaPromotoria ? 'Promotoria de destino *' : 'Promotoria *';
+    document.querySelector('label[for="c-promotoria"]').textContent = mudaPromotoria ? 'Promotoria de destino *' : (autorizacao ? 'Promotoria (opcional)' : 'Promotoria *');
+    document.querySelector('label[for="c-titular"]').textContent = autorizacao ? 'Promotor titular *' : 'Promotor titular';
     document.querySelector('label[for="c-promotoria-origem"]').textContent = mudaPromotoria ? 'Promotoria de origem *' : 'Promotoria de origem';
     camposGerais.hidden = exige;
     campoDestinacao.hidden = mudaPromotoria;
@@ -3874,18 +3913,22 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       mostrarToast('Somente administradores podem salvar registros.');
       return;
     }
+    const tipoSelecionado = document.getElementById('c-tipo').value;
+    const autorizacao = tipoAutorizacao(tipoSelecionado);
     const valorPromotoria = document.getElementById('c-promotoria').value.trim();
-    if(!valorPromotoria){
+    if(!valorPromotoria && !autorizacao){
       mostrarToast('Preencha o campo obrigatório: Promotoria.');
       return;
     }
-    const promotoriaBase = promotorias.find(p => p.nome.toLocaleLowerCase('pt-BR') === valorPromotoria.toLocaleLowerCase('pt-BR'));
-    if(!promotoriaBase){
+    const promotoriaBase = valorPromotoria
+      ? promotorias.find(p => p.nome.toLocaleLowerCase('pt-BR') === valorPromotoria.toLocaleLowerCase('pt-BR'))
+      : null;
+    if(valorPromotoria && !promotoriaBase){
       mostrarToast('Selecione uma promotoria existente na lista.');
       document.getElementById('c-promotoria').focus();
       return;
     }
-    document.getElementById('c-promotoria').value = promotoriaBase.nome;
+    document.getElementById('c-promotoria').value = promotoriaBase?.nome || '';
     const nomeTitular = document.getElementById('c-titular').value.trim();
     if(nomeTitular){
       const promotorBase = membroPorNome(promotores, nomeTitular);
@@ -3896,12 +3939,16 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       }
       document.getElementById('c-titular').value = promotorBase.nome;
     }
-    const tipoSelecionado = document.getElementById('c-tipo').value;
     const movimentacaoDeLotacao = tipoMudaPromotoria(tipoSelecionado);
     const promotoriaOrigem = document.getElementById('c-promotoria-origem').value.trim();
     const dataInicialMovimentacao = document.getElementById('c-data-ini').value;
     if(movimentacaoDeLotacao && !nomeTitular){
       mostrarToast('Para Promoção e Remoção, informe o promotor titular.');
+      document.getElementById('c-titular').focus();
+      return;
+    }
+    if(autorizacao && !nomeTitular){
+      mostrarToast('Para Autorização, informe o promotor titular.');
       document.getElementById('c-titular').focus();
       return;
     }
@@ -3915,7 +3962,7 @@ table.reg-table td.num{ font-family:var(--mono); color:var(--ink-soft); }
       document.getElementById('c-promotoria-origem').focus();
       return;
     }
-    if(movimentacaoDeLotacao && textoChaveImportacao(promotoriaOrigem) === textoChaveImportacao(promotoriaBase.nome)){
+    if(movimentacaoDeLotacao && promotoriaBase && textoChaveImportacao(promotoriaOrigem) === textoChaveImportacao(promotoriaBase.nome)){
       mostrarToast('A promotoria de origem deve ser diferente da promotoria de destino.');
       document.getElementById('c-promotoria-origem').focus();
       return;

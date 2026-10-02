@@ -633,6 +633,17 @@ alter table public.registros
 
 drop table if exists public.substitutos;
 
+-- Autorizações podem ser cadastradas sem promotoria; o vínculo obrigatório é o promotor.
+alter table public.registros
+  alter column promotoria drop not null;
+
+alter table public.registros drop constraint if exists registros_autorizacao_promotor_check;
+alter table public.registros add constraint registros_autorizacao_promotor_check check (
+  lower(trim(coalesce(tipo, ''))) <> 'autorização'
+  or promotor_id is not null
+  or nullif(trim(coalesce(titular, '')), '') is not null
+) not valid;
+
 -- ============================================================
 -- Afastamentos por dia
 -- ============================================================
